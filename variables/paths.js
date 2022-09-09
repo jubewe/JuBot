@@ -2,4 +2,8 @@ const mainpath = require("../functions/_mainpath");
 
 module.exports = {
   channels: mainpath("./data/channels.json"),
+  userids: mainpath("./data/userids.json"),
+  logcode: mainpath("./data/logcode.txt"),
+
+  
 };

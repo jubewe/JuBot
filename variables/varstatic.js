@@ -1,7 +1,7 @@
 const checkenv = require("../functions/_checkenv");
 
 let nonarr = [null, undefined];
-let replacer = /[@#-󠀀]/g;
+let replacer = /[@#-]/g;
 let splitter = "-󠀀~󠀀-󠀀JUBOT󠀀-󠀀~󠀀-";
 const starttime = Date.now();
 

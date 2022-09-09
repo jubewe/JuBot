@@ -14,8 +14,6 @@ let j = {
     env: env,
     e: e,
     c: config,
-    join: require("../functions/join"),
-    send: () => {},
     client: new ChatClient({
         username: env().T_USERNAME,
         password: env().T_TOKEN,
@@ -41,5 +39,8 @@ let j = {
 
 
 };
+
+j.send = require("../functions/send");
+j.join = require("../functions/join");
 
 module.exports = j;

@@ -1,3 +1,9 @@
-const { cleantime } = require("./functions/_");
+const getuser = require("./functions/getuser");
 
-console.log(cleantime(1000, 3, 2))
+getuser(1, "jubewe")
+.then(u => {
+    console.log(u)
+})
+.catch(e => {
+    console.error(e)
+})

@@ -12,6 +12,11 @@ module.exports = {
     exec: async () => {
         j = require("../variables/j");
 
-        
+        if(j.message._.msg.split(" ")[1] !== undefined){
+            let joinchan = j.message._.msg.split(" ")[1];
+            
+        } else {
+            j.send(2, null, `Error: No Channel given`);
+        }
     }
 }

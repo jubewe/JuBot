@@ -1,4 +1,4 @@
-const { PrivmsgMessage } = require("@kararty/dank-twitch-irc");
+const { PrivmsgMessage, reply } = require("@kararty/dank-twitch-irc");
 
 /**
  * 
@@ -58,7 +58,7 @@ function privmsg_parser(response) {
     static id = response.messageID;
     static timestamp = response.serverTimestamp;
     static timestampRaw = response.serverTimestampRaw;
-    static isreply = isreply();
+    static isreply = (response.ircTags["reply-parent-msg-id"] !== null ? true : false);
     static replyUserName = getreply()[0];
     static replyUserID = getreply()[1];
     static replyMessage = getreply()[2];
