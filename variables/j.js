@@ -16,7 +16,6 @@ let j = {
   variables: () => {
     return require("./varstatic");
   },
-  vars: require("./vars"),
   functions: () => {
     return require("../functions/_");
   },
@@ -49,6 +48,11 @@ let j = {
       user: null,
       chan: null,
       command: null,
+      userperm: {
+        num: null,
+        desc: "",
+        tag: null || "",
+      },
     },
   },
 
@@ -57,7 +61,6 @@ let j = {
       return uptime();
     },
   },
-}
-j.channels = [];
+};
 
 module.exports = j;

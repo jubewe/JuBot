@@ -1,6 +1,7 @@
 {
     "prefix": "<",
     "perm": {
+        "bot":1,
         "default":10,
         "moderator":25,
         "broadcaster":30,

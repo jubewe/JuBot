@@ -13,12 +13,9 @@ function send(smode, schan, smsg, sparentid, sfirst) {
       j.variables().botnamebeta() + smsg
     );
   } else if ([2, "reply"].includes(smode)) {
-    sparentid = (j.variables().nonarr.includes(sparentid) ? j.message.message.replyMessageID : sparentid);
-    j.client.say(
-      schan,
-      (sfirst === false ? "" : j.variables().botnamebeta()) 
-      + (j.variables().nonarr.includes(sparentid) ? j.message._.usertag : "") + smsg,
-      (j.variables().nonarr.includes(sparentid) ? {} : {replyTo: sparentid})
+    sparentid = (j.variables().nonarr.includes(sparentid) ? j.message.message.id : sparentid);
+    j.client.reply(
+      schan, sparentid, (sfirst === false ? "" : j.variables().botnamebeta()) + smsg
     );
   }
 };

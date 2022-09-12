@@ -1,5 +1,6 @@
 badgestoarr     
-send > init            
+< send > init            
 editchan        
-getuser
-perms
+< getuser
+< getuserperm
+< permission (edit etc)
