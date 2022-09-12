@@ -10,7 +10,7 @@ function _init(){
         log(1, "Main-Client Connected");
     });
 
-    j.join(rf(j.paths().channels, true).channels);
+    j.join(rf(j.paths().channels, true).channels)
 
     j.client.on("error", (e) => {
         new Error(e);

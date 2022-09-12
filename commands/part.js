@@ -1,10 +1,10 @@
-const { returnerr } = require("../functions/_");
 const pixelize = require("../functions/_pixelize");
+const returnerr = require("../functions/_returnerr");
 let j = require("../variables/j");
 
 module.exports = {
-    name: "join",
-    aliases: [],
+    name: "part",
+    aliases: ["leave"],
     state: 1,
     add_version: "0.0.1",
     add_user: "jubewe",
@@ -15,13 +15,13 @@ module.exports = {
         j = require("../variables/j");
 
         if(j.message._.msg.split(" ")[1] !== undefined){
-            let joinchan = j.message._.msg.split(" ")[1].toLowerCase();
-            j.join(joinchan)
-            .then(jc => {
-                j.send(2, null, `Successfully joined ${pixelize(joinchan)}`);
+            let partchan = j.message._.msg.split(" ")[1].toLowerCase();
+            j.part(partchan)
+            .then(pc => {
+                j.send(2, null, `Successfully parted ${pixelize(partchan)} ${returnerr(pc, 1)}`);
             })
             .catch(e => {
-                j.send(2, null, `Error: Could not join ${pixelize(joinchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`);
+                j.send(2, null, `Error: Could not part ${pixelize(partchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`)
             })
         } else {
             j.send(2, null, `Error: No Channel given`);
