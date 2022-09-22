@@ -1,5 +1,5 @@
 const { date, date_ } = require("../variables/varstatic.js");
-const returner = require("./_returner.js");
+const _returner = require("./_returner.js");
 
 /**
  * 
@@ -49,13 +49,13 @@ function log(logopt, logmsg, logcolorfg, logcolorbg){
     }
 
     if(logopt === 0){
-        console.log(`${returner(3, logcolorbg, undefined, "")}${returner(3, logcolorfg, undefined, "")} ${date_()}\x1b[0m${returner(3, logcolorbg, undefined, "")}${returner(3, logcolorfg, undefined, "")} \x1b[0m > ${logmsg}`);
+        console.log(`${_returner(3, logcolorbg, undefined, "")}${_returner(3, logcolorfg, undefined, "")} ${date_()}\x1b[0m${_returner(3, logcolorbg, undefined, "")}${_returner(3, logcolorfg, undefined, "")} \x1b[0m > ${logmsg}`);
         // none
     } else if(logopt === 1){
-        console.info(`${returner(3, logcolorbg, undefined, "\x1b[43m")}${returner(3, logcolorfg, undefined, "\x1b[30m")} ${date_()}\x1b[0m${returner(3, logcolorbg, undefined, "\x1b[43m")}${returner(3, logcolorfg, undefined, "\x1b[30m")} \x1b[0m > ${logmsg}`);
+        console.info(`${_returner(3, logcolorbg, undefined, "\x1b[43m")}${_returner(3, logcolorfg, undefined, "\x1b[30m")} ${date_()}\x1b[0m${_returner(3, logcolorbg, undefined, "\x1b[43m")}${_returner(3, logcolorfg, undefined, "\x1b[30m")} \x1b[0m > ${logmsg}`);
         // yellow
     } else if(logopt === 2){
-        console.error(`${returner(3, logcolorbg, undefined, "\x1b[41m")}${returner(3, logcolorfg, undefined, "")} ${date_()}\x1b[0m${returner(3, logcolorbg, undefined, "\x1b[41m")}${returner(3, logcolorfg, undefined, "")} \x1b[0m > ${logmsg}`);
+        console.error(`${_returner(3, logcolorbg, undefined, "\x1b[41m")}${_returner(3, logcolorfg, undefined, "")} ${date_()}\x1b[0m${_returner(3, logcolorbg, undefined, "\x1b[41m")}${_returner(3, logcolorfg, undefined, "")} \x1b[0m > ${logmsg}`);
         // red
     }
 };

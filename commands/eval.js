@@ -2,6 +2,7 @@ let j = require("../variables/j");
 
 module.exports = {
     name: "eval",
+    id: "global_commands_eval",
     aliases: [],
     state: 1,
     add_version: "0.0.2",

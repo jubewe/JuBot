@@ -4,8 +4,8 @@
  * @returns {number}
  */
 
-function pad2(n){
+function _pad2(n){
     return n < 10 ? '0' + n : n
 };
 
-module.exports = pad2;
+module.exports = _pad2;

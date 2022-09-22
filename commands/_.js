@@ -3,6 +3,6 @@ module.exports = {
     join: require("./join"),
     part: require("./part"),
     eval: require("./eval"),
-    
+    test2: require("./test2"),
 
 }

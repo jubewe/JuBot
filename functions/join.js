@@ -6,20 +6,20 @@ async function join(jchan) {
     try {
       let j = require("../variables/j");
 
-      let channels = syncfile(5, j.paths().channels);
+      let joinchannels = syncfile(5, j.paths().clientchannels);
 
       if (Array.isArray(jchan)) {
         [...jchan].map((c) => {
-          if (!channels.channels.includes(c)) {
-            channels.channels.push(c);
+          if (!joinchannels.channels.includes(c)) {
+            joinchannels.channels.push(c);
           }
         });
       } else {
-        if (!channels.channels.includes(jchan)) {
-          channels.channels.push(jchan);
+        if (!joinchannels.channels.includes(jchan)) {
+          joinchannels.channels.push(jchan);
         }
       }
-      wf(j.paths().channels, channels);
+      wf(j.paths().clientchannels, joinchannels);
       j.client.joinAll(jchan);
       return resolve({ path: [1], msg: "Successfully joined channel" });
     } catch(e){

@@ -4,6 +4,7 @@ let j = require("../variables/j");
 
 module.exports = {
     name: "join",
+    id: "global_commands_join",
     aliases: [],
     state: 1,
     add_version: "0.0.1",

@@ -4,6 +4,7 @@ module.exports = {
   combineArr: require("./_combineArr"),
   editchan: require("./_editchan"),
 
+  id: require("./_id"),
   log: require("./_log"),
   logcode: require("./_logcode"),
   mainpath: require("./_mainpath"),

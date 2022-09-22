@@ -1,4 +1,4 @@
-function pixelize(pinput, piindex, ppixel){
+function _pixelize(pinput, piindex, ppixel){
     if(pinput !== undefined){
       let pindex = 3;
       let pixler = "󠀀";
@@ -14,4 +14,4 @@ function pixelize(pinput, piindex, ppixel){
     }
 };
 
-module.exports = pixelize;
+module.exports = _pixelize;

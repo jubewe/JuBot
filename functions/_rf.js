@@ -1,10 +1,10 @@
 const fs = require("fs");
-const mainpath = require("./_mainpath");
+const _mainpath = require("./_mainpath");
 const _wf = require("./_wf");
 
 /**
  * 
- * @param {string} rfpath rfpath > mainpath()
+ * @param {string} rfpath rfpath > _mainpath()
  * @param {boolean} parse_json 
  * @returns {file} Read file
  */
@@ -13,8 +13,8 @@ function _rf(rfpath, parse_json){
     if(!rfpath) throw new Error(`_rf: rfpath is undefined`);
 
     try {
-        if(fs.existsSync(mainpath(rfpath))){
-            let file = fs.readFileSync(mainpath(rfpath), "utf-8");
+        if(fs.existsSync(_mainpath(rfpath))){
+            let file = fs.readFileSync(_mainpath(rfpath), "utf-8");
             if(rfpath.endsWith(".json") && parse_json){
                 if(typeof file === "string" && typeof JSON.parse(file) === "object" && Object.keys(file).length >= 2){
                     return JSON.parse(file);

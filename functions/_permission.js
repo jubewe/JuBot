@@ -1,6 +1,6 @@
 const paths = require("../variables/paths");
-const syncfile = require("./_syncfile");
-const wf = require("./_wf");
+const _syncfile = require("./_syncfile");
+const _wf = require("./_wf");
 
 /**
  *
@@ -18,7 +18,7 @@ function _permission(permopt, permnum, permuser) {
      * 1    set
      * 2    delete
      */
-    let permissions = syncfile(5, paths.permissions);
+    let permissions = _syncfile(5, paths.permissions);
     switch (permopt) {
       default:
       case 0: {
@@ -47,7 +47,7 @@ function _permission(permopt, permnum, permuser) {
         if (permnum) {
           if (permuser) {
             permissions.users[permuser] = permnum;
-            wf(paths.permissions, permissions);
+            _wf(paths.permissions, permissions);
             return resolve({
               path: [1, 1, 1],
               msg: "Successfully set users perm",
@@ -64,7 +64,7 @@ function _permission(permopt, permnum, permuser) {
       case 2: {
         if (permuser) {
           delete permissions.users[permuser];
-          wf(paths.permissions, permissions);
+          _wf(paths.permissions, permissions);
           return resolve({ path: [2, 1], msg: "Successfully deleted user" });
         } else {
           return reject({ path: [2, 0], msg: "permuser is indefuned" });

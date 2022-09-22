@@ -1,4 +1,4 @@
-function requestopts(romethod, rotoken){
+function _requestopts(romethod, rotoken){
     let j = require("../variables/j");
     if(romethod !== undefined){
         return {
@@ -21,4 +21,4 @@ function requestopts(romethod, rotoken){
     }
 };
 
-module.exports = requestopts;
+module.exports = _requestopts;

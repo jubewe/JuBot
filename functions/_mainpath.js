@@ -6,8 +6,12 @@ const path = require("path");
  * @returns {path} Path from the main dir
  */
 
-function mainpath(path_){
-    return path.resolve(path.dirname(__dirname), path_);
+function _mainpath(path_){
+    if(!path_ || path_.length === 0){
+        return path.resolve(path.dirname(__dirname), "./");
+    } else {
+        return path.resolve(path.dirname(__dirname), path_);
+    }
 };
 
-module.exports = mainpath;
+module.exports = _mainpath;

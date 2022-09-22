@@ -1,5 +1,5 @@
 let { nonarr } = require("../variables/varstatic");
-const pad2 = require("./_pad2");
+const _pad2 = require("./_pad2");
 
 /**
  *
@@ -107,10 +107,10 @@ function _cleantime(time, timeopt, timedigits) {
             dat["tag"] = `${t[Object.keys(t)[i]]["tag"]}${cte > 1 ? "s" : ""}`;
           }
           if (timeopt === 1) {
-            dat["time"].push(pad2(cte).toString());
+            dat["time"].push(_pad2(cte).toString());
             dat["order"].push(Object.keys(t)[i]);
           } else if ([2, 3].includes(timeopt)) {
-            dat["time"].push(pad2(cte).toString());
+            dat["time"].push(_pad2(cte).toString());
             dat["order"].push(Object.keys(t)[i]);
           } else if ([4, 5].includes(timeopt)) {
             if (cte >= 1) {

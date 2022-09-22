@@ -4,3 +4,7 @@ editchan
 < getuser
 < getuserperm
 < permission (edit etc)
+< cooldowns
+
+
+custom id: <channel>_<"command"/"keyword"/"global_command">(_<num>)

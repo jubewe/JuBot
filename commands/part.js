@@ -4,6 +4,7 @@ let j = require("../variables/j");
 
 module.exports = {
     name: "part",
+    id: "global_commands_part",
     aliases: ["leave"],
     state: 1,
     add_version: "0.0.1",
