@@ -16,6 +16,7 @@ module.exports = {
   returnerr: require("./_returnerr"),
   rf: require("./_rf"),
   syncfile: require("./_syncfile"),
+  timer: require("./_timer"),
   wf: require("./_wf"),
 
   regex: require("./_regex"),

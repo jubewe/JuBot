@@ -19,11 +19,9 @@ async function commandhandler() {
                 commands[j.message._.command].exec();
                 if(command.cooldown > 0 || command.cooldown_user > 0){
                   _cooldown(1, j.message.channel.id, commandid, j.message.userstate.id, true)
-                  .then(c2 => {
-                    // console.log(`cooldown set `, c2);
-                  })
+                  .then(c2 => {})
                   .catch(e => {throw e});
-                  }
+                }
               })();
             }
           }

@@ -1,9 +1,10 @@
 /**
  * 
  * @param {number} copt 
- * @param {number | undefined | null} cchan null|undefined if cname = "global"
+ * @param {number} cchan
  * @param {string} cid 
  * @param {number} cuser 
+ * @param {boolean} creject
  * @returns {object | array}
  */
 

@@ -8,6 +8,7 @@ module.exports = {
   permissions: mainpath("./data/permissions.json"),
   cooldowns: mainpath("./data/cooldowns.json"),
   ids: mainpath("./data/ids.json"),
+  timers: mainpath("./data/timers.json"),
   
   
 };

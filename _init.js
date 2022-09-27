@@ -1,4 +1,5 @@
 const { rf, log } = require("./functions/_");
+const _executetimers = require("./functions/_executetimers");
 
 function _init(){
     let j = require("./variables/j");
@@ -17,6 +18,9 @@ function _init(){
     });
 
     j.send = require("./functions/send");
+
+    _executetimers();
+    log(1, "Executed timers");
 }
 
 module.exports = _init;

@@ -62,7 +62,7 @@ async function _id(idopt, idtype, idchan, idkey) {
           let idnum = ids[idtype][idchan][idkey];
           idreturn = [
             `${idchan}_${idkey}_${idnum}`,
-            idnum,
+            idnum.toString(),
           ];
         } else {
           if (!idkey)
@@ -71,10 +71,10 @@ async function _id(idopt, idtype, idchan, idkey) {
               msg: "idchan and idkey are undefined",
             });
 
-          if (!Object.keys(ids[idtype]).includes(idkey)) ids[idtype][idkey] = 0;
-          ids[idtype][idkey] =+ 1;
+          if (Object.keys(ids[idtype]).includes(idkey) === false) ids[idtype][idkey] = 0;
+          ids[idtype][idkey]++;
           let idnum = ids[idtype][idkey];
-          idreturn = [`global_${idkey}_${idnum}`, idnum];
+          idreturn = [`global_${idkey}_${idnum}`, idnum.toString()];
         }
 
         _wf(paths.ids, ids);

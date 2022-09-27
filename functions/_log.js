@@ -9,7 +9,7 @@ const _returner = require("./_returner.js");
  * @param {string} logcolorbg 
  */
 
-function log(logopt, logmsg, logcolorfg, logcolorbg){
+function _log(logopt, logmsg, logcolorfg, logcolorbg){
     // 0 = none, 1 = info (green), 2 = error (red), 3 = custom
     let logcolors = ["reset", "bright", "dim", "underscore", "blink", "reverse", "hidden", "fgblack", 
         "fgred", "fggreen", "fgyellow", "fgblue", "fgmagenta", "fgcyan", "fgwhite", "bgblack", "bgred", 
@@ -60,4 +60,4 @@ function log(logopt, logmsg, logcolorfg, logcolorbg){
     }
 };
 
-module.exports = log;
+module.exports = _log;
