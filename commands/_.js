@@ -1,8 +1,9 @@
 module.exports = {
-    test: require("./test"),
+    eval: require("./eval"),
     join: require("./join"),
     part: require("./part"),
-    eval: require("./eval"),
+    say: require("./say"),
+    test: require("./test"),
     test2: require("./test2"),
 
 }
