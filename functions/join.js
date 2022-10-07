@@ -1,8 +1,11 @@
 const syncfile = require("./_syncfile");
 const wf = require("./_wf");
 
-async function join(jchan) {
+async function join(jchan, jclient, channelkey) {
   return new Promise(function (resolve, reject) {
+    let j = require("../variables/j");
+    jclient = (jclient ? jclient : j.client);
+    channelkey = (channelkey ? channelkey : "channels")
     try {
       let j = require("../variables/j");
 
@@ -10,17 +13,17 @@ async function join(jchan) {
 
       if (Array.isArray(jchan)) {
         [...jchan].map((c) => {
-          if (!joinchannels.channels.includes(c)) {
-            joinchannels.channels.push(c);
+          if (!joinchannels[channelkey].includes(c)) {
+            joinchannels[channelkey].push(c);
           }
         });
       } else {
-        if (!joinchannels.channels.includes(jchan)) {
-          joinchannels.channels.push(jchan);
+        if (!joinchannels[channelkey].includes(jchan)) {
+          joinchannels[channelkey].push(jchan);
         }
       }
       wf(j.paths().clientchannels, joinchannels);
-      j.client.joinAll(jchan);
+      jclient.joinAll(jchan);
       return resolve({ path: [1], msg: "Successfully joined channel" });
     } catch(e){
       return reject(e);

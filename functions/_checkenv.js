@@ -4,7 +4,7 @@ function _checkenv(checkenv, checkvar, checkopt, checkval){
     j = require("../variables/j");
 
     let nonarr = j.variables().nonarr;
-    let e = (j.variables().nonarr.includes(checkenv) ? j.e() : checkenv);
+    let e = (nonarr.includes(checkenv) ? j.e() : checkenv);
     
     try {
         if(!nonarr.includes(checkopt)){

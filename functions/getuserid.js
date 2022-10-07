@@ -1,11 +1,11 @@
 const request = require("request");
 let { nonarr, replacer } = require("../variables/varstatic");
-const requestopts = require("./_requestopts");
+const _requestopts = require("./_requestopts");
 
 async function getuserid(gusidusername){
     return new Promise(function(resolve, reject){
         if(isNaN(gusidusername)){
-            request(`https://api.twitch.tv/helix/users?login=${gusidusername.replace(replacer, "")}`, requestopts("GET", 0), function(e, r){
+            request(`https://api.twitch.tv/helix/users?login=${gusidusername.replace(replacer, "")}`, _requestopts("GET", null), function(e, r){
                 if(e){
                     return reject("0 " + e)
                 } else {
@@ -23,7 +23,7 @@ async function getuserid(gusidusername){
                 }
             })
         } else {
-          return reject("0");
+            return reject("0");
         }
     })
 };

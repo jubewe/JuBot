@@ -1,5 +1,3 @@
-const checkenv = require("../functions/_checkenv");
-
 let nonarr = [null, undefined];
 let replacer = /[@#-]/g;
 let splitter = "-󠀀~󠀀-󠀀JUBOT󠀀-󠀀~󠀀-";
@@ -12,7 +10,5 @@ module.exports = {
     splitter: splitter,
     replacer: replacer,
     starttime: starttime,
-    botname: () => {return checkenv(null, "OS", 0, "Windows_NT") ? "Bot BETA " : "Bot "},
-    botnamebeta: () => {return checkenv(null, "OS", 0, "Windows_NT") ? "[BETA] " : ""},
 
 }

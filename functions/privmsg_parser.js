@@ -50,7 +50,7 @@ function privmsg_parser(response) {
     static isAction = response.isAction;
     static isCheer = response.isCheer();
     static bits = response.bits;
-    static botsraw = response.bitsRaw;
+    static bitsraw = response.bitsRaw;
     static type = response.ircCommand;
     static emotes = response.emotes;
     static emotesRaw = response.emotesRaw;

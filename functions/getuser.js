@@ -1,7 +1,8 @@
 const fs = require("fs");
 let { userids: useridspath } = require("../variables/paths");
 let { replacer } = require("../variables/varstatic");
-let getuserid = require("./getuserid");
+const getuserbyid = require("./getuserbyid");
+const getuserid = require("./getuserid");
 const logcode = require("./_logcode");
 let regex = require("./_regex");
 const syncfile = require("./_syncfile");
@@ -15,7 +16,7 @@ async function getuser(gumode, guinput){
             return resolve(ainum);
         };
 
-        if(!regex.numregex(guinput)){
+        if(!regex.numregex().test(guinput)){
             // name
             guinput = guinput.toLowerCase().replace(replacer, "");
             if(Object.keys(useridsfile.names).includes(guinput)){
@@ -45,12 +46,11 @@ async function getuser(gumode, guinput){
                             useridsfile.errors.push(guinput);
                             fs.writeFileSync(useridspath, JSON.stringify(useridsfile));
                         }
-                        console.error(e);
                         return reject([gumode,1,0]);
                     })
                 }
             }
-        } else if(regex.numregex(guinput)) {
+        } else if(regex.numregex().test(guinput)) {
             // id
             guinput = guinput.toString();
             if(Object.keys(useridsfile.ids).includes(guinput)){

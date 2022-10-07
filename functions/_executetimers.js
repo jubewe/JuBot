@@ -32,14 +32,14 @@ function _executetimers(tid){
     function settimer(id){
         if(Object.keys(tfile.ids).includes(id)){
             let tobj = tfile.ids[id];
-            if(tobj.time - Date.now() < 1000){
-                executetimer(tobj.id);
+            if((tobj.time - Date.now()) < 1000){
+                executetimer(id);
             } else {
                 set_timers.push(id);
+                setTimeout(() => {
+                    executetimer(id);
+                }, (tobj.time - Date.now() >= 2147483647 ? 2147483647 : tobj.time - Date.now()));
             }
-            setTimeout(() => {
-                executetimer(tobj.id);
-            }, (tobj.time >= 2147483647 ? 2147483647 : tobj.time));
 
         }
     };
@@ -52,16 +52,10 @@ function _executetimers(tid){
             getuser(1, tobj.user.id)
             .then(u => {
                 try {
-                    j.send(0, ch[0], `${u[0]}, Timer from ${_cleantime(Date.now()-parseInt(tobj.set_time), 5, 2).time.join(", ")} ago: ${tobj.message}`);
+                    j.send(0, ch[0], `[TIMER] ${u[0]}, Timer from ${_cleantime(Date.now()-parseInt(tobj.set_time), 5, 2).time.join(", ")} ago: ${tobj.message}`);
 
                     delete tfile.ids[id];
-                    if(tfile.times[tobj.time].length === 1){
-                        delete tfile.times[tobj.time];
-                    } else {
-                        tfile.times[tobj.time].splice(tfile.times[tobj.time].indexOf(tobj.id), 1);
-                    }
                     tfile.users[tobj.user.id].splice(tfile.users[tobj.user.id].indexOf(tobj.id), 1);
-
                     _wf(paths.timers, tfile);
                 } catch(e) {
                     throw e;

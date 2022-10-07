@@ -5,7 +5,7 @@
 
 function uptime(){
     let j = require("../variables/j");
-    return j.functions().cleantime(Date.now() - j.variables().starttime, 3, 2);
+    return j.functions().cleantime(Date.now() - j.variables().starttime, 5, "auto").time;
 };
 
 module.exports = uptime;

@@ -1,9 +1,11 @@
 const { ChatClient } = require("@kararty/dank-twitch-irc");
 const uptime = require("../functions/uptime");
 const mainpath = require("../functions/_mainpath");
+const express = require("express");
+const app = express();
 
 let env = () => {
-  return require("dotenv").config().parsed;
+  return require("dotenv").config({path: mainpath("./.env")}).parsed;
 };
 let e = () => {
   return process.env;
@@ -12,15 +14,27 @@ let config = () => {
   return require("../config.json");
 };
 
+let client = new ChatClient({
+  username: env().T_USERNAME,
+  password: env().T_TOKEN,
+  rateLimits: env().T_RATELIMITS,
+});
+
 let j = {
   variables: () => {
     return require("./varstatic");
+  },
+  vars: () => {
+    return require("../variables/vars");
   },
   functions: () => {
     return require("../functions/_");
   },
   commands: () => {
     return require("../commands/_");
+  },
+  dm_commands: () => {
+    return require("../commands/_dm")
   },
   paths: () => {
     return require("./paths");
@@ -32,10 +46,13 @@ let j = {
   join: require("../functions/join"),
   part: require("../functions/part"),
   lasterror: {},
-  client: new ChatClient({
-    username: env().T_USERNAME,
-    password: env().T_TOKEN,
-    rateLimits: env().T_RATELIMITS,
+  
+  client: client,
+  client_: () => {return client},
+  viewclient: new ChatClient({
+    username: env().T_USERNAME_PV,
+    password: env().T_TOKEN_PV,
+    rateLimits: env().T_RATELIMITS_PV,
   }),
   message: {
     message: null,
@@ -53,6 +70,8 @@ let j = {
         desc: "",
         tag: null || "",
       },
+      userperms: {},
+      type: 0,
     },
   },
 
@@ -60,6 +79,9 @@ let j = {
     uptime: () => {
       return uptime();
     },
+  },
+  express: {
+    app: app,
   },
 };
 

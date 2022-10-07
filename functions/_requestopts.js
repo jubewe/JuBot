@@ -1,21 +1,21 @@
-function _requestopts(romethod, rotoken){
+function _requestopts(romethod, rotoken, roclientid){
     let j = require("../variables/j");
-    if(romethod !== undefined){
+    if(romethod){
         return {
             method: romethod,
             headers: {
-              'Client-ID' : j.env().T_CLIENTID,
-              'Accept' : 'application/vnd.twitchtv.v5+json',
-              'Authorization' : `Bearer ${rotoken === undefined || rotoken === 0 ? j.env().T_TOKEN : rotoken}`,
+                'Client-ID' : (roclientid ? roclientid : j.env().T_CLIENTID),
+                'Accept' : 'application/vnd.twitchtv.v5+json',
+                'Authorization' : `Bearer ${!rotoken || rotoken === 0 ? j.env().T_TOKEN : rotoken}`,
             }
         }
     } else {
         return {
             method: "GET",
             headers: {
-              'Client-ID' : j.env().T_CLIENTID,
-              'Accept' : 'application/vnd.twitchtv.v5+json',
-              'Authorization' : `Bearer ${j.env().T_TOKEN}`,
+                'Client-ID' : j.env().T_CLIENTID,
+                'Accept' : 'application/vnd.twitchtv.v5+json',
+                'Authorization' : `Bearer ${j.env().T_TOKEN}`,
             }
         }
     }

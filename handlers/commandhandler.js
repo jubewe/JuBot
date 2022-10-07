@@ -13,8 +13,8 @@ async function commandhandler() {
       if (parseInt(j.message._.userperm.num) >= command.permission) {
         _cooldown(0, j.message.channel.id, commandid, j.message.userstate.id, false)
         .then((c) => {
-          if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown)){
-            if(c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user)){
+          if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || j.message._.userperms._default){
+            if(j.message._.userperms._default || c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user)){
               (async () => {
                 commands[j.message._.command].exec();
                 if(command.cooldown > 0 || command.cooldown_user > 0){

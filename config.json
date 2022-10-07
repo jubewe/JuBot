@@ -1,12 +1,12 @@
 {
-    "prefix": "<",
+    "prefix": ">",
     "perm": {
-        "bot":1,
-        "default":10,
-        "moderator":25,
-        "broadcaster":30,
-        "botdefault":60,
-        "bothigh":62,
-        "botowner":69
+        "bot": 1,
+        "default": 10,
+        "moderator": 25,
+        "broadcaster": 30,
+        "botdefault": 60,
+        "bothigh": 62,
+        "botowner": 69
     }
 }

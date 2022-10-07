@@ -13,10 +13,10 @@ const _wf = require("./_wf");
  * @param {string} targ2 message
  * @param {string} targ3 channelname
  * @param {boolean} treturn
- * @returns {array}
+ * @returns 
  */
 
-function _timer(tmode, tuser, targ, targ2, targ3, treturn){
+async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
     return new Promise(function(resolve, reject){
         /**
          * get, set, delete
@@ -66,7 +66,7 @@ function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                                     "name":ch[0],
                                     "id":ch[1]
                                 },
-                                "time":targ,
+                                "time":Date.now()+targ,
                                 "message":targ2,
                                 "user":{
                                     "name":u[0],
@@ -79,12 +79,6 @@ function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                             };
 
                             tfile.users[tuser].push(i[1]);
-
-                            if(!tfile.times[targ]){
-                                tfile.times[targ] = [];
-                            };
-
-                            tfile.times[targ].push(i[1])
 
                             _wf(paths.timers, tfile);
 

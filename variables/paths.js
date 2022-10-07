@@ -9,6 +9,10 @@ module.exports = {
   cooldowns: mainpath("./data/cooldowns.json"),
   ids: mainpath("./data/ids.json"),
   timers: mainpath("./data/timers.json"),
+  usertokens: mainpath("./data/usertokens.json"),
+  afkusers: mainpath("./data/afkusers.json"),
+  valorant: mainpath("./data/valorant.json"),
+  
   
   
 };

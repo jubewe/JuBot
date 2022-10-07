@@ -5,6 +5,10 @@ editchan
 < getuserperm
 < permission (edit etc)
 < cooldowns
-
-
+<? finish timers
+< clip
 custom id: <channel>_<"command"/"keyword"/"global_command">(_<num>)
+< token: 1 = opt, 2 = token, 3 = if perm user
+viewclient (+init)
+customcommands
+< valorantrank
