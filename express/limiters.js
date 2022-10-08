@@ -1,10 +1,8 @@
 const rateLimit = require("express-rate-limit");
 const _rf = require("../functions/_rf");
-let admin_logins = _rf("./express/oauth/admin_logins.json", true);
+let admin_logins = _rf("./express/auth/admin_logins.json", true);
 
 const _default = _rateLimit(1000*60*10, 100, true, false);
-
-const _valorantrank = _rateLimit(null, 200, true, false);
 
 async function skipadmin(req, res, skip) {
   let sr = (req.headers.username && req.headers.password && Object.keys(admin_logins).includes(req.headers.username) && admin_logins[req.headers.username] === req.headers.password)
@@ -37,7 +35,5 @@ function _rateLimit(windowMs, max, standardHeaders, legacyHeaders, message, stat
 module.exports = {
   "_default": _default,
   "%2F": _default,
-  "%2Fping": _default,
-  "%2Fvalorantrank%2F%3Ariotid%2F%3Atagline": _valorantrank
 
 };
