@@ -8,5 +8,8 @@
         "botdefault": 60,
         "bothigh": 62,
         "botowner": 69
+    },
+    "timeouts": {
+        "cache": 300000
     }
 }

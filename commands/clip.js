@@ -16,7 +16,7 @@ module.exports = {
     add_user: "jubewe",
     permission: j.c().perm.default,
     cooldown: 10000,
-    cooldown_user: 15000,
+    cooldown_user: 5000,
     exec: async () => {
         j = require("../variables/j");
 

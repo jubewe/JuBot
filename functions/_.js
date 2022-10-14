@@ -13,6 +13,7 @@ module.exports = {
   logcode: require("./_logcode"),
   mainpath: require("./_mainpath"),
   pad2: require("./_pad2"),
+  _percentage: require("./_percentage"),
   permission: require("./_permission"),
   _pickrandom: require("./_pickrandom"),
   pixelize: require("./_pixelize"),
@@ -20,10 +21,14 @@ module.exports = {
   returner: require("./_returner"),
   returnerr: require("./_returnerr"),
   _rf: require("./_rf"),
+  _stackname: require("./_stackname"),
   _staticspacer: require("./_staticspacer"),
   syncfile: require("./_syncfile"),
   timer: require("./_timer"),
   wf: require("./_wf"),
+  _wf: require("./_wf"),
+  cache: require("./cache"),
+  channel: require("./channel"),
 
   regex: require("./_regex"),
 
@@ -42,5 +47,8 @@ module.exports = {
   uptime: require("./uptime"),
   userperms: require("./userperms"),
   
-
+  api: {
+    api_requestheaders: require("./api/api_requestheaders"),
+    
+  }
 };

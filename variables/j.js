@@ -1,11 +1,13 @@
 const { ChatClient } = require("@kararty/dank-twitch-irc");
 const uptime = require("../functions/uptime");
-const mainpath = require("../functions/_mainpath");
+const _mainpath = require("../functions/_mainpath");
 const express = require("express");
 const app = express();
+// const ws = require("ws");
+// const { Gpio } = require("onoff")
 
 let env = () => {
-  return require("dotenv").config({path: mainpath("./.env")}).parsed;
+  return require("dotenv").config({path: _mainpath("./.env")}).parsed;
 };
 let e = () => {
   return process.env;
@@ -20,12 +22,17 @@ let client = new ChatClient({
   rateLimits: env().T_RATELIMITS,
 });
 
+// let seventv_ws = new ws.WebSocket("")
+
 let j = {
   variables: () => {
     return require("./varstatic");
   },
   vars: () => {
-    return require("../variables/vars");
+    return require("./vars");
+  },
+  urls: () => {
+    return require("./urls")
   },
   functions: () => {
     return require("../functions/_");
@@ -49,6 +56,7 @@ let j = {
   
   client: client,
   client_: () => {return client},
+  
   viewclient: new ChatClient({
     username: env().T_USERNAME_PV,
     password: env().T_TOKEN_PV,
@@ -61,6 +69,7 @@ let j = {
     server: null,
 
     _: {
+      args: require("../functions/twitch/messageargs"),
       msg: null,
       user: null,
       chan: null,
@@ -83,6 +92,11 @@ let j = {
   express: {
     app: app,
   },
+  _error: require("../functions/_error"),
+  modules: {
+    "request": require("request"),
+    
+  }
 };
 
 module.exports = j;

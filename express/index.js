@@ -1,4 +1,4 @@
-const c = require("../express_config.json");
+const c = require("./config.json");
 const sendres = require("./functions/sendres");
 const _log = require("../functions/_log");
 const path = require("path");

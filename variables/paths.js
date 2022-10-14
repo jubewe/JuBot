@@ -12,6 +12,7 @@ module.exports = {
   usertokens: mainpath("./data/usertokens.json"),
   afkusers: mainpath("./data/afkusers.json"),
   valorant: mainpath("./data/valorant.json"),
+  cache: mainpath("./data/cache.json"),
   
   
   

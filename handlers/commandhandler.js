@@ -8,7 +8,7 @@ async function commandhandler() {
   if (Object.keys(commands).includes(j.message._.command)) {
     let command = commands[j.message._.command];
     let commandid = (Object.keys(commands).includes(j.message._.command) ? `${j.message.channel.id}_${command.id}` : command.id);
-
+    
     if ([1].includes(command.state)) {
       if (parseInt(j.message._.userperm.num) >= command.permission) {
         _cooldown(0, j.message.channel.id, commandid, j.message.userstate.id, false)

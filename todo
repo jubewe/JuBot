@@ -6,9 +6,14 @@ editchan
 < permission (edit etc)
 < cooldowns
 <? finish timers
-< clip
-custom id: <channel>_<"command"/"keyword"/"global_command">(_<num>)
+< clip in commands
+< custom id: <channel>_<"command"/"keyword"/"global_command">(_<num>)
 < token: 1 = opt, 2 = token, 3 = if perm user
 viewclient (+init)
 customcommands
 < valorantrank
+channelhandler
+command: setting: valoranttag,discordserver
+7tv emote in commands
+download in commands
+update urls in command files
