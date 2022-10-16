@@ -84,8 +84,6 @@ j.client.on("WHISPER", response => {
       (async () => {
         dm_commandhandler();
       })();
-
     }
-    
   })();
 });

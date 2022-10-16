@@ -3,7 +3,7 @@ const uptime = require("../functions/uptime");
 const _mainpath = require("../functions/_mainpath");
 const express = require("express");
 const app = express();
-// const ws = require("ws");
+const ws = require("ws");
 // const { Gpio } = require("onoff")
 
 let env = () => {
@@ -96,7 +96,12 @@ let j = {
   modules: {
     "request": require("request"),
     
-  }
+  },
+  // seventv: {
+  //   ws: new ws.WebSocket("wss://events.7tv.io/v3")
+  // }
 };
+
+j.client.on("")
 
 module.exports = j;

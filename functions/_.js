@@ -15,6 +15,8 @@ module.exports = {
   pad2: require("./_pad2"),
   _percentage: require("./_percentage"),
   permission: require("./_permission"),
+  _pi_blink: require("./_pi_blink"),
+  _pi_gpio: require("./_pi_gpio"),
   _pickrandom: require("./_pickrandom"),
   pixelize: require("./_pixelize"),
   requestopts: require("./_requestopts"),

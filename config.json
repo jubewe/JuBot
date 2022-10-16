@@ -11,5 +11,8 @@
     },
     "timeouts": {
         "cache": 300000
+    },
+    "raspi": {
+        "led_pin": "27"
     }
 }
