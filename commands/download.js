@@ -34,7 +34,7 @@ module.exports = {
                 } else {
                     if(JSON.parse(r2.body) && JSON.parse(r2.body).status === 201){
                         let dat = JSON.parse(r2.body);
-                        j.send(2, null, `Successfully downloaded file (Size: ${(dat.data.size/1048576).toFixed(2)} mb), Path: (Server) ${dat.data.path}, (Client) file://///Jupi/nas/MSD128_NAS/files/upload/${dat.data.name}`);
+                        j.send(2, null, `Successfully downloaded file (Size: ${(dat.data.size/1048576).toFixed(2)} mb), Path: (Server) ${dat.data.path}, (Client) \\\\JUPI\\nas\\MSD128_NAS\\files\\upload\\${dat.data.name}`);
                     } else {
                         console.log(r2.body)
                         j.send(2, null, `Error: Could not upload file to server`);

@@ -10,9 +10,17 @@
         "botowner": 69
     },
     "timeouts": {
-        "cache": 300000
+        "cache": 300000,
+        "afk": {
+            "resume": 300000
+        }
     },
     "raspi": {
         "led_pin": "27"
+    },
+    "connect": {
+        "discord": true,
+        "twitch": true,
+        "twitch_view": true
     }
 }

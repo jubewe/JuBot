@@ -8,7 +8,7 @@ let urls = {
             "GET": {
                 "valorantrank": "/valorantrank/:riotid/:tagline",
                 "serverinfo": "/status",
-                "error": "/error",
+                "errors": "/errors",
             },
             "POST": {
                 "upload": "/upload",
@@ -46,6 +46,9 @@ let urls = {
         "events": {
             "_base": "wss://events.7tv.io/v3"
         }
+    },
+    "ws": {
+        "_port":6970
     }
     
 };

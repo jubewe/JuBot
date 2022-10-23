@@ -1,19 +1,20 @@
 badgestoarr     
 < send > init            
-editchan        
+editchan
 < getuser
 < getuserperm
 < permission (edit etc)
 < cooldowns
-<? finish timers
+< finish timers
 < clip in commands
 < custom id: <channel>_<"command"/"keyword"/"global_command">(_<num>)
 < token: 1 = opt, 2 = token, 3 = if perm user
-viewclient (+init)
+< viewclient (+init)
 customcommands
 < valorantrank
 channelhandler
 command: setting: valoranttag,discordserver
 7tv emote in commands
-download in commands
-update urls in command files
+< download in commands
+< update urls in command files
+< dc integration

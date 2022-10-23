@@ -1,4 +1,7 @@
+const { _rf, _wf } = require("../functions/_");
+const _pixelize = require("../functions/_pixelize");
 let j = require("../variables/j");
+const paths = require("../variables/paths");
 
 module.exports = {
     name: "view",
@@ -12,10 +15,18 @@ module.exports = {
     cooldown_user: -1,
     exec: async () => {
         j = require("../variables/j");
+        let channels = _rf(paths.clientchannels, true);
 
         if(j.message._.args()[0]){
-            let viewchan = j.message._.args()[0];
-            j.viewclient.join(viewchan);
+            let viewchan = j.message._.args()[0].toLowerCase();
+            if(!channels.viewchannels.includes(viewchan)){
+                j.viewclient.join(viewchan);
+                channels.viewchannels.push(viewchan);
+                _wf(paths.clientchannels, channels);
+                j.send(2, null, `Successfully started viewing ${_pixelize(viewchan)}`);
+            } else {
+                j.send(2, null, `Error: Already viewing ${_pixelize(viewchan)}`)
+            }
         } else {
             j.send(2, null, `Error: No channel given`);
         }

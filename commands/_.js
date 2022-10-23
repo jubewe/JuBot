@@ -12,6 +12,14 @@ module.exports = {
     botinfo: require("./botinfo"),
     serverinfo: require("./server"),
     download: require("./download"),
+    view: require("./view"),
+    unview: require("./unview"),
+    afk: require("./afk"),
+    gn: require("./afk"),
+    cafk: require("./afk"),
+    rafk: require("./afk"),
+    ping: require("./botinfo"),
+    tuck: require("./tuck"),
     
 
 }

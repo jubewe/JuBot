@@ -12,13 +12,13 @@ async function _initexpress(){
     j.express.app.use(limiters._default);
 
     j.express.app.listen(c.port, () => {
-        _log(1, `Express Started`);
+        _log(1, `${j.functions()._stackname("express")[3]} Started`);
     });
 
     j.express.app.use("/restart", (req, res) => {
         if(req._permissions._admin){
             sendres(res, 200, {data: `Successful`}, true);
-            _log(2, `API Restart`);
+            _log(2, `${j.functions()._stackname("express")[3]} Restart Called`);
             j.express.app.removeAllListeners();
             process.exit();
         } else {

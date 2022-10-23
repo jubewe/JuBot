@@ -19,7 +19,7 @@ module.exports = {
         await j.client.ping().then(() => {
             let ping = (Date.now()-pingstart);
             
-            j.send(2, null, `[BOTINFO] Ping: ${_cleantime(ping, 5, 1).time.join(" ")}, Uptime: ${uptime()}`)
+            j.send(2, null, `[BOTINFO] Ping: ${_cleantime(ping, 5, 1).time.join(" ")}, Uptime: ${uptime().join(" ")}`)
         })
     }
 }

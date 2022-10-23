@@ -26,7 +26,7 @@ function _executetimers(tid){
                 settimer(i2);
             })
         }
-        _log(1, `Set ${set_timers.length} timers`);
+        _log(1, `${j.functions()._stackname("timers", "set")[3]} ${set_timers.length}`);
     }
 
     function settimer(id){

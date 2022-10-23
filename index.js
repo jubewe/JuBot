@@ -5,6 +5,9 @@ const getuserperm = require("./functions/getuserperm");
 const userperms_ = require("./functions/userperms");
 const whisper_parser = require("./functions/whisper_parser");
 const { privmsg_parser, log } = require("./functions/_");
+const _afk = require("./functions/_afk");
+const _cleantime = require("./functions/_cleantime");
+const _rf = require("./functions/_rf");
 const _staticspacer = require("./functions/_staticspacer");
 const commandhandler = require("./handlers/commandhandler");
 const dm_commandhandler = require("./handlers/dm_commandhandler");
@@ -25,12 +28,24 @@ j.client.on("PRIVMSG", (response) => {
     let user = j.message._.user = userstate.username;
     let chan = j.message._.chan = channel.name;
     let _type = j.message._.type = response.ircCommand;
-    let usertag = j.message._.usertag = `@${user}, `;
+    let usertag = j.message._.usertag = `${user} > `;
     let userperm = j.message._.userperm = await getuserperm(j.message.userstate.id);
     let userperms = j.message._.userperms = await userperms_();
-    j.send = require("./functions/send");
+    // j.send = require("./functions/send");
 
     log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
+
+    (async () => {
+      _afk(2, j.message.userstate.id, null, null, true)
+      .then(a => {
+        if(Object.keys(a).length > 0){
+          j.send(0, null, `${user} is no longer AFK: ${a.message} (${_cleantime(Date.now()-a.start, 4, "auto").time.join(" ")} ago)`);
+        }
+      })
+      .catch(e => {
+        // console.error(e);
+      });
+    })();
 
     if (msg.startsWith(j.c().prefix)) {
       let command = j.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().prefix)[1] : msg.split(j.c().prefix)[1];
@@ -56,7 +71,6 @@ j.client.on("PRIVMSG", (response) => {
   })();
 });
 
-
 j.client.on("WHISPER", response => {
   (async () => {
     let whisper = whisper_parser(response);
@@ -70,7 +84,7 @@ j.client.on("WHISPER", response => {
     let user = j.message._.user = userstate.username;
     let chan = j.message._.chan = channel.name;
     let _type = j.message._.type = response.ircCommand;
-    let usertag = j.message._.usertag = `@${user}, `;
+    let usertag = j.message._.usertag = `${user} > `;
     let userperm = j.message._.userperm = await getuserperm(j.message.userstate.id);
     let userperms = j.message._.userperms = userperms_();
 
@@ -87,3 +101,4 @@ j.client.on("WHISPER", response => {
     }
   })();
 });
+

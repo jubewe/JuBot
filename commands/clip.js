@@ -42,18 +42,18 @@ module.exports = {
                         j.send(2, null, `Successfully created clip in ${_pixelize(clipchan)} (${u[1]}), Edit and publish at ${c.edit_url}`);
                     })
                     .catch(e => {
-                        j.send(2, null, `Error: Could not create clip ${(e.message ? e.message : "")}`);
+                        j.send(2, null, `Error: Could not create clip: ${(e.message ? e.message : "")}`);
                     })
                 } else {
                     j.send(2, null, `Error: Missing scope clips:edit`);
                 }
             })
             .catch(e => {
-                j.send(2, null, `Error: Could not get user token ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                j.send(2, null, `Error: Could not get user token: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
             })
         })
         .catch(e => {
-            j.send(2, null, `Error: Could not recieve channelid ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+            j.send(2, null, `Error: Could not recieve channelid: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
         })
     }
 }

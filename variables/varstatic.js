@@ -4,8 +4,8 @@ let splitter = "-󠀀~󠀀-󠀀JUBOT󠀀-󠀀~󠀀-";
 const starttime = Date.now();
 
 module.exports = {
-    date: () => {return new Date(new Date().setHours(new Date().getHours()+2))},
-    date_: () => {return new Date(new Date().setHours(new Date().getHours()+2)).toISOString().split(".")[0].replace("T", " ")},
+    date: () => {return new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset()))},
+    date_: () => {return new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset())).toISOString().split(".")[0].replace("T", " ")},
     nonarr: nonarr,
     splitter: splitter,
     replacer: replacer,

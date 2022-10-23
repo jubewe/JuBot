@@ -9,6 +9,6 @@ module.exports = {
     timereg2: () => {return new RegExp(`\\b^(([\\d]{2,}+\:){1,}+([\\d]{2}))$\\b`, "g")},
     timereg3: () => {return new RegExp(`\\b^(\\d{2,}+\:){1,}+(\\d{2})+[a-z]$\\b`, "g")},
     timereg4: () => {return new RegExp(`^(\\d{4}+(\-+\\d{2}+){2}+T+\\d{2}(\:+\\d{2}){2}+\.+[\\d]+Z)$`, "g")},
-
+    jsonreg: () => {return new RegExp(`^\\{+[\\W\\w]*\\}$`, "g")}
 
 };

@@ -1,5 +1,5 @@
 module.exports = {
-    "client": "[CLIENT]",
+    "client": "[CLIENT] ",
     "express": "[EXPRESS]",
     
 };

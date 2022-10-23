@@ -1,9 +1,11 @@
 const { ChatClient } = require("@kararty/dank-twitch-irc");
+const { Client, Intents, MessageAttachment } = require("discordjs13.11.0");
 const uptime = require("../functions/uptime");
 const _mainpath = require("../functions/_mainpath");
 const express = require("express");
 const app = express();
 const ws = require("ws");
+const urls = require("./urls");
 // const { Gpio } = require("onoff")
 
 let env = () => {
@@ -22,6 +24,9 @@ let client = new ChatClient({
   rateLimits: env().T_RATELIMITS,
 });
 
+let dc_client = new Client({
+  intents: new Intents(32767)
+});
 // let seventv_ws = new ws.WebSocket("")
 
 let j = {
@@ -56,7 +61,14 @@ let j = {
   
   client: client,
   client_: () => {return client},
-  
+
+  send: require("../functions/send"),
+  ws: {
+    client: new ws.WebSocket(`ws://${urls.api._base.replace("http://", "")}:${urls.ws._port}`)
+  },
+  dc: {
+    client: dc_client
+  },
   viewclient: new ChatClient({
     username: env().T_USERNAME_PV,
     password: env().T_TOKEN_PV,
@@ -102,6 +114,5 @@ let j = {
   // }
 };
 
-j.client.on("")
-
+global.j = j;
 module.exports = j;
