@@ -30,13 +30,13 @@ module.exports = {
                 _timer(1, j.message.userstate.id, ttime, tmsg, j.message.channel.name, true)
                 .then(t => {
                     let timecl = _cleantime(ttime, 5, 2);
-                    j.send(2, null, `Successfully set timer (${timecl.time.join(" ")})`);
+                    j.send(2, j, `Successfully set timer (${timecl.time.join(" ")})`);
                 })
             } else {
-                j.send(2, null, `Error: Invalid time format`);
+                j.send(2, j, `Error: Invalid time format`);
             }
         } else {
-            j.send(2, null, `Error: Expected time at arg 1`);
+            j.send(2, j, `Error: Expected time at arg 1`);
         }
     }
 }

@@ -18,13 +18,13 @@ module.exports = {
         if(j.message._.msg.split(" ")[1]){
             getuser(1, j.message._.msg.split(" ")[1])
             .then(u => {
-                j.send(2, null, `User ${_pixelize(j.message._.msg.split(" ")[1])}: ${_pixelize(u[0])} / ${u[1]}`);
+                j.send(2, j, `User ${_pixelize(j.message._.msg.split(" ")[1])}: ${_pixelize(u[0])} / ${u[1]}`);
             })
             .catch(e => {
-                j.send(2, null, `Error: Could not recieve userid`);
+                j.send(2, j, `Error: Could not recieve userid`);
             })
         } else {
-            j.send(2, null, `Error: No user given`);
+            j.send(2, j, `Error: No user given`);
         }
     }
 }

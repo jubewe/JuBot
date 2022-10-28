@@ -33,21 +33,21 @@ module.exports = {
                             .then(u => {
                                 _usertoken(0, u[1])
                                 .then(t => {
-                                    j.send(2, null, `Raw Tokeninfo for ${_pixelize(u[0])} (${u[1]}): ${JSON.stringify(t)}`);
+                                    j.send(2, j, `Raw Tokeninfo for ${_pixelize(u[0])} (${u[1]}): ${JSON.stringify(t)}`);
                                 })
                                 .catch(e => {
-                                   j.send(2, null, `Error: Could not get tokeninfo for ${_pixelize(u[0])} (${u[1]}): ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                   j.send(2, j, `Error: Could not get tokeninfo for ${_pixelize(u[0])} (${u[1]}): ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                                 })
                             })
                             .catch(e => {
                                 console.error(new Error(e));
-                                j.send(2, null, `Error: Could not recieve userid ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                j.send(2, j, `Error: Could not recieve userid ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                             })
                         } else {
-                            j.send(2, null, `Error: Expected user at position 2`);
+                            j.send(2, j, `Error: Expected user at position 2`);
                         }
                     } else {
-                        j.send(2, null, `Error: You do not have permission to perform that action`);
+                        j.send(2, j, `Error: You do not have permission to perform that action`);
                     }
 
                     break;
@@ -57,7 +57,7 @@ module.exports = {
                     if(j.message._.msg.split(" ")[2]){
                         let oauthtoken = j.message._.msg.split(" ")[2];
                         if(!_regex.tokenreg().test(oauthtoken)){
-                            j.send(2, null, `Error: Token on position 2 does not match the twitch token pattern`);
+                            j.send(2, j, `Error: Token on position 2 does not match the twitch token pattern`);
                             return;
                         }
                         let oauthuser = j.message._.user;
@@ -65,7 +65,7 @@ module.exports = {
                             if(j.message._.userperms._default){
                                 oauthuser = j.message._.msg.split(" ")[3];
                             } else {
-                                j.send(2, null, `Error: You do not have permission to perform that action`);
+                                j.send(2, j, `Error: You do not have permission to perform that action`);
                                 return;
                             }
                         }
@@ -74,17 +74,17 @@ module.exports = {
                         .then(u => {
                             _usertoken(1, u[1], oauthtoken)
                             .then(t => {
-                                j.send(2, null, `Successfully set token for ${_pixelize(oauthuser)} (${u[1]}) [Expires in: ${t.expires_in}, Scopes: ${t.scopes.length}]`);
+                                j.send(2, j, `Successfully set token for ${_pixelize(oauthuser)} (${u[1]}) [Expires in: ${t.expires_in}, Scopes: ${t.scopes.length}]`);
                             })
                             .catch(e => {
-                                j.send(2, null, `Error: Could not set token ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                j.send(2, j, `Error: Could not set token ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                             })
                         })
                         .catch(e => {
-                            j.send(2, null, `Error: Could not get userid of ${_pixelize(oauthuser)}`);
+                            j.send(2, j, `Error: Could not get userid of ${_pixelize(oauthuser)}`);
                         })
                     } else {
-                        j.send(2, null, `Error: No token specified`);
+                        j.send(2, j, `Error: No token specified`);
                     }
 
                     break;
@@ -98,15 +98,15 @@ module.exports = {
                             .then(t => {
                                 token(4, oauthtoken, t.client_id)
                                 .then(t2 => {
-                                    j.send(2, null, `Successfully revoked token - Note: You cannot use this token anymore`);
+                                    j.send(2, j, `Successfully revoked token - Note: You cannot use this token anymore`);
                                 })
                                 .catch(e => {
                                     console.error(e)
-                                    j.send(2, null, `Error: Could not revoke token: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                    j.send(2, j, `Error: Could not revoke token: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                                 })
                             })
                             .catch(e => {
-                                j.send(2, null, `Error: Could not recieve tokeninfo`);
+                                j.send(2, j, `Error: Could not recieve tokeninfo`);
                             })
                         } else {
                             let oauthuser = j.message._.user;
@@ -115,7 +115,7 @@ module.exports = {
                                 if(j.message._.userperms._default){
                                     oauthuser = j.message._.msg.split(" ")[2];
                                 } else {
-                                    j.send(2, null, `Error: You do not have permission to perform that action`);
+                                    j.send(2, j, `Error: You do not have permission to perform that action`);
                                     return;
                                 }
                             }
@@ -124,21 +124,21 @@ module.exports = {
                             .then(u => {
                                 _usertoken(3, u[1])
                                 .then(t => {
-                                    j.send(2, null, `Successfully revoked and deleted token of ${_pixelize(u[0])}`);
+                                    j.send(2, j, `Successfully revoked and deleted token of ${_pixelize(u[0])}`);
                                 })
                                 .catch(e => {
                                     // console.error(new Error(e))
-                                    j.send(2, null, `Error: Could not revoke token of ${_pixelize(u[0])} (${u[1]}) ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                    j.send(2, j, `Error: Could not revoke token of ${_pixelize(u[0])} (${u[1]}) ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                                 })
                             })
                             .catch(e => {
                                 console.error(new Error(e));
                                 console.error(e);
-                                j.send(2, null, `Error: Could not recieve userid`);
+                                j.send(2, j, `Error: Could not recieve userid`);
                             })
                         }
                     } else {
-                        j.send(2, null, `Error: No token to revoke given`);
+                        j.send(2, j, `Error: No token to revoke given`);
                     }
 
                     break;
@@ -155,44 +155,44 @@ module.exports = {
                                     .then(u => {
                                         _usertoken(0, u[1])
                                         .then(t => {
-                                            j.send(2, null, `Tokeninfo: Clientid: ${t.client_id}, Expires in: ${t.expires_in}, User login: ${t.login}, User id: ${t.user_id}, Scopes: ${t.scopes.length},`);
+                                            j.send(2, j, `Tokeninfo: Clientid: ${t.client_id}, Expires in: ${t.expires_in}, User login: ${t.login}, User id: ${t.user_id}, Scopes: ${t.scopes.length},`);
                                         })
                                         .catch(e => {
-                                            j.send(2, null, `Error: Could not recieve tokeninfo of ${_pixelize(u[0])} (${u[1]}) ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                            j.send(2, j, `Error: Could not recieve tokeninfo of ${_pixelize(u[0])} (${u[1]}) ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                                         })
                                     })
                                     .catch(e => {
-                                        j.send(2, null, `Error: Could not recieve userid of ${_pixelize(oauthtoken)} ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                        j.send(2, j, `Error: Could not recieve userid of ${_pixelize(oauthtoken)} ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                                         return;
                                     })
                                 } else {
-                                    j.send(2, null, `Error: You do not have permission to perform that action`);
+                                    j.send(2, j, `Error: You do not have permission to perform that action`);
                                     return;
                                 }
                             }
                         } else {
                             gettoken(oauthtoken)
                             .then(t => {
-                                j.send(2, null, `Tokeninfo: Clientid: ${t.client_id}, Expires in: ${t.expires_in}, User login: ${t.login}, User id: ${t.user_id}, Scopes: ${t.scopes.length},`);
+                                j.send(2, j, `Tokeninfo: Clientid: ${t.client_id}, Expires in: ${t.expires_in}, User login: ${t.login}, User id: ${t.user_id}, Scopes: ${t.scopes.length},`);
                             })
                             .catch(e => {
-                                j.send(2, null, `Error: Could not recieve tokeninfo ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                j.send(2, j, `Error: Could not recieve tokeninfo ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                             })
                         }
 
                     } else {
-                        j.send(2, null, `Error: No token given`);
+                        j.send(2, j, `Error: No token given`);
                     }
 
                     break;
                 }
 
                 default: {
-                    j.send(2, null, `Error: Option not found`);
+                    j.send(2, j, `Error: Option not found`);
                 }
             }
         } else {
-            j.send(2, null, `Error: No option specified`);
+            j.send(2, j, `Error: No option specified`);
         }
     }
 }

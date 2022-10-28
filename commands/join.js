@@ -19,13 +19,13 @@ module.exports = {
             let joinchan = j.message._.msg.split(" ")[1].toLowerCase();
             j.join(joinchan)
             .then(jc => {
-                j.send(2, null, `Successfully joined ${pixelize(joinchan)}`);
+                j.send(2, j, `Successfully joined ${pixelize(joinchan)}`);
             })
             .catch(e => {
-                j.send(2, null, `Error: Could not join ${pixelize(joinchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`);
+                j.send(2, j, `Error: Could not join ${pixelize(joinchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`);
             })
         } else {
-            j.send(2, null, `Error: No Channel given`);
+            j.send(2, j, `Error: No Channel given`);
         }
     }
 }

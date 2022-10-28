@@ -19,8 +19,14 @@
         "led_pin": "27"
     },
     "connect": {
-        "discord": true,
+        "discord": false,
         "twitch": true,
-        "twitch_view": true
+        "twitch_view": false
+    },
+    "commands": {
+        "custom": {
+            "restricted": ["settings", "help"],
+            "max": 50
+        }
     }
 }

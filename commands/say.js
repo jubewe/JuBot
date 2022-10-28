@@ -15,9 +15,9 @@ module.exports = {
 
         if(j.message._.msg.split(" ")[1] !== undefined){
             let saymsg = j.message._.msg.substring(j.message._.msg.split(" ")[0].length, j.message._.msg.length);
-            j.send(0, null, saymsg, null, false);
+            j.send(0, j, saymsg, null, false);
         } else {
-            j.send(2, null, `Error: Nothing to say given`);
+            j.send(2, j, `Error: Nothing to say given`);
         }
     }
 }

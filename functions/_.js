@@ -1,6 +1,7 @@
 module.exports = {
   _afk: require("./_afk"),
   _appf: require("./_appf"),
+  _channel: require("./_channel"),
 
   _checkenv: require("./_checkenv"),
   cleantime: require("./_cleantime"),
@@ -41,6 +42,7 @@ module.exports = {
   _wf: require("./_wf"),
   cache: require("./cache"),
   channel: require("./channel"),
+  _nonarr: require("./_nonarr"),
 
   regex: require("./_regex"),
 
@@ -48,6 +50,7 @@ module.exports = {
   createclip: require("./createclip"),
   checktoken: require("./gettoken"),
   privmsg_parser: require("./privmsg_parser"),
+  replacevariables: require("./replacevariables"),
   whisper_parser: require("./whisper_parser"),
   revoketoken: require("./revoketoken"),
   getuser: require("./getuser"),

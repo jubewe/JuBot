@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 const ws = require("ws");
 const urls = require("./urls");
+const _log = require("../functions/_log");
 // const { Gpio } = require("onoff")
 
 let env = () => {
@@ -18,10 +19,16 @@ let config = () => {
   return require("../config.json");
 };
 
-let client = new ChatClient({
+const client = new ChatClient({
   username: env().T_USERNAME,
   password: env().T_TOKEN,
   rateLimits: env().T_RATELIMITS,
+});
+
+const viewclient = new ChatClient({
+  username: env().T_USERNAME_PV,
+  password: env().T_TOKEN_PV,
+  rateLimits: env().T_RATELIMITS_PV,
 });
 
 let dc_client = new Client({
@@ -69,11 +76,7 @@ let j = {
   dc: {
     client: dc_client
   },
-  viewclient: new ChatClient({
-    username: env().T_USERNAME_PV,
-    password: env().T_TOKEN_PV,
-    rateLimits: env().T_RATELIMITS_PV,
-  }),
+  viewclient: viewclient,
   message: {
     message: null,
     userstate: null,
@@ -107,7 +110,7 @@ let j = {
   _error: require("../functions/_error"),
   modules: {
     "request": require("request"),
-    
+    "ws": require("ws")
   },
   // seventv: {
   //   ws: new ws.WebSocket("wss://events.7tv.io/v3")

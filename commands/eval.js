@@ -20,12 +20,12 @@ module.exports = {
             evalmsg = evalmsg.join(" ");
             try {
                 let eval_ = await eval(`(async () => {${evalmsg}})()`);
-                j.send(2, null, `Successfully executed code [${typeof eval_}]> ${eval_}`);
+                j.send(2, j, `Successfully executed code [${typeof eval_}]> ${eval_}`);
             } catch(e){
-                j.send(2, null, `Error: Could not execute code: ${e.message}`);
+                j.send(2, j, `Error: Could not execute code: ${e.message}`);
             }
         } else {
-            j.send(2, null, `Error: Nothing to execute given`);
+            j.send(2, j, `Error: Nothing to execute given`);
         }
     }
 };

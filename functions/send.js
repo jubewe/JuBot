@@ -1,3 +1,4 @@
+let replacevariables = require("./replacevariables");
 const _log = require("./_log");
 const _staticspacer = require("./_staticspacer");
 
@@ -9,11 +10,18 @@ const _staticspacer = require("./_staticspacer");
  * @param {number | null | undefined} sparentid 
  * @param {boolean | null | undefined} sfirst 
  * @param {boolean | undefined} smulti 
+ * @param {boolean | null | undefined} sreplacer
  * @returns 
  */
 
-async function send(smode, schan, smsg, sparentid, sfirst, smulti) {
-  let j = require("../variables/j");
+async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
+  let j;
+  if(typeof schan === "object"){
+    j = schan;
+    schan = null;
+  } else {
+    j = require("../variables/j");
+  }
   schan = j.variables().nonarr.includes(schan) ? j.message._.chan : schan;
   smulti = ([null, undefined].includes(smulti) ? undefined : smulti);
 
@@ -24,6 +32,17 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti) {
 
   let sendtrys = 1+1;
   let sendretrytimeout = 3000;
+
+  if([3, "tag"].includes(smode)){
+    smsg = j.message._.usertag_ + smsg;
+  }
+
+  if(sreplacer){
+    smsg = await replacevariables(j, smsg);
+  }
+
+  smsg = smsg.replace(new RegExp("\n|\\n", "g"), "\\\n");
+  smsg = smsg.replace(new RegExp("\r|\\r", "g"), "\\\r");
 
   if(smsg.length > 500){
     let smsges = _splitmsg(smsg, " ", 500, 1, 1);
@@ -45,11 +64,9 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti) {
   } else {
     _send(smode, schan, smsg, sparentid, sfirst)
   }
-  smsg = smsg.replace(new RegExp("\n|\\n", "g"), "\\\n");
-  smsg = smsg.replace(new RegExp("\r|\\r", "g"), "\\\r");
-
+  
   async function _send(_smode, _schan, _smsg, _sparentid, _sfirst){
-    if ([null, undefined, 0, "channel"].includes(_smode)) {
+    if ([null, undefined, 0, "channel", 3, "user"].includes(_smode)) {
       _send();
       function _send(){
         if(sendtrys > 0){

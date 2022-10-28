@@ -1,3 +1,4 @@
+const { _channel } = require("../functions/_");
 let j = require("../variables/j");
 const paths = require("../variables/paths");
 const urls = require("../variables/urls");
@@ -10,27 +11,30 @@ module.exports = {
     add_version: "0.0.6",
     add_user: "jubewe",
     permission: j.c().perm.default,
-    cooldown: 15000,
+    cooldown: 3000,
     cooldown_user: 5000,
     exec: async () => {
         j = require("../variables/j");
 
-        let valorant = j.functions()._rf(paths.valorant, true);
-        if(valorant.channels[j.message.channel.id]){
-            let valorantchan = valorant.channels[j.message.channel.id];
-            j.modules.request(`${urls.api.__url("valorantrank", "GET").replace(":riotid", valorantchan.split("#")[0]).replace(":tagline", valorantchan.split("#")[1])}`, {method: "GET"}, function(e, r){
-                if(e){
-                    j.send(2, null, `Error: Could not recieve rank`);
-                } else {
-                    let dat = JSON.parse(r.body);
-
-                    if(r.statusCode === 200){
-                        j.send(2, null, `${j.message._.chan} Valorant Rank: ${dat.data}`);
+        _channel(0, j.message.channel.id, "valoranttag")
+        .then(valoranttag => {
+            if(valoranttag){
+                j.modules.request(`${urls.api.__url("valorantrank", "GET").replace(":riotid", valoranttag.split("#")[0]).replace(":tagline", valoranttag.split("#")[1])}`, {method: "GET"}, function(e, r){
+                    if(e){
+                        j.send(2, j, `Error: Could not recieve rank`);
                     } else {
-                        j.send(2, null, `${j.message._.chan} Valorant Rank Error: ${dat.data} (${dat.e})`);
+                        let dat = JSON.parse(r.body);
+
+                        if(r.statusCode === 200){
+                            j.send(3, j, `${j.message._.chan}'s Valorant Rank: ${dat.data}`);
+                        } else {
+                            j.send(2, j, `${j.message._.chan}'s Valorant Rank Error: ${dat.data} (${dat.e})`);
+                        }
                     }
-                }
-            })
-        }
+                })
+            } else {
+                j.send(2, j, `Error: No valoranttag set`);
+            }
+        })
     }
 };

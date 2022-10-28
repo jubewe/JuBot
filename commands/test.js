@@ -13,6 +13,6 @@ module.exports = {
     exec: async () => {
         j = require("../variables/j");
 
-        j.send(2, null, `Test`);
+        j.send(2, j, `Test VoHiYo $(message[1])`, null, null, null, true);
     }
 }

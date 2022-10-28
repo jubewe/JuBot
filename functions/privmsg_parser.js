@@ -92,6 +92,7 @@ function privmsg_parser(response) {
     userstate: userstate,
     channel: channel,
     server: server,
+    response: response,
   };
 }
 

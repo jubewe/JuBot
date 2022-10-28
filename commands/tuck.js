@@ -14,9 +14,9 @@ module.exports = {
         j = require("../variables/j");
 
         if(j.message._.args()[0]){
-            j.send(0, null, `${j.message._.usertag} You tuck ${j.message._.args()[0]} to Bed ${j.message._.args()[1] || "OkayChamp"} 👉 🛌 Bedge`);
+            j.send(0, j, `${j.message._.usertag} You tuck ${j.message._.args()[0]} to Bed ${j.message._.args()[1] || "OkayChamp"} 👉 🛌 Bedge`);
         } else {
-            j.send(0, null, `${j.message._.usertag} You tuck someone to Bed OkayChamp 👉 🛌 Bedge`);
+            j.send(0, j, `${j.message._.usertag} You tuck someone to Bed OkayChamp 👉 🛌 Bedge`);
         }
     }
 }

@@ -52,11 +52,7 @@ function _cleantime(time, timeopt, timedigits) {
     return time;
   } else if ([1, 2, 3, 4, 5].includes(timeopt)) {
     if (timedigits === "auto") {
-    } else if (
-      nonarr.includes(timedigits) ||
-      typeof timedigits !== "number" ||
-      timedigits <= 0
-    ) {
+    } else if (nonarr.includes(timedigits) || typeof timedigits !== "number" || timedigits <= 0 ) {
       timedigits = 2;
     }
     let dat = { time: [], order: [], tag: "" };

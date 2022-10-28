@@ -8,9 +8,13 @@ module.exports = {
     clip: require("./clip"),
     user: require("./user"),
     timer: require("./timer"),
+    tuck: require("./tuck"),
     rank: require("./_valorantrank"),
+    
     botinfo: require("./botinfo"),
     serverinfo: require("./server"),
+    setting: require("./settings"),
+    settings: require("./settings"),
     download: require("./download"),
     view: require("./view"),
     unview: require("./unview"),
@@ -19,7 +23,12 @@ module.exports = {
     cafk: require("./afk"),
     rafk: require("./afk"),
     ping: require("./botinfo"),
-    tuck: require("./tuck"),
     
+    command: require("./command"),
+    
+    addcmd: require("./command"),
+    delcmd: require("./command"),
+    editcmd: require("./command"),
+    renamecmd: require("./command"),
 
 }

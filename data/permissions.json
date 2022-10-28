@@ -1,33 +1,41 @@
 {
   "permissions": {
     "1": {
-      "desc": "Bot"
+      "desc": "Bot",
+      "tag": ["bot"]
     },
     "10": {
-      "desc": "Regular"
+      "desc": "Regular",
+      "tag": ["default"]
     },
     "11": {
-      "desc": "Approved-Bot"
+      "desc": "Approved-Bot",
+      "tag": ["approvedbot"]
     },
     "20": {
       "desc": "Twitch-Channel-Bit-Donator",
-      "name": "bits"
+      "name": "bits",
+      "tag": ["bits"]
     },
     "21": {
       "desc": "Twitch-Channel-Subscriber",
-      "name": "subscriber"
+      "name": "subscriber",
+      "tag": ["subscriber", "sub"]
     },
     "22": {
       "desc": "Twitch-Channel-VIP",
-      "name": "vip"
+      "name": "vip",
+      "tag": ["vip"]
     },
     "25": {
       "desc": "Twitch-Channel-Moderator",
-      "name": "moderator"
+      "name": "moderator",
+      "tag": ["moderator", "mod"]
     },
     "30": {
       "desc": "Twitch-Channel-Broadcaster",
-      "name": "broadcaster"
+      "name": "broadcaster",
+      "tag": ["broadcaster", "streamer"]
     },
     "40": {
       "desc": "Twitch-Staff",

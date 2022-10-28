@@ -12,16 +12,16 @@ let queuedreconnect = -1;
 global.test = "test";
 function _init(){
     let j = require("./variables/j");
-    console.clear();
+    // console.clear();
 
     process.on("unhandledRejection", (rej) => {
         console.error(rej);
         _error(rej)
         // console.error(new Error(rej));
     });
-    
-    if(c.connect.twitch){j.client.connect();};
-    if(c.connect.twitch_view){j.viewclient.connect();};
+
+    if(c.connect.twitch){j.client.connect(); j.join(_rf(j.paths().clientchannels, true).channels);};
+    if(c.connect.twitch_view){j.viewclient.connect(); j.join(_rf(j.paths().clientchannels, true).viewchannels, j.viewclient, "viewchannels");};
     if(c.connect.discord){j.dc.client.login(j.e().DC_TOKEN);};
 
     j.client.on("ready", () => {
@@ -67,10 +67,10 @@ function _init(){
         }
         if(queuedreconnect > -1) return;
         queuedreconnect = 0;
-        attemptreconnect();
-        let recint = setInterval(() => {
-            attemptreconnect();
-        }, 15000);
+        // attemptreconnect();
+        // let recint = setInterval(() => {
+        //     attemptreconnect();
+        // }, 15000);
 
         function attemptreconnect(){
             queuedreconnect++;
@@ -101,9 +101,6 @@ function _init(){
         };
     };
 
-    j.join(_rf(j.paths().clientchannels, true).channels);
-    j.join(_rf(j.paths().clientchannels, true).viewchannels, j.viewclient, "viewchannels");
-    
     _executetimers();
     _log(1, `${_stackname("timers")[3]} Executed`);
 
@@ -136,9 +133,19 @@ function _init(){
         _log(1, `${_stackname("ws", "api")[3]} Connected`);
         j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
     });
-
+    
     j.ws.client.on("close", e => {
         _log(2, `${_stackname("ws", "api")[3]} Closed`);
+        let wsreconnectint = setInterval(() => {
+            if(j.ws.client.readyState !== 1){
+                j.ws.client.close();
+                j.ws.client = new j.modules.ws.WebSocket(`ws://${j.urls().api._base.replace("http://", "")}:${j.urls().ws._port}`)
+                _log(2, `${_stackname("ws", "api")[3]} Re-Created`);
+            } else {
+                _log(1, `${_stackname("ws", "api")[3]} Reconnected`);
+                clearInterval(wsreconnectint);
+            }
+        }, 10000);
     });
 
     j.ws.client.on("error", e => {
