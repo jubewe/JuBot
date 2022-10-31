@@ -20,7 +20,7 @@ module.exports = {
                 afkmessage = j.message._.args().join(" ");
             };
     
-            _afk(1, j.message.userstate.id, afkmessage, j.message._.command, true, j.message._.userperm)
+            _afk(1, j.message.userstate.id, afkmessage, j.message._.command, true, j.message._.userperm.num)
             .then(a => {
                 j.send(0, j, `${j.message._.usertag} is now ${getafkopt(a.opt)}: ${afkmessage}`);
             })
@@ -29,7 +29,7 @@ module.exports = {
                 j.send(2, j, `Error: Could not set AFK Status Sadge`);
             });
         } else if(["cafk", "rafk"].includes(j.message._.command)){
-            _afk(3, j.message.userstate.id, null, null, true)
+            _afk(3, j.message.userstate.id, null, null, j.message._.userperm.num)
             .then(a => {
                 if([0, 1].includes(a.type)){
                     j.send(0, j, `${j.message._.usertag} Your old AFK status has been resumed: ${a.message}`);

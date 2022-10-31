@@ -34,6 +34,7 @@ module.exports = {
   returner: require("./_returner"),
   returnerr: require("./_returnerr"),
   _rf: require("./_rf"),
+  _splitmsg: require("./_splitmsg"),
   _stackname: require("./_stackname"),
   _staticspacer: require("./_staticspacer"),
   syncfile: require("./_syncfile"),
@@ -43,8 +44,10 @@ module.exports = {
   cache: require("./cache"),
   channel: require("./channel"),
   _nonarr: require("./_nonarr"),
+  _numberspacer: require("./_numberspacer"),
 
   regex: require("./_regex"),
+  _regex: require("./_regex"),
 
   badgestoarr: require("./badgestoarr"),
   createclip: require("./createclip"),

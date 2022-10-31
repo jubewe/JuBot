@@ -1,5 +1,9 @@
 {
     "prefix": ">",
+    "anna": {
+        "prefix": "a!",
+        "perm": 62
+    },
     "perm": {
         "bot": 1,
         "default": 10,
@@ -15,13 +19,23 @@
             "resume": 300000
         }
     },
+    "intervals":{
+        "reconnect": {
+            "client": 1800000,
+            "ws": 1800000
+        },
+        "errors": 1800000
+    },
     "raspi": {
         "led_pin": "27"
     },
     "connect": {
         "discord": false,
         "twitch": true,
-        "twitch_view": false
+        "twitch_view": true,
+        "ws": {
+            "api": false
+        }
     },
     "commands": {
         "custom": {

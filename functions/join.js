@@ -25,7 +25,7 @@ async function join(jchan, jclient, channelkey) {
       }
       _wf(j.paths().clientchannels, joinchannels);
       jclient.joinAll(jchan);
-      return resolve({path:[1], msg:"Successfully joined channel"});
+      return resolve({path:[1], msg:"Successfully joined channel(s)"});
     } catch(e){
       return reject(e);
     }

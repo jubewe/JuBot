@@ -1,8 +1,10 @@
 const paths = require("../variables/paths");
 const { nonarr } = require("../variables/varstatic");
+const _appf = require("./_appf");
 const _id = require("./_id");
 const _nonarr = require("./_nonarr");
 const _rf = require("./_rf");
+const _stackname = require("./_stackname");
 const _wf = require("./_wf");
 
 /**
@@ -31,7 +33,8 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
 
         channelid = _nonarr(channelid, j.message.channel.id);
         commandaliases = _nonarr(commandaliases, []);
-        commandstate = _nonarr(commandstate, 1);
+        commandstate = _nonarr(commandstate, 0);
+        // commandstate = (global.variables.varstatic.nonarr.includes(commandstate) ? undefined : commandstate);
         commandpermission = _nonarr(commandpermission, "10");
         commandcooldown = _nonarr(commandcooldown, 10000);
         commandcooldownuser = _nonarr(commandcooldownuser, 30000);
@@ -47,29 +50,27 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
         let channels = _rf(paths.channels, true);
         switch (opt){
             case 0: {
-                if(Object.keys(channels.channels).includes(channelid)){
-                    if(Object.keys(channels.channels[channelid]).includes("commands")){
-                        if(commandid){
-                            if(Object.keys(channels.channels[channelid]["commands"]).includes(commandid)){
-                                return resolve(channels.channels[channelid]["commands"][commandid]);
-                            } else {
-                                return reject({path:[opt,1,1,1,0],msg:"command not found by id"});
-                            }
-                        } else if(commandname){
-                            if(getcommandidbyname()){
-                                return resolve(channels.channels[channelid]["commands"][getcommandidbyname()])
-                            } else {
-                                return reject({path:[opt,1,1,1,0],msg:"command not found by name"});
-                            }
-                        } else {
-                            return resolve(channels.channels[channelid]["commands"]);
-                        }
+                if(!Object.keys(channels.channels).includes(channelid)){
+                    channels.channels[channelid] = {};
+                };
+                if(!Object.keys(channels.channels[channelid]).includes("commands")){
+                    channels.channels[channelid]["commands"] = {};
+                };
+
+                if(commandid){
+                    if(Object.keys(channels.channels[channelid]["commands"]).includes(commandid)){
+                        return resolve(channels.channels[channelid]["commands"][commandid]);
                     } else {
-                        if(noreturn) return resolve({});
-                        return reject({path:[opt,1,0],msg:"channel keys do not include commands"});
+                        return reject({path:[opt,1,1,1,0],msg:"command not found by id"});
+                    }
+                } else if(commandname){
+                    if(getcommandidbyname()){
+                        return resolve(channels.channels[channelid]["commands"][getcommandidbyname()])
+                    } else {
+                        return reject({path:[opt,1,1,1,0],msg:"command not found by name"});
                     }
                 } else {
-                    return reject({path:[opt,0],msg:"channels do not include channelid"});
+                    return resolve(channels.channels[channelid]["commands"]);
                 }
                 break;
             }
@@ -95,8 +96,8 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                     };
                     if(!Object.keys(channels.channels).includes(channelid)) channels.channels[channelid] = {};
                     if(!Object.keys(channels.channels[channelid]).includes("commands")) channels.channels[channelid]["commands"] = {};
-
                     channels.channels[channelid]["commands"][id[0]] = command;
+                    _appf(paths.commandlog, `\n${_stackname(0, "commands", "add")[0]} ${command.id} ${command.name} ${JSON.stringify(command)}`);
                     _wf(paths.channels, channels);
 
                     return resolve(command);
@@ -110,7 +111,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
 
             case 2: {
                 if(!commandid && !getcommandidbyname()){
-                    return reject({path:[opt,0],msg:"commandid is undefined and could not find id"});
+                    return reject({path:[opt,0],msg:"could not find command"});
                 } else {
                     commandid = commandid || getcommandidbyname();
                     if(Object.keys(channels.channels).includes(channelid)){
@@ -119,6 +120,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                                 let command = channels.channels[channelid]["commands"][commandid];
                                 delete channels.channels[channelid]["commands"][commandid];
                                 _wf(paths.channels, channels);
+                                _appf(paths.commandlog, `\n${_stackname(0, "commands", "delete")[0]} ${command.id} ${command.name} ${JSON.stringify(command)}`);
 
                                 return resolve(command);
                             } else {
@@ -136,7 +138,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
 
             case 3: {
                 if(!commandid && !getcommandidbyname()){
-                    return reject({path:[opt,0],msg:"commandid is undefined and could not find id"});
+                    return reject({path:[opt,0],msg:"could not find command"});
                 } else {
                     if(!Object.keys(channels.channels).includes(channelid)) channels.channels[channelid] = {};
                     if(!Object.keys(channels.channels[channelid]).includes("commands")) channels.channels[channelid]["commands"] = {};
@@ -144,20 +146,21 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                     if(Object.keys(channels.channels[channelid]["commands"]).includes(commandid)){
                         let command_ = channels.channels[channelid]["commands"][commandid];
                         let command = {
-                            name: commandname || command_.name,
+                            name: _nonarr(commandname, command_.name),
                             id: command_.id,
-                            aliases: commandaliases || command_.aliases,
-                            state: commandstate || command_.state,
+                            aliases: _nonarr(commandaliases, command_.aliases),
+                            state: _nonarr(commandstate, command_.state),
                             add_user: command_.add_user,
-                            permission: commandpermission || command_.permission,
+                            permission: _nonarr(commandpermission, command_.permission),
                             create_time: command_.create_time,
                             update_time: Date.now(),
-                            cooldown: commandcooldown || command_.cooldown,
-                            cooldown_user: commandcooldownuser || command_.cooldown_user,
-                            response: commandresponse || command_.response
+                            cooldown: _nonarr(commandcooldown, command_.cooldown),
+                            cooldown_user: _nonarr(commandcooldownuser, command_.cooldown_user),
+                            response: _nonarr(commandresponse, command_.response)
                         };
 
                         channels.channels[channelid]["commands"][commandid] = command;
+                        _appf(paths.commandlog, `\n${_stackname(0, "commands", "edit")[0]} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
                         _wf(paths.channels, channels);
 
                         return resolve(command);
@@ -170,7 +173,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
 
             case 4: {
                 if(!commandid && !getcommandidbyname()){
-                    return reject({path:[opt,0],msg:"commandid is undefined and could not find id"});
+                    return reject({path:[opt,0],msg:"could not find command"});
                 } else {
                     if(!commandresponse) return reject({path:[opt,1,0],msg:"new commandname is undefined"});
 
@@ -181,7 +184,10 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                     if(j.c().commands.custom.restricted.includes(commandresponse)) return reject({path:[opt,1,1,1,0],msg:"restrictedcommand"});
                     
                     if(Object.keys(channels.channels[channelid]["commands"]).includes(commandid)){
-                        channels.channels[channelid]["commands"][commandid].name = commandresponse;
+                        let command = channels.channels[channelid]["commands"][commandid];
+                        let command_ = command;
+                        command.name = commandresponse;
+                        _appf(paths.commandlog, `\n${_stackname(0, "commands", "rename")[0]} ${command.id} ${command.name} ${JSON.stringify(command_)} ${JSON.stringify(command)}`);
                         _wf(paths.channels, channels);
                         return resolve(channels.channels[channelid]["commands"][commandid]);
                     } else {

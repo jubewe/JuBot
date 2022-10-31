@@ -12,7 +12,7 @@ const _wf = require("./_wf");
  * @returns 
  */
 
-async function channel(opt, channel, key, value, return_){
+async function _channel(opt, channel, key, value, return_){
     return new Promise((resolve, reject) => {
         let chans = _rf(paths.channels, true);
         switch (opt){
@@ -73,4 +73,4 @@ async function channel(opt, channel, key, value, return_){
     })
 };
 
-module.exports = channel;
+module.exports = _channel;

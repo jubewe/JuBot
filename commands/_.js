@@ -25,10 +25,15 @@ module.exports = {
     ping: require("./botinfo"),
     
     command: require("./command"),
+    commands: require("./command"),
     
     addcmd: require("./command"),
     delcmd: require("./command"),
     editcmd: require("./command"),
     renamecmd: require("./command"),
+    permcmd: require("./command"),
+    enablecmd: require("./command"),
+    disablecmd: require("./command"),
+    permission: require("./permission"),
 
 }

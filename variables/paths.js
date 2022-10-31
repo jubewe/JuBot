@@ -12,7 +12,7 @@ module.exports = {
   usertokens: mainpath("./data/usertokens.json"),
   afkusers: mainpath("./data/afkusers.json"),
   cache: mainpath("./data/cache.json"),
-  
+  commandlog: mainpath("./data/commandlog.txt")
   
   
 };

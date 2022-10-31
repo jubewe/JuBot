@@ -49,6 +49,28 @@ let urls = {
     },
     "ws": {
         "_port":6970
+    },
+    "twitch": {
+        "moderator": {
+            "add": {
+                "url": "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=:broadcaster_id&user_id=:user_id",
+                "method": "POST"
+            },
+            "remove": {
+                "url": "https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=:broadcaster_id&user_id=:user_id",
+                "method": "DELETE"
+            }
+        },
+        "vip": {
+            "add": {
+                "url": "https://api.twitch.tv/helix/channels/vips?broadcaster_id=:broadcaster_id&user_id=:user_id",
+                "method": "POST"
+            },
+            "remove": {
+                "url": "https://api.twitch.tv/helix/channels/vips?broadcaster_id=:broadcaster_id&user_id=:user_id",
+                "method": "DELETE"
+            },
+        }
     }
     
 };

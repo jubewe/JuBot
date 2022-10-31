@@ -18,7 +18,15 @@ badgestoarr
 < download in commands
 < update urls in command files
 < dc integration
-custom command: command always lowercase
+< replacements: commands
+< custom command: command always lowercase
 commandhandler: custom return
-replacements: commands
+<replacements: custom url
 perm command
+fix joinchannels of viewclient
+disable all integrations in _init if connect is false
+command to get channel
+commands
+new splitmsg
+<anna commands:
+<mod/unmod, vip/unvip

@@ -1,4 +1,5 @@
 const { _channel } = require("../functions/_");
+const _returnerr = require("../functions/_returnerr");
 let j = require("../variables/j");
 
 module.exports = {
@@ -9,8 +10,8 @@ module.exports = {
     add_version: "0.1.0",
     add_user: "jubewe",
     permission: j.c().perm.broadcaster,
-    cooldown: -1,
-    cooldown_user: -1,
+    cooldown: 1000,
+    cooldown_user: 1000,
     exec: async () => {
         const j = require("../variables/j");
 
@@ -33,22 +34,18 @@ module.exports = {
                 if(["reset"].includes(prefix)){
                     _channel(2, j.message.channel.id, "prefix")
                     .then(p => {
-                        console.log(p);
                         j.send(2, j, `Successfully resetted (channel-) prefix to ${j.c().prefix}`);
                     })
                     .catch(e => {
-                        console.log(e);
-                        j.send(2, j, `Error: Could not reset prefix (${e})`);
+                        j.send(2, j, `Error: Could not reset prefix: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
                     _channel(1, j.message.channel.id, "prefix", prefix)
                     .then(p => {
-                        console.log(p);
                         j.send(2, j, `Successfully set (channel-) prefix to ${prefix}`);
                     })
                     .catch(e => {
-                        console.log(e);
-                        j.send(2, j, `Error: Could not set prefix (${e})`);
+                        j.send(2, j, `Error: Could not set prefix: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 }
 

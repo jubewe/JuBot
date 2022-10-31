@@ -2,7 +2,13 @@ const _staticspacer = require("./_staticspacer");
 
 function _stackname(){
     let stacknames = require("../variables/stacknames");
-    let stackret = [...arguments].map(a => {
+    let opt = [...arguments][0];
+    let args = [...arguments];
+    if(!global.variables.varstatic.nonarr.includes(opt) && !isNaN(opt)){
+        args.shift();
+    }
+
+    let stackret = args.map(a => {
         if(typeof a === "string"){
             return stacknames[a] || `[${a.toUpperCase()}]`;
         } else {
@@ -10,12 +16,27 @@ function _stackname(){
         }
     });
     let stackcolor = (stackret.some(s2 => {return s2 == "[ERROR]"}) ? "\x1b[4;31m" : "\x1b[4;1;36m");
-    return [
-        stackret.join(" "), 
-        stackret, 
-        stackret.map(s => {return _staticspacer(2, s, stackcolor)}), 
-        stackret.map(s => {return _staticspacer(2, s, stackcolor)}).join(" ")
-    ];
+
+    switch (opt){
+        default: {
+            return [
+                stackret.join(" "), 
+                stackret, 
+                stackret.map(s => {return _staticspacer(2, s, stackcolor)}), 
+                stackret.map(s => {return _staticspacer(2, s, stackcolor)}).join(" ")
+            ];
+        }
+
+        case 1: {
+            return [
+                stackret.join(" "), 
+                stackret, 
+                stackret.map(s => {return _staticspacer(2, s)}), 
+                stackret.map(s => {return _staticspacer(2, s)}).join(" ")
+            ]
+        }
+    }
+    
 };
 
 module.exports = _stackname;

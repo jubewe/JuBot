@@ -37,27 +37,14 @@ let dc_client = new Client({
 // let seventv_ws = new ws.WebSocket("")
 
 let j = {
-  variables: () => {
-    return require("./varstatic");
-  },
-  vars: () => {
-    return require("./vars");
-  },
-  urls: () => {
-    return require("./urls")
-  },
-  functions: () => {
-    return require("../functions/_");
-  },
-  commands: () => {
-    return require("../commands/_");
-  },
-  dm_commands: () => {
-    return require("../commands/_dm")
-  },
-  paths: () => {
-    return require("./paths");
-  },
+  variables: () => {return require("./varstatic");},
+  vars: () => {return require("./vars");},
+  urls: () => {return require("./urls")},
+  functions: () => {return require("../functions/_");},
+  commands: () => {return require("../commands/_");},
+  dm_commands: () => {return require("../commands/_dm")},
+  anna_dm_commands: () => {return require("../commands/anna/_")},
+  paths: () => {return require("./paths");},
   env: env,
   e: e,
   c: config,

@@ -1,6 +1,7 @@
 let replacevariables = require("./replacevariables");
 const _log = require("./_log");
 const _staticspacer = require("./_staticspacer");
+const _splitmsg = require("./_splitmsg");
 
 /**
  * 
@@ -43,9 +44,9 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
 
   smsg = smsg.replace(new RegExp("\n|\\n", "g"), "\\\n");
   smsg = smsg.replace(new RegExp("\r|\\r", "g"), "\\\r");
-
   if(smsg.length > 500){
-    let smsges = _splitmsg(smsg, " ", 500, 1, 1);
+    let smsges = _splitmsg(smsg, ",", 500, 1, 1);
+    // console.log(smsges)
     if(smsges.length > 3 && !smulti){
       _send(smode, schan, `<Error: Too long message>`, sparentid, true); 
       return;

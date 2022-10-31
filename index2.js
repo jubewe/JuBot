@@ -1,0 +1,4 @@
+const _splitmsg = require("./functions/_splitmsg");
+
+let str = `jubewe >  "{\\"data\\":{\\"bots\\":{\\"jubot\\":{\\"data\\":{\\"path\\":\\"/home/pi/FTP/files/JuBot\\",\\"connections\\":1,\\"uptime\\":2500733},\\"status\\":200},\\"patrick\\":{\\"data\\":{\\"path\\":\\"/home/pi/FTP/files/patrick\\",\\"connections\\":1,\\"uptime\\":10165923},\\"status\\":200},\\"phil\\":{\\"data\\":{\\"path\\":\\"/home/pi/FTP/files/phil\\",\\"connections\\":1,\\"uptime\\":42679892},\\"status\\":200}},\\"api\\":{\\"uptime\\":39498071},\\"pi\\":{\\"uptime\\":42681.34,\\"memory\\":{\\"used\\":667275264,\\"total\\":3978678272,\\"free\\":331143008},\\"ips\\":{\\"ipv4\\":[\\"192.168.2.170\\",\\"192.168.178.198\\"],\\"ipv6\\":[\\"2003:c4:d74b:8700:1a7e:b050:bc03:60a7\\"]}}},\\"status\\":200}"`
+_splitmsg(str)
