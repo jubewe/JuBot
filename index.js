@@ -15,6 +15,7 @@ const anna_dm_commandhandler = require("./handlers/twitch/anna/dm_commandhandler
 
 let j = require("./variables/j");
 const custom_commandhandler = require("./handlers/twitch/custom_commandhandler");
+const custom_keywordhandler = require("./handlers/twitch/custom_keywordhandler");
 const _combineArr = require("./functions/_combineArr");
 
 j.client.on("PRIVMSG", (response) => {
@@ -39,6 +40,8 @@ j.client.on("PRIVMSG", (response) => {
 
     _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
 
+    if(j.message.userstate.id == j.env().T_USERID) return;
+
     if(!msg.includes("-afk")){
       (async () => {
         _afk(2, j.message.userstate.id, null, null, true)
@@ -56,7 +59,7 @@ j.client.on("PRIVMSG", (response) => {
     let prefix = j.message._.prefix = j.c().prefix;
     _channel(0, channel.id, undefined, undefined, true)
     .then(ch => {
-      prefix = j.message._.prefix = (new RegExp(`^${j.c().prefix}`).test(msg) ? j.c().prefix : ch.prefix);
+      prefix = j.message._.prefix = (ch.prefix ? (new RegExp(`^${j.c().prefix}`).test(msg) ? j.c().prefix : ch.prefix) : j.c().prefix);
       if(new RegExp(`^${prefix}+[\\w]+`).test(msg) || new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
         let always_allowed = ["setting", "settings"];
         let command = j.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(prefix)[1].toLowerCase() : msg.split(prefix)[1].toLowerCase();
@@ -76,6 +79,11 @@ j.client.on("PRIVMSG", (response) => {
             }
           })();
         }
+      } else if(ch.keywords && new RegExp(`\\b(${_combineArr(...Object.keys(ch.keywords).map(key => {return _combineArr(ch.keywords[key].name, ch.keywords[key].aliases)})).join("|")})\\b`, "i").test(msg.toLowerCase())){
+        let keyword = j.message._.keyword = msg.toLowerCase().match(new RegExp(`\\b(${_combineArr(...Object.keys(ch.keywords).map(key => {return _combineArr(ch.keywords[key].name, ch.keywords[key].aliases)})).join("|")})\\b`, "i"))[0];
+        (async () => {
+          custom_keywordhandler();
+        })();
       }
     })
     .catch(e => {

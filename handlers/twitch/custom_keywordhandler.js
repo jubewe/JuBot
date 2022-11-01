@@ -1,0 +1,43 @@
+const customkeyword = require("../../functions/customkeyword");
+const getuserperm = require("../../functions/getuserperm");
+const _cooldown = require("../../functions/_cooldown");
+
+async function custom_keywordhandler(j){
+    j = j || require("../../variables/j");
+
+    customkeyword(0, j, false, null, null, j.message._.keyword)
+    .then(keyword => {
+        if(keyword.path) return;
+        if ([1].includes(keyword.state)) {
+            if (parseInt(j.message._.userperm.num) >= keyword.permission) {
+                _cooldown(0, j.message.channel.id, keyword.id, j.message.userstate.id, false)
+                .then((c) => {
+                    if(c[0] === 0 || keyword.cooldown <= 0 || ((Date.now() - c[0]) >= keyword.cooldown) || j.message._.userperms._default){
+                        if(j.message._.userperms._default || c[1] === 0 || keyword.cooldown_user <= 0 || ((Date.now() - c[0]) >= keyword.cooldown_user)){
+                            (async () => {
+                                j.send(0, j, keyword.response, undefined, undefined, undefined, true);
+                                if(keyword.cooldown > 0 || keyword.cooldown_user > 0){
+                                    _cooldown(1, j.message.channel.id, keyword.id, j.message.userstate.id, true)
+                                    .then(c2 => {})
+                                    .catch(e => {throw e});
+                                }
+                            })();
+                        }
+                    }
+                })
+                .catch(e => {
+                    console.error(new Error(e))
+                })
+            } else {
+                if(j.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
+                    j.send(2, null, `Error: You don't have permission to perform that action (required: ${getuserperm(j.message.userstate.id).num})`);
+                }
+            }
+        }
+    })
+    .catch(e => {
+        console.error(e);
+    })
+};
+
+module.exports = custom_keywordhandler;

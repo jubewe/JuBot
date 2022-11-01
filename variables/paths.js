@@ -12,7 +12,8 @@ module.exports = {
   usertokens: mainpath("./data/usertokens.json"),
   afkusers: mainpath("./data/afkusers.json"),
   cache: mainpath("./data/cache.json"),
-  commandlog: mainpath("./data/commandlog.txt")
-  
+  commandlog: mainpath("./data/commandlog.txt"),
+  keywordlog: mainpath("./data/keywordlog.txt"),
+  counterlog: mainpath("./data/counterlog.txt"),
   
 };

@@ -12,6 +12,8 @@ module.exports = {
     jsonreg: () => {return new RegExp(`^\\{+[\\W\\w]*\\}$`, "g")},
     urlreg: () => {return new RegExp(`(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})`, "g")},
     j_id_custom_commandreg: () => {return new RegExp(`[\\d]+\\_+command+\\_+[\\d]+`)},
-    j_id_global_commandreg: () => {return new RegExp(`global+\\_+commands+\\_+[\\w]+`)}
+    j_id_global_commandreg: () => {return new RegExp(`global+\\_+commands+\\_+[\\w]+`)},
+    j_id_custom_keywordreg: () => {return new RegExp(`[\\d]+\\_+keyword+\\_+[\\d]+`)},
+    j_id_custom_counterreg: () => {return new RegExp(`[\\d]+\\_+counter+\\_+[\\d]+`)},
 
 };

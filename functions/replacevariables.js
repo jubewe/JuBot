@@ -1,5 +1,7 @@
 const _channel = require("./channel");
 const customcommand = require("./customcommand");
+const customcounter = require("./customcounter");
+const customkeyword = require("./customkeyword");
 
 const _regex = require("./_regex");
 
@@ -53,26 +55,48 @@ async function replacevariables(){
         
     };
 
-    let msgreferencereg = new RegExp(`\\$\\(references+\\s+[^\\)]+\\)`, "gi");
-    if(msgreferencereg.test(msg)){
-        let msgreference = msg.match(msgreferencereg);
-        if(msgreference !== null){
-            for(let msgreference2 in msgreference){
-                let referencename = msgreference[msgreference2].split(new RegExp(`\\$\\(references+\\s+`, "i"))[1].split(new RegExp(`\\)`, "i"))[0].toLowerCase();
-                let referenceidtest = _regex.j_id_custom_commandreg().test(referencename);
-                await customcommand(0, j, false, j.message.channel.id, (referenceidtest ? referencename : null), (referenceidtest ? null : referencename))
+    let msgcommandreg = new RegExp(`\\$\\(commands+\\s+[^\\)]+\\)`, "gi");
+    if(msgcommandreg.test(msg)){
+        let msgcommand = msg.match(msgcommandreg);
+        if(msgcommand !== null){
+            for(let msgcommand2 in msgcommand){
+                let commandname = msgcommand[msgcommand2].split(new RegExp(`\\$\\(commands+\\s+`, "i"))[1].split(new RegExp(`\\)`, "i"))[0].toLowerCase();
+                let referenceidtest = _regex.j_id_custom_commandreg().test(commandname);
+                await customcommand(0, j, false, j.message.channel.id, (referenceidtest ? commandname : null), (referenceidtest ? null : commandname))
                 .then(cmd => {
-                    msg = msg.replace(msgreference[msgreference2], cmd.response);
+                    msg = msg.replace(msgcommand[msgcommand2], cmd.response);
                 })
                 .catch(e => {
                     console.error(e)
-                    msg = msg.replace(msgreference[msgreference2], "");
+                    msg = msg.replace(msgcommand[msgcommand2], "");
                 })
             }
         } else {
-            msg = msg.replace(msgreferencereg, `[Error: Internal Error]`);
+            msg = msg.replace(msgcommandreg, `[Error: Internal Error]`);
         }
-    }
+    };
+    
+    let msgkeywordreg = new RegExp(`\\$\\(keywords+\\s+[^\\)]+\\)`, "gi");
+    if(msgkeywordreg.test(msg)){
+        let msgkeyword = msg.match(msgkeywordreg);
+        if(msgkeyword !== null){
+            for(let msgkeyword2 in msgkeyword){
+                let keywordname = msgkeyword[msgkeyword2].split(new RegExp(`\\$\\(keywords+\\s+`, "i"))[1].split(new RegExp(`\\)`, "i"))[0].toLowerCase();
+                let referenceidtest = _regex.j_id_custom_keywordreg().test(keywordname);
+                console.log(keywordname)
+                await customkeyword(0, j, false, j.message.channel.id, (referenceidtest ? keywordname : null), (referenceidtest ? null : keywordname))
+                .then(key => {
+                    msg = msg.replace(msgkeyword[msgkeyword2], key.response);
+                })
+                .catch(e => {
+                    console.error(e)
+                    msg = msg.replace(msgkeyword[msgkeyword2], "");
+                })
+            }
+        } else {
+            msg = msg.replace(msgkeywordreg, `[Error: Internal Error]`);
+        }
+    };
 
     let msgsettingsreg = new RegExp(`\\$\\(settings+\\s+[\\w]+\\)`, "gi");
     if(msgsettingsreg.test(msg)){
@@ -153,8 +177,6 @@ async function replacevariables(){
         }
     };
 
-    // let msgreplacereg = new RegExp();
-
     let msgevalreg = new RegExp(`\\$\\(eval+\\s+[^\\)]+\\)`, "gi");
     if(msgevalreg.test(msg)){
         msg = msg.replace(msgevalreg, `[Error: Not finished yet]`);
@@ -185,6 +207,56 @@ async function replacevariables(){
         }*/
     };
 
+    let msgcountreg = new RegExp(`\\$\\(count+(er)*\\s+(increment|update|set|get)+\\s+[\\w]+(\\s+[\\d]+)*\\)`, "gi");
+    if(msgcountreg.test(msg)){
+        let msgcountmatch = msg.match(msgcountreg);
+        if(msgcountmatch !== null){
+            for(let msgcount2 in msgcountmatch){
+                let msgcountopt = msgcountmatch[msgcount2].split(new RegExp(`\\$\\(count+(er)*\\s+`, "i"))[2].split(new RegExp(`\\s+[\\w]+(\\s+[\\d]+)*\\)`, "i"))[0];
+                let msgcountname = msgcountmatch[msgcount2].split(new RegExp(`\\$\\(count+(er)*\\s+(increment|update|set|get)+\\s+`))[3].split(new RegExp(`(\\s+[\\d]+)*\\)`, "i"))[0];
+                let msgcountnum = msgcountmatch[msgcount2].split(new RegExp(`\\$\\(count+(er)*\\s+(increment|update|set|get)+\\s+[\\w]+\\s*`, "i"))[3].split(new RegExp(`\\)`, "i"))[0];
+                msgcountnum = (msgcountnum.length > 0 ? msgcountnum : undefined);
+
+                let msgcountidtest = _regex.j_id_custom_counterreg().test(msgcountname);
+                switch (msgcountopt){
+                    case "increment": {
+                        await customcounter(5, j, false, j.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
+                        .then(counter => {
+                            msg = msg.replace(msgcountmatch[msgcount2], counter.num);
+                        })
+                        .catch(e => {
+                            msg = msg.replace(msgcountmatch[msgcount2], `[Error: ${e.msg || "code error"}]`);
+                        })
+                        break;
+                    }
+
+                    case "get": {
+                        await customcounter(0, j, false, j.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
+                        .then(counter => {
+                            msg = msg.replace(msgcountmatch[msgcount2], counter.num);
+                        })
+                        .catch(e => {
+                            msg = msg.replace(msgcountmatch[msgcount2], `[Error: ${e.msg || "code error"}]`);
+                        })
+                        break;
+                    }
+
+                    case "set":
+                    case "update": {
+                        await customcounter(4, j, false, j.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
+                        .then(counter => {
+                            msg = msg.replace(msgcountmatch[msgcount2], counter.num);
+                        })
+                        .catch(e => {
+                            msg = msg.replace(msgcountmatch[msgcount2], `[Error: ${e.msg || "code error"}]`);
+                        })
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
     msg = msg.replace("$(test)", `$\(${Object.keys(replacements).join("\) $\(")}\)`);
 
     for(let replacement in replacements){
@@ -192,7 +264,8 @@ async function replacevariables(){
     };
 
     met = msg.replace(msgindexreg, "");
-    msg = msg.replace(msgreferencereg, "");
+    msg = msg.replace(msgcommandreg, "");
+    msg = msg.replace(msgkeywordreg, "");
 
     return msg;
 };

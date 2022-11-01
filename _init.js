@@ -7,6 +7,7 @@ const _log = require("./functions/_log");
 const _stackname = require("./functions/_stackname");
 const c = require("./config.json");
 const urls = require("./variables/urls");
+const _checkenv = require("./functions/_checkenv");
 let queuedreconnect = -1;
 
 global.test = "test";
@@ -121,8 +122,10 @@ function _init(){
 
     setInterval(reconnect, j.c().intervals.reconnect.client);
 
-    setTimeout(getapierrors, 3000);
-    setInterval(getapierrors, j.c().intervals.errors);
+    if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
+        setTimeout(getapierrors, 3000);
+        setInterval(getapierrors, j.c().intervals.errors);
+    }
 
     function getapierrors(){
         request(`${urls.api.__url("errors", "GET")}`, {method: "GET", headers: api_requestheaders()}, (e, r) => {

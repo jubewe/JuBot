@@ -32,7 +32,7 @@
     "connect": {
         "discord": false,
         "twitch": true,
-        "twitch_view": true,
+        "twitch_view": false,
         "ws": {
             "api": false
         }
@@ -40,6 +40,11 @@
     "commands": {
         "custom": {
             "restricted": ["settings", "help"],
+            "max": 50
+        }
+    },
+    "keywords": {
+        "custom": {
             "max": 50
         }
     }

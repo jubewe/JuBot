@@ -1,7 +1,5 @@
 const customcommand = require("../functions/customcommand");
 const _cleantime = require("../functions/_cleantime");
-const _combineArr = require("../functions/_combineArr");
-const _permission = require("../functions/_permission");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
 const _rf = require("../functions/_rf");
@@ -9,8 +7,8 @@ let j = require("../variables/j");
 const paths = require("../variables/paths");
 
 module.exports = {
-    name: "command",
-    id: "global_commands_command",
+    name: "customcommand",
+    id: "global_commands_customcommand",
     aliases: [],
     state: 1,
     add_version: "0.1.0",
@@ -35,7 +33,7 @@ module.exports = {
                         case "rename": {renamecommand(1); break;}
                         case "permission": {permissioncommand(1); break;}
                         case "enable": {togglestate(1, 1); break;}
-                        case "disable": {togglestate(1, 1); break;}
+                        case "disable": {togglestate(1, 0); break;}
                         case "list":
                         case "get": {getcommand(1); break;}
 
@@ -56,6 +54,7 @@ module.exports = {
             case "permcmd": {permissioncommand(0); break;}
             case "enablecmd": {togglestate(0, 1); break;}
             case "disablecmd": {togglestate(0, 0); break;}
+            case "getcmd": {getcommand(0); break;}
         };
 
         async function addcommand(num){
