@@ -15,6 +15,8 @@ module.exports = {
     serverinfo: require("./server"),
     setting: require("./settings"),
     settings: require("./settings"),
+    "7tv": require("./seventv"),
+    seventv: require("./seventv"),
     download: require("./download"),
     view: require("./view"),
     unview: require("./unview"),
@@ -47,5 +49,8 @@ module.exports = {
     getkey: require("./customkeyword"),
     
     permission: require("./permission"),
+
+    remind: require("./reminder"),
+    remindme: require("./reminder"),
 
 }

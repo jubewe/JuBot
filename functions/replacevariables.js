@@ -1,4 +1,4 @@
-const _channel = require("./channel");
+const _channel = require("./_channel");
 const customcommand = require("./customcommand");
 const customcounter = require("./customcounter");
 const customkeyword = require("./customkeyword");

@@ -30,7 +30,7 @@
         "led_pin": "27"
     },
     "connect": {
-        "discord": false,
+        "discord": true,
         "twitch": true,
         "twitch_view": false,
         "ws": {

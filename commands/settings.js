@@ -147,6 +147,36 @@ module.exports = {
 
                 break;
             }
+            
+            case "discord": {
+                if(!j.message._.args()[1]){
+                    j.send(2, j, `Error: No id given`);
+                    break;
+                };
+
+                let discord_serverid = j.message._.args()[1];
+                // console.log(discord_serverid)
+
+                if(!isNaN(discord_serverid)){
+                    j.dc.client.guilds.fetch(discord_serverid)
+                    .then(() => {
+                        _channel(1, j.message.channel.id, "discord_serverid", discord_serverid)
+                        .then(t => {
+                            j.send(2, j, `Successfully set discord serverid to ${discord_serverid}`);
+                        })
+                        .catch(e => {
+                            j.send(2, j, `Error: Could not set discord serverid: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                        })
+                    })
+                    .catch(e => {
+                        console.error(e);
+                        j.send(2, j, `Error: Could not fetch guild - check the given id and try again`);
+                    })
+                } else {
+                    j.send(2, j, `Error: Given ID id not a number (Expected: Server-ID)`);
+                }
+                break;
+            }
 
             default: {
                 j.send(2, j, `Error: Setting ${opt} not found`);

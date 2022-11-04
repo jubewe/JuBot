@@ -119,7 +119,7 @@ async function customkeyword(opt, j, noreturn, channelid, keywordid, keywordname
                                 let keyword = channels.channels[channelid]["keywords"][keywordid];
                                 delete channels.channels[channelid]["keywords"][keywordid];
                                 _wf(paths.channels, channels);
-                                _appf(paths.keywordlog, `\n${_stackname(0, "keywords", "delete")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)}`);
+                                _appf(paths.keywordlog, `\n${Date.now()} ${_stackname(0, "keywords", "delete")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)}`);
 
                                 return resolve(keyword);
                             } else {
@@ -159,7 +159,7 @@ async function customkeyword(opt, j, noreturn, channelid, keywordid, keywordname
                         };
 
                         channels.channels[channelid]["keywords"][keywordid] = keyword;
-                        _appf(paths.keywordlog, `\n${_stackname(0, "keywords", "edit")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)} ${JSON.stringify(keyword_)}`);
+                        _appf(paths.keywordlog, `\n${Date.now()} ${_stackname(0, "keywords", "edit")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)} ${JSON.stringify(keyword_)}`);
                         _wf(paths.channels, channels);
 
                         return resolve(keyword);
@@ -186,7 +186,7 @@ async function customkeyword(opt, j, noreturn, channelid, keywordid, keywordname
                         let keyword = channels.channels[channelid]["keywords"][keywordid];
                         let keyword_ = keyword;
                         keyword.name = keywordresponse;
-                        _appf(paths.keywordlog, `\n${_stackname(0, "keywords", "rename")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword_)} ${JSON.stringify(keyword)}`);
+                        _appf(paths.keywordlog, `\n${Date.now()} ${_stackname(0, "keywords", "rename")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword_)} ${JSON.stringify(keyword)}`);
                         _wf(paths.channels, channels);
                         return resolve(channels.channels[channelid]["keywords"][keywordid]);
                     } else {

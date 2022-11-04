@@ -97,7 +97,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                     if(!Object.keys(channels.channels).includes(channelid)) channels.channels[channelid] = {};
                     if(!Object.keys(channels.channels[channelid]).includes("commands")) channels.channels[channelid]["commands"] = {};
                     channels.channels[channelid]["commands"][id[0]] = command;
-                    _appf(paths.commandlog, `\n${_stackname(0, "commands", "add")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
+                    _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "add")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
                     _wf(paths.channels, channels);
 
                     return resolve(command);
@@ -120,7 +120,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                                 let command = channels.channels[channelid]["commands"][commandid];
                                 delete channels.channels[channelid]["commands"][commandid];
                                 _wf(paths.channels, channels);
-                                _appf(paths.commandlog, `\n${_stackname(0, "commands", "delete")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
+                                _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "delete")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
 
                                 return resolve(command);
                             } else {
@@ -160,7 +160,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                         };
 
                         channels.channels[channelid]["commands"][commandid] = command;
-                        _appf(paths.commandlog, `\n${_stackname(0, "commands", "edit")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
+                        _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "edit")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
                         _wf(paths.channels, channels);
 
                         return resolve(command);
@@ -187,7 +187,7 @@ async function customcommand(opt, j, noreturn, channelid, commandid, commandname
                         let command = channels.channels[channelid]["commands"][commandid];
                         let command_ = command;
                         command.name = commandresponse;
-                        _appf(paths.commandlog, `\n${_stackname(0, "commands", "rename")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command_)} ${JSON.stringify(command)}`);
+                        _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "rename")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command_)} ${JSON.stringify(command)}`);
                         _wf(paths.channels, channels);
                         return resolve(channels.channels[channelid]["commands"][commandid]);
                     } else {

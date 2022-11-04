@@ -17,6 +17,8 @@ let j = require("./variables/j");
 const custom_commandhandler = require("./handlers/twitch/custom_commandhandler");
 const custom_keywordhandler = require("./handlers/twitch/custom_keywordhandler");
 const _combineArr = require("./functions/_combineArr");
+const remind = require("./functions/remind");
+const getuser = require("./functions/getuser");
 
 j.client.on("PRIVMSG", (response) => {
 //  j = require("./variables/j");
@@ -54,7 +56,36 @@ j.client.on("PRIVMSG", (response) => {
           // console.error(e);
         });
       })();
-    }
+    };
+
+    (async () => {
+      remind(3, j, false, null, j.message.userstate.id)
+      .then(r => {
+        if(r.length > 0){
+          j.send(0, j, `${usertag} You have ${r.length} new Reminders:`);
+          let reminders_ = [];
+          (async () => {
+            for(let r2 in r){
+              if(r[r2].sender_userid === r[r2].target_userid){
+                reminders_.push(`${r[r2].message} (${_cleantime(Date.now()-r[r2].time, 4, 2).time.join(" ")} ago by yourself)`);
+              } else {
+                await getuser(1, r[r2].sender_userid)
+                .then(u => {
+                  reminders_.push(`${r[r2].message} (${_cleantime(Date.now()-r[r2].time, 4, 2).time.join(" ")} ago by ${u[0]} (${u[1]}))`);
+                })
+                .catch(() => {
+                  reminders_.push(`${r[r2].message} (${_cleantime(Date.now()-r[r2].time, 4, 2).time.join(" ")} ago by ${r[r2].sender_userid})`);
+                })
+              }
+            }
+            j.send(0, j, `${usertag} ${reminders_.join("; ")}`);
+          })();
+        }
+      })
+      .catch(e => {
+        console.error(e);
+      })
+    })();
     
     let prefix = j.message._.prefix = j.c().prefix;
     _channel(0, channel.id, undefined, undefined, true)

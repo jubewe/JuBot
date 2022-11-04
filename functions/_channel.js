@@ -2,7 +2,7 @@ const paths = require("../variables/paths");
 const _rf = require("./_rf");
 const _wf = require("./_wf");
 
-async function channel(opt, id, key, value, noreturn){
+async function _channel(opt, id, key, value, noreturn){
     return new Promise((resolve, reject) => {
         if([null, undefined].includes(opt)) return reject({path:[0],msg:"no opt given"});
         if(![0].includes(opt) && !id) return reject({path:[1,0],msg:"no id given"});
@@ -71,4 +71,4 @@ async function channel(opt, id, key, value, noreturn){
     });
 };
 
-module.exports = channel;
+module.exports = _channel;

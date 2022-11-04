@@ -1,7 +1,10 @@
-async function cache(cacheopt, cachekey, cachevalue){
+const paths = require("../variables/paths");
+const _rf = require("./_rf");
+const _wf = require("./_wf");
+
+async function _cache(cacheopt, cachekey, cachevalue){
     return new Promise(function(resolve, reject) {
-        let j = require("../variables/j");
-        let cache = j.functions()._rf(j.paths().cache, true);
+        let cache = _rf(paths.cache, true);
 
         (async() => {
             switch (cacheopt) {
@@ -28,7 +31,7 @@ async function cache(cacheopt, cachekey, cachevalue){
                             "add_time": Date.now()
                         }
                     };
-                    j.functions()._wf(j.paths().cache, cache);
+                    _wf(paths.cache, cache);
 
                     return resolve(cache[cachekey]);
 
@@ -39,7 +42,7 @@ async function cache(cacheopt, cachekey, cachevalue){
                     if(!cachekey) return reject({"path":[cacheopt,0],"msg":"cachekey is undefined"});
                     if(Object.keys(cache).includes(cachekey)){
                         delete cache[cachekey];
-                        j.functions()._wf(j.paths().cache, cache);
+                        _wf(paths.cache, cache);
 
                         return resolve(cache[cachekey]);
                     } else {
@@ -58,4 +61,4 @@ async function cache(cacheopt, cachekey, cachevalue){
     })
 };
 
-module.exports = cache;
+module.exports = _cache;

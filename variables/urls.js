@@ -36,7 +36,8 @@ let urls = {
         "v2": {
             "channel": {
                 "emotes": "https://api.7tv.app/v2/users/${channel}/emotes"
-            }
+            },
+            "emote": "https://api.7tv.app/v2/emotes/${id}"
         },
         "v3": {
             "channel": {

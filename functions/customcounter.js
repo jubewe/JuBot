@@ -31,8 +31,8 @@ async function customcounter(opt, j, noreturn, channelid, counterid, countername
                         }
                     } else {
                         if(countername || counterid){
-                            return reject({path:[opt,1,1,0],msg:"counter not found - channel has no counters"});
                             if(noreturn) return resolve({});
+                            return reject({path:[opt,1,1,0],msg:"counter not found - channel has no counters"});
                         } else {
                             if(noreturn) return resolve({});
                             return reject({path:[opt,1,0],msg:"channel has no counters"})
@@ -75,7 +75,7 @@ async function customcounter(opt, j, noreturn, channelid, counterid, countername
                     delete counter;
 
                     _wf(paths.channels, channels);
-                    _appf(paths.counterlog, `\n${_stackname(0, "counters", "delete")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
+                    _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "delete")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
 
                     return resolve(counter);
                 } else {
@@ -103,7 +103,7 @@ async function customcounter(opt, j, noreturn, channelid, counterid, countername
 
                     _wf(paths.channels, channels);
 
-                    _appf(paths.counterlog, `\n${_stackname(0, "counters", "rename")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.name} ${counter.name} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
+                    _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "rename")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.name} ${counter.name} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
                     return resolve(counter);
                 } else {
                     if(noreturn) return resolve({});
@@ -150,7 +150,7 @@ async function customcounter(opt, j, noreturn, channelid, counterid, countername
                 channels.channels[channelid]["counters"][id[0]] = counter;
 
                 _wf(paths.channels, channels);
-                _appf(paths.counterlog, `\n${_stackname(0, "counters", "add")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
+                _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "add")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
 
                 return resolve(counter);
             })
@@ -172,7 +172,7 @@ async function customcounter(opt, j, noreturn, channelid, counterid, countername
 
                 _wf(paths.channels, channels);
 
-                _appf(paths.counterlog, `\n${_stackname(0, "counters", "update")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.num} ${counter.num} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
+                _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "update")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.num} ${counter.num} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
                 return resolve(counter);
             } else {
                 if(noreturn) return resolve({});
