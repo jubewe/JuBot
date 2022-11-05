@@ -1,4 +1,10 @@
-const _splitmsg = require("./functions/_splitmsg");
+const request = require("request");
+const _requestopts = require("./functions/_requestopts");
 
-let str = `jubewe >  "{\\"data\\":{\\"bots\\":{\\"jubot\\":{\\"data\\":{\\"path\\":\\"/home/pi/FTP/files/JuBot\\",\\"connections\\":1,\\"uptime\\":2500733},\\"status\\":200},\\"patrick\\":{\\"data\\":{\\"path\\":\\"/home/pi/FTP/files/patrick\\",\\"connections\\":1,\\"uptime\\":10165923},\\"status\\":200},\\"phil\\":{\\"data\\":{\\"path\\":\\"/home/pi/FTP/files/phil\\",\\"connections\\":1,\\"uptime\\":42679892},\\"status\\":200}},\\"api\\":{\\"uptime\\":39498071},\\"pi\\":{\\"uptime\\":42681.34,\\"memory\\":{\\"used\\":667275264,\\"total\\":3978678272,\\"free\\":331143008},\\"ips\\":{\\"ipv4\\":[\\"192.168.2.170\\",\\"192.168.178.198\\"],\\"ipv6\\":[\\"2003:c4:d74b:8700:1a7e:b050:bc03:60a7\\"]}}},\\"status\\":200}"`
-_splitmsg(str)
+request("https://api.twitch.tv/helix/streams?user_id=461098086&user_id=263830208&user_id=187528776", _requestopts(), (e, r) => {
+    if(e){
+        console.error(e);
+    } else {
+        console.log(r.body);
+    }
+})

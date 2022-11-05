@@ -1,6 +1,6 @@
 {
   "name": "jubot",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "JuBot",
   "main": "index.js",
   "scripts": {

@@ -47,6 +47,14 @@ module.exports = {
     enablekey: require("./customkeyword"),
     disablekey: require("./customkeyword"),
     getkey: require("./customkeyword"),
+
+    notification: require("./customnotification"),
+    addnotification: require("./customnotification"),
+    deletenotification: require("./customnotification"),
+    removenotification: require("./customnotification"),
+    editnotification: require("./customnotification"),
+    enablenotification: require("./customnotification"),
+    disablenotification: require("./customnotification"),
     
     permission: require("./permission"),
 

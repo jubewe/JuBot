@@ -24,19 +24,24 @@
             "client": 1800000,
             "ws": 1800000
         },
-        "errors": 1800000
+        "errors": 1800000,
+        "live_check": 900000
     },
     "raspi": {
         "led_pin": "27"
     },
     "connect": {
-        "discord": true,
+        "discord": false,
         "twitch": true,
         "twitch_view": false,
+        "twitch_notifications": false,
         "ws": {
             "api": false
         }
     },
+    "modules": {
+        "notifications": true
+    }, 
     "commands": {
         "custom": {
             "restricted": ["settings", "help"],
@@ -46,6 +51,13 @@
     "keywords": {
         "custom": {
             "max": 50
+        }
+    },
+    "notifications":{
+        "names": ["live", "follow", "subscription", "resub", "cheer", "subgift", "masssubgift"],
+        "defaultmessages": {
+            "live": "$(live.user_login) is now Live playing $(live.game_name): $(live.title)",
+            "cheer": "$(sender) just cheered $(messagebits)"
         }
     }
 }

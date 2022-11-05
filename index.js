@@ -19,11 +19,47 @@ const custom_keywordhandler = require("./handlers/twitch/custom_keywordhandler")
 const _combineArr = require("./functions/_combineArr");
 const remind = require("./functions/remind");
 const getuser = require("./functions/getuser");
+const paths = require("./variables/paths");
+let subcache = {
+  "masssubgift":{},
+  "subgift":{}
+};
 
 j.client.on("PRIVMSG", (response) => {
 //  j = require("./variables/j");
   (async () => {
     let privmsg = privmsg_parser(response);
+    privmsg.message.messageText = privmsg.message.messageText.replace(/(^\s|\s$)/g, "").replace(/[\s]{2,}/g, " ");
+    let modified_channel = j.message._.modified_channel = false;
+
+    let msgchanmatch = privmsg.message.messageText.match(new RegExp(`\-chan\:[^\\s]+`, "i"));
+    if(msgchanmatch !== null){
+      await new Promise((resolve) => {
+        getuserperm(privmsg.userstate.id)
+        .then(uperm => {
+          if(uperm.num >= j.c().perm.botdefault){
+            let msgchan = msgchanmatch[0].split(new RegExp(`\-chan\:`))[1];
+            getuser(1, msgchan)
+            .then(u => {
+              privmsg.channel.name = u[0];
+              privmsg.channel.nameraw = u[0];
+              privmsg.channel.id = u[1];
+
+              modified_channel = j.message._.modified_channel = true;
+
+              privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatch[0], "");
+              return resolve();
+            })
+            .catch(() => {
+              privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatch[0], "");
+              return resolve();
+            })
+          } else {
+            return resolve();
+          }
+        })
+      })
+    }
 
     let message = j.message.message = privmsg.message;
     let userstate = j.message.userstate = privmsg.userstate;
@@ -37,7 +73,7 @@ j.client.on("PRIVMSG", (response) => {
     let usertag = j.message._.usertag = `${user} > `;
     let usertag_ = j.message._.usertag_ = `${(msg.split(" ")[1] && j.functions().regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
     let userperm = j.message._.userperm = await getuserperm(j.message.userstate.id);
-    let userperms = j.message._.userperms = await userperms_();
+    let userperms = j.message._.userperms = await userperms_(j);
     // j.send = require("./functions/send");
 
     _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
@@ -161,4 +197,46 @@ j.client.on("WHISPER", response => {
       })();
     }
   })();
+});
+
+j.client.on("USERNOTICE", response => {
+  if(!j.c().modules.notifications) return;
+  let privmsg = privmsg_parser(response);
+
+  let message = j.message.message = privmsg.message;
+  let userstate = j.message.userstate = privmsg.userstate;
+  let channel = j.message.channel = privmsg.channel;
+  let server = j.message.server = privmsg.server;
+
+  let channels = _rf(paths.channels, true);
+  let channelnotifications = (channels.channels[response.channelID] && channels.channels[response.channelID]["notifications"] ? channels.channels[response.channelID]["notifications"] : {});
+  (async () => {
+    if(response.isCheer()){
+      executenotification("cheer");
+    } 
+    if(response.isSub()){
+      executenotification("subscription");
+    }
+    if(response.isResub()){
+      executenotification("resub");
+    }
+    if(response.isSubgift() || response.isAnonSubgift()){
+      if(!Object.keys(subcache.masssubgift).includes(response.senderUserID || "anonymus") || (Date.now()-subcache.masssubgift[response.senderUserID || "anonymus"] > 2000)){
+        executenotification("subgift");
+      }
+    }
+    if(response.isMassSubgift()){
+      subcache.masssubgift[response.senderUserID || "anonymus"] = Date.now();
+      executenotification("masssubgift");
+    }
+  })();
+
+  function executenotification(notificationname){
+    if(Object.keys(channelnotifications).includes(notificationname)){
+      if([1].includes(channelnotifications[notificationname].state)){
+        // j.send(0, response.channelName, channels.channels[response.channelID]["notifications"][notificationname].message || j.c().notifications.defaultmessages.cheer);
+        console.log(channels.channels[response.channelID]["notifications"][notificationname].message || j.c().notifications.defaultmessages.cheer);
+      }
+    }
+  };
 });

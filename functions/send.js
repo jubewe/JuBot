@@ -31,6 +31,11 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
     schan = j.message.userstate.username;
   };
 
+  if(j.message._.modified_channel){
+    smode = 0;
+    schan = j.message._.chan;
+  }
+
   let sendtrys = 1+1;
   let sendretrytimeout = 3000;
 

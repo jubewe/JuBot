@@ -14,7 +14,7 @@ badgestoarr
 < valorantrank
 < channelhandler
 < command: setting: valoranttag,discordserver
-7tv emote in commands
+<7tv emote in commands
 < download in commands
 < update urls in command files
 < dc integration
@@ -31,4 +31,6 @@ new splitmsg
 <anna commands:
 <mod/unmod, vip/unvip
 notifications
-7tv
+<7tv
+livenotifications: prevent duplicate
+subgiftnotification: prevent spam

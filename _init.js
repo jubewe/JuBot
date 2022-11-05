@@ -8,6 +8,12 @@ const _stackname = require("./functions/_stackname");
 const c = require("./config.json");
 const urls = require("./variables/urls");
 const _checkenv = require("./functions/_checkenv");
+const paths = require("./variables/paths");
+const _requestopts = require("./functions/_requestopts");
+const _regex = require("./functions/_regex");
+const _staticspacer = require("./functions/_staticspacer");
+const replacevariableslive = require("./functions/replacevariableslive");
+const replacevariables = require("./functions/replacevariables");
 let queuedreconnect = -1;
 
 global.test = "test";
@@ -20,6 +26,7 @@ global.functions = require("./functions/_");
 function _init(){
     let j = require("./variables/j");
     // console.clear();
+    let channels = _rf(paths.channels, true);
 
     process.on("unhandledRejection", (rej) => {
         console.error(rej);
@@ -52,6 +59,8 @@ function _init(){
                 reconnect();
             }, 10000);
         });
+
+        setInterval(reconnect, j.c().intervals.reconnect.client);
     };
 
     if(c.connect.twitch_view){
@@ -120,8 +129,6 @@ function _init(){
     _executetimers();
     _log(1, `${_stackname("timers")[3]} Executed`);
 
-    setInterval(reconnect, j.c().intervals.reconnect.client);
-
     if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
         setTimeout(getapierrors, 3000);
         setInterval(getapierrors, j.c().intervals.errors);
@@ -143,6 +150,42 @@ function _init(){
                 }
             }
         })
+    };
+
+    if(j.c().connect.twitch_notifications && j.c().modules.notifications){
+        setTimeout(getlivechannels, 3000);
+        setInterval(getlivechannels, j.c().intervals.live_check);
+    }
+
+    async function getlivechannels(){
+        let checklivechannels = Object.keys(channels.channels).filter(livechan => {return channels.channels[livechan].notifications && channels.channels[livechan].notifications.live && [1].includes(channels.channels[livechan].notifications.live.state)})
+        _log(1, `${_staticspacer("notifications", "get")} [${checklivechannels.length}] ${checklivechannels}`);
+        if(checklivechannels.length > 0){
+            request(`${urls.twitch.streams.get}?user_id=${checklivechannels.join("&user_id=")}`, _requestopts(), (e, r) => {
+                if(e){
+                    console.error(e);
+                } else {
+                    if(_regex.jsonreg().test(r.body)){
+                        let dat = JSON.parse(r.body);
+                        if(dat.data.length > 0){
+                            for(let livechan in dat.data){
+                                // console.log(dat.data[livechan])
+                                replacevariableslive(channels.channels[dat.data[livechan].user_id].notifications.live.message || j.c().notifications.defaultmessages.live, dat.data[livechan])
+                                .then(msg => {
+                                    replacevariables(j, msg)
+                                    .then(msg2 => {
+                                        j.send(0, dat.data[livechan].user_login, msg2)
+                                    })
+                                    .catch(e => {
+                                        j.send(0, dat.data[livechan].user_login, msg)
+                                    })
+                                })
+                            }
+                        }
+                    }
+                }
+            })
+        }
     };
 
     // Reference: https://github.com/SevenTV/EventAPI/
@@ -176,7 +219,7 @@ function _init(){
         j.ws.client.on("pong", p => {
             j.ws.client.pong(JSON.stringify({"type":"pong","start":p.start,"start_client":Date.now()}));
         });
-    }
+    };
 }
 
 module.exports = _init;

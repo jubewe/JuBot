@@ -71,6 +71,9 @@ let urls = {
                 "url": "https://api.twitch.tv/helix/channels/vips?broadcaster_id=:broadcaster_id&user_id=:user_id",
                 "method": "DELETE"
             },
+        },
+        "streams": {
+            "get": "https://api.twitch.tv/helix/streams"
         }
     }
     
