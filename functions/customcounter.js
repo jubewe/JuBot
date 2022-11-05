@@ -5,9 +5,21 @@ const _rf = require("./_rf");
 const _stackname = require("./_stackname");
 const _wf = require("./_wf");
 
-async function customcounter(opt, j, noreturn, channelid, counterid, countername, counternum){
+/**
+ * 
+ * @param {number} opt 
+ * @param {object | undefined} j_ 
+ * @param {boolean} noreturn 
+ * @param {string | number} channelid 
+ * @param {string} counterid 
+ * @param {string} countername 
+ * @param {string | number} counternum 
+ * @returns {promise}
+ */
+
+async function customcounter(opt, j_, noreturn, channelid, counterid, countername, counternum){
     return new Promise((resolve, reject) => {
-        j = j || require("../variables/j");
+        let j = require("../variables/j");
         channelid = channelid || j.message.channel.id;
         counternum = (!global.variables.varstatic.nonarr.includes(counternum) ? parseInt(counternum) : undefined);
 

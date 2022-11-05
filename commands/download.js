@@ -13,12 +13,10 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.args()[0]){
-            j.send(2, j, `Started downloading, this might take some time Waiting`);
-            let url = j.message._.args()[0];
+    exec: async (j_, j) => {
+        if(j_.message._.args()[0]){
+            j.send(2, j_, `Started downloading, this might take some time Waiting`);
+            let url = j_.message._.args()[0];
             j.modules.request(`${j.urls().api.__url("upload", "POST")}`, {
                 method: "POST",
                 headers: {
@@ -30,14 +28,14 @@ module.exports = {
             (e2, r2) => {
                 if(e2){
                     console.error(new Error(e2));
-                    j.send(2, j, `Error: Could not download file ${e2.stack} ${e2.message}`);
+                    j.send(2, j_, `Error: Could not download file ${e2.stack} ${e2.message}`);
                 } else {
                     if(JSON.parse(r2.body) && JSON.parse(r2.body).status === 201){
                         let dat = JSON.parse(r2.body);
-                        j.send(2, j, `Successfully downloaded file (Size: ${(dat.data.size/1048576).toFixed(2)} mb), Path: (Server) ${dat.data.path}, (Client) \\\\JUPI\\nas\\MSD128_NAS\\files\\upload\\${dat.data.name}`);
+                        j.send(2, j_, `Successfully downloaded file (Size: ${(dat.data.size/1048576).toFixed(2)} mb), Path: (Server) ${dat.data.path}, (Client) \\\\JUPI\\nas\\MSD128_NAS\\files\\upload\\${dat.data.name}`);
                     } else {
                         console.log(r2.body)
-                        j.send(2, j, `Error: Could not upload file to server`);
+                        j.send(2, j_, `Error: Could not upload file to server`);
                     }
                 }
             })
@@ -65,7 +63,7 @@ module.exports = {
                 }
             })*/
         } else {
-            j.send(2, j, `Error: No url given`);
+            j.send(2, j_, `Error: No url given`);
         }
     }
 }

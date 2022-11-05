@@ -10,14 +10,12 @@ module.exports = {
     permission: j.c().perm.bothigh,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.msg.split(" ")[1] !== undefined){
-            let saymsg = j.message._.msg.substring(j.message._.msg.split(" ")[0].length, j.message._.msg.length);
-            j.send(0, j, saymsg, null, false);
+    exec: async (j_, j) => {
+        if(j_.message._.msg.split(" ")[1] !== undefined){
+            let saymsg = j_.message._.msg.substring(j_.message._.msg.split(" ")[0].length, j_.message._.msg.length);
+            j.send(0, j_, saymsg, null, false);
         } else {
-            j.send(2, j, `Error: Nothing to say given`);
+            j.send(2, j_, `Error: Nothing to say given`);
         }
     }
 }

@@ -13,22 +13,21 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
+    exec: async (j_, j) => {
         let channels = _rf(paths.clientchannels, true);
 
-        if(j.message._.args()[0]){
-            let viewchan = j.message._.args()[0].toLowerCase();
+        if(j_.message._.args()[0]){
+            let viewchan = j_.message._.args()[0].toLowerCase();
             if(!channels.viewchannels.includes(viewchan)){
-                j.viewclient.join(viewchan);
+                j_.viewclient.join(viewchan);
                 channels.viewchannels.push(viewchan);
                 _wf(paths.clientchannels, channels);
-                j.send(2, j, `Successfully started viewing ${_pixelize(viewchan)}`);
+                j.send(2, j_, `Successfully started viewing ${_pixelize(viewchan)}`);
             } else {
-                j.send(2, j, `Error: Already viewing ${_pixelize(viewchan)}`)
+                j.send(2, j_, `Error: Already viewing ${_pixelize(viewchan)}`)
             }
         } else {
-            j.send(2, j, `Error: No channel given`);
+            j.send(2, j_, `Error: No channel given`);
         }
     }
 }

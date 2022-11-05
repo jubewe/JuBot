@@ -12,20 +12,18 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.msg.split(" ")[1] !== undefined){
-            let partchan = j.message._.msg.split(" ")[1].toLowerCase();
+    exec: async (j_, j) => {
+        if(j_.message._.msg.split(" ")[1] !== undefined){
+            let partchan = j_.message._.msg.split(" ")[1].toLowerCase();
             j.part(partchan)
             .then(pc => {
-                j.send(2, j, `Successfully parted ${pixelize(partchan)} ${returnerr(pc, 1)}`);
+                j.send(2, j_, `Successfully parted ${pixelize(partchan)} ${returnerr(pc, 1)}`);
             })
             .catch(e => {
-                j.send(2, j, `Error: Could not part ${pixelize(partchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`)
+                j.send(2, j_, `Error: Could not part ${pixelize(partchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`)
             })
         } else {
-            j.send(2, j, `Error: No Channel given`);
+            j.send(2, j_, `Error: No Channel given`);
         }
     }
 }

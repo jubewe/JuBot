@@ -12,11 +12,9 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 3000,
     cooldown_user: 1000,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.args()[0]){
-            switch (j.message._.command){
+    exec: async (j_, j) => {
+        if(j_.message._.args()[0]){
+            switch (j_.message._.command){
                 case "notification": {
                     switch (j.message._.args()[0]){
                         case "add": {addnotification(1); break;}
@@ -30,7 +28,7 @@ module.exports = {
                         case "disable": {statenotification(1, 0); break;}
         
                         default: {
-                            j.send(2, j, `Error: Option not found`);
+                            j.send(2, j_, `Error: Option not found`);
                         }
                     }
                 }
@@ -45,68 +43,68 @@ module.exports = {
 
             let states = ["disabled", "enabled"];
             async function addnotification(num){
-                if(j.message._.args()[num]){
-                    let notificationname = j.message._.args()[num];
-                    let notificationmessage = j.message._.args().splice(num+1).join(" ");
+                if(j_.message._.args()[num]){
+                    let notificationname = j_.message._.args()[num];
+                    let notificationmessage = j_.message._.args().splice(num+1).join(" ");
                     
-                    customnotification(1, j, false, j.message.channel.id, notificationname, notificationmessage, null, 1)
+                    customnotification(1, j_, false, j_.message.channel.id, notificationname, notificationmessage, null, 1)
                     .then(n => {
-                        j.send(2, j, `Successfully added notification`);
+                        j.send(2, j_, `Successfully added notification`);
                     })
                     .catch(e => {
-                        j.send(2, j, `Error: Could not add notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                        j.send(2, j_, `Error: Could not add notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
-                    j.send(2, j, `Error: No notificationname given`);
+                    j.send(2, j_, `Error: No notificationname given`);
                 }
             };
             async function editnotification(num){
-                if(j.message._.args()[num]){
-                    let notificationname = j.message._.args()[num];
-                    let notificationmessage = j.message._.args().splice(num+1).join(" ");
+                if(j_.message._.args()[num]){
+                    let notificationname = j_.message._.args()[num];
+                    let notificationmessage = j_.message._.args().splice(num+1).join(" ");
                     
-                    customnotification(3, j, false, j.message.channel.id, notificationname, notificationmessage, null, null)
+                    customnotification(3, j_, false, j_.message.channel.id, notificationname, notificationmessage, null, null)
                     .then(n => {
-                        j.send(2, j, `Successfully added notification`);
+                        j.send(2, j_, `Successfully added notification`);
                     })
                     .catch(e => {
-                        j.send(2, j, `Error: Could not add notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                        j.send(2, j_, `Error: Could not add notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
-                    j.send(2, j, `Error: No notificationname given`);
+                    j.send(2, j_, `Error: No notificationname given`);
                 }
             };
             async function statenotification(num, state){
-                if(j.message._.args()[num]){
-                    let notificationname = j.message._.args()[num];
-                    customnotification(4, j, false, j.message.channel.id, notificationname, null, null, state)
+                if(j_.message._.args()[num]){
+                    let notificationname = j_.message._.args()[num];
+                    customnotification(4, j_, false, j_.message.channel.id, notificationname, null, null, state)
                     .then(n => {
-                        j.send(2, j, `Successfully set notification state to ${state} (${states[state]})`);
+                        j.send(2, j_, `Successfully set notification state to ${state} (${states[state]})`);
                     })
                     .catch(e => {
-                        j.send(2, j, `Error: Could not set notification state to ${state} (${states[state]}): ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                        j.send(2, j_, `Error: Could not set notification state to ${state} (${states[state]}): ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
-                    j.send(2, j, `Error: No notificationname given`);
+                    j.send(2, j_, `Error: No notificationname given`);
                 }
             };
             async function deletenotification(num){
-                if(j.message._.args()[num]){
-                    let notificationname = j.message._.args()[num];
+                if(j_.message._.args()[num]){
+                    let notificationname = j_.message._.args()[num];
                     
-                    customnotification(2, j, false, j.message.channel.id, notificationname)
+                    customnotification(2, j_, false, j_.message.channel.id, notificationname)
                     .then(n => {
-                        j.send(2, j, `Successfully deleted notification`);
+                        j.send(2, j_, `Successfully deleted notification`);
                     })
                     .catch(e => {
-                        j.send(2, j, `Error: Could not delete notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                        j.send(2, j_, `Error: Could not delete notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
-                    j.send(2, j, `Error: No notificationname given`);
+                    j.send(2, j_, `Error: No notificationname given`);
                 }
             };
         } else {
-            j.send(2, j, `Error: No option given`)
+            j.send(2, j_, `Error: No option given`)
         }
     }
 }

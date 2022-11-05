@@ -10,7 +10,7 @@ const _wf = require("./_wf");
 /**
  * 
  * @param {number} opt 
- * @param {object} j 
+ * @param {object} j_ 
  * @param {boolean | null} noreturn 
  * @param {number | null} channelid 
  * @param {string | null} commandid 
@@ -24,10 +24,10 @@ const _wf = require("./_wf");
  * @returns {promise}
  */
 
-async function customcommand(opt, j, noreturn, channelid, commandid, commandname, commandresponse, commandaliases, commandstate, commandpermission, commandcooldown, commandcooldownuser){
+async function customcommand(opt, j_, noreturn, channelid, commandid, commandname, commandresponse, commandaliases, commandstate, commandpermission, commandcooldown, commandcooldownuser){
     return new Promise((resolve, reject) => {
         if(nonarr.includes(opt)) return reject({path:[0],msg:"opt is undefined"});
-        j = j || require("../variables/j");
+        let j = require("../variables/j");
 
         let permissions = _rf(paths.permissions, true);
 

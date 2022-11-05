@@ -64,27 +64,27 @@ let j = {
     client: dc_client
   },
   viewclient: viewclient,
-  message: {
-    message: null,
-    userstate: null,
-    channel: null,
-    server: null,
+  // message: {
+  //   message: null,
+  //   userstate: null,
+  //   channel: null,
+  //   server: null,
 
-    _: {
-      args: require("../functions/twitch/messageargs"),
-      msg: null,
-      user: null,
-      chan: null,
-      command: null,
-      userperm: {
-        num: null,
-        desc: "",
-        tag: null || "",
-      },
-      userperms: {},
-      type: 0,
-    },
-  },
+  //   _: {
+  //     args: [],
+  //     msg: null,
+  //     user: null,
+  //     chan: null,
+  //     command: null,
+  //     userperm: {
+  //       num: null,
+  //       desc: "",
+  //       tag: null || "",
+  //     },
+  //     userperms: {},
+  //     type: 0,
+  //   },
+  // },
 
   script: {
     uptime: () => {

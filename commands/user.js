@@ -12,19 +12,17 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.msg.split(" ")[1]){
-            getuser(1, j.message._.msg.split(" ")[1])
+    exec: async (j_, j) => {
+        if(j_.message._.msg.split(" ")[1]){
+            getuser(1, j_.message._.msg.split(" ")[1])
             .then(u => {
-                j.send(2, j, `User ${_pixelize(j.message._.msg.split(" ")[1])}: ${_pixelize(u[0])} / ${u[1]}`);
+                j.send(2, j_, `User ${_pixelize(j_.message._.msg.split(" ")[1])}: ${_pixelize(u[0])} / ${u[1]}`);
             })
             .catch(e => {
-                j.send(2, j, `Error: Could not recieve userid`);
+                j.send(2, j_, `Error: Could not recieve userid`);
             })
         } else {
-            j.send(2, j, `Error: No user given`);
+            j.send(2, j_, `Error: No user given`);
         }
     }
 }

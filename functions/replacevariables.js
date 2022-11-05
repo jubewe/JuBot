@@ -6,52 +6,51 @@ const customkeyword = require("./customkeyword");
 const _regex = require("./_regex");
 
 async function replacevariables(){
-    // j, msg
-    let j = [...arguments][0] || require("../variables/j");
+    let j = require("../variables/j");
+    
+    let j_ = [...arguments][0];
+    let msg = [...arguments][1] || j_.message.content;
 
-    // let j = require("../variables/j")
-    let msg = [...arguments][1] || j.message.content;
-
-    if([null, undefined].includes(j.message.message.messageText)) return msg;
+    if([null, undefined].includes(j_.message.message.messageText)) return msg;
 
     let replacements = {
-        "user": j.message._.usertag_,
-        "user2": j.message._.usertag,
+        "user": j_.message._.usertag_,
+        "user2": j_.message._.usertag,
 
-        "sender": j.message.userstate.username,
-        "sendername": j.message.userstate.username,
-        "senderdisplayname": j.message.userstate.displayname,
-        "senderid": j.message.userstate.id,
-        "senderismod": j.message.userstate.ismod,
-        "senderismodraw": j.message.userstate.mod,
-        "sendercolor": j.message.userstate.color,
-        "senderissubscriber": j.message.userstate.subscriber,
-        "senderusertype": j.message.userstate.usertype,
-        "senderisturbo": j.message.userstate.turbo,
-        "senderbadges": j.message.userstate.badges,
-        "senderbadgesinfo": j.message.userstate.badgesinfo,
+        "sender": j_.message.userstate.username,
+        "sendername": j_.message.userstate.username,
+        "senderdisplayname": j_.message.userstate.displayname,
+        "senderid": j_.message.userstate.id,
+        "senderismod": j_.message.userstate.ismod,
+        "senderismodraw": j_.message.userstate.mod,
+        "sendercolor": j_.message.userstate.color,
+        "senderissubscriber": j_.message.userstate.subscriber,
+        "senderusertype": j_.message.userstate.usertype,
+        "senderisturbo": j_.message.userstate.turbo,
+        "senderbadges": j_.message.userstate.badges,
+        "senderbadgesinfo": j_.message.userstate.badgesinfo,
         
-        "channel": j.message.channel.name,
-        "channelname": j.message.channel.name,
-        "channeldisplayname": j.message.channel.name,
-        "channelid": j.message.channel.id,
+        "channel": j_.message.channel.name,
+        "channelname": j_.message.channel.name,
+        "channeldisplayname": j_.message.channel.name,
+        "channelid": j_.message.channel.id,
         
-        "message": j.message.message.content,
-        "messageid": j.message.message.id,
-        "messagetype": j.message.message.type,
-        "messageisaction": j.message.message.isAction,
-        "messageisfirstmsg": j.message.userstate.firstmsg,
-        "messageischeer": j.message.message.isCheer,
-        "messagebits": j.message.message.bits,
-        "messagebitsraw": j.message.message.bitsraw,
-        "messageemotes": j.message.message.emotesraw,
-        "messageemotescount": j.message.message.emotecount,
+        "message": j_.message.message.content,
+        "messageid": j_.message.message.id,
+        "messagetype": j_.message.message.type,
+        "messageisaction": j_.message.message.isAction,
+        "messageisfirstmsg": j_.message.userstate.firstmsg,
+        "messageischeer": j_.message.message.isCheer,
+        "messagebits": j_.message.message.bits,
+        "messagebitsraw": j_.message.message.bitsraw,
+        "messageemotes": j_.message.message.emotesraw,
+        "messageemotescount": j_.message.message.emotecount,
 
-        "timestamp": j.message.server.timestampRaw,
-        "timestampraw": j.message.server.timestamp,
+        "timestamp": j_.message.server.timestampRaw,
+        "timestampraw": j_.message.server.timestamp,
 
-        "prefix": j.message._.prefix,
-        "command": j.message._.command,
+        "prefix": j_.message._.prefix,
+        "command": j_.message._.command,
         
     };
 
@@ -62,7 +61,7 @@ async function replacevariables(){
             for(let msgcommand2 in msgcommand){
                 let commandname = msgcommand[msgcommand2].split(new RegExp(`\\$\\(commands+\\s+`, "i"))[1].split(new RegExp(`\\)`, "i"))[0].toLowerCase();
                 let referenceidtest = _regex.j_id_custom_commandreg().test(commandname);
-                await customcommand(0, j, false, j.message.channel.id, (referenceidtest ? commandname : null), (referenceidtest ? null : commandname))
+                await customcommand(0, j_, false, j_.message.channel.id, (referenceidtest ? commandname : null), (referenceidtest ? null : commandname))
                 .then(cmd => {
                     msg = msg.replace(msgcommand[msgcommand2], cmd.response);
                 })
@@ -84,7 +83,7 @@ async function replacevariables(){
                 let keywordname = msgkeyword[msgkeyword2].split(new RegExp(`\\$\\(keywords+\\s+`, "i"))[1].split(new RegExp(`\\)`, "i"))[0].toLowerCase();
                 let referenceidtest = _regex.j_id_custom_keywordreg().test(keywordname);
                 console.log(keywordname)
-                await customkeyword(0, j, false, j.message.channel.id, (referenceidtest ? keywordname : null), (referenceidtest ? null : keywordname))
+                await customkeyword(0, j_, false, j_.message.channel.id, (referenceidtest ? keywordname : null), (referenceidtest ? null : keywordname))
                 .then(key => {
                     msg = msg.replace(msgkeyword[msgkeyword2], key.response);
                 })
@@ -131,7 +130,7 @@ async function replacevariables(){
         if(msgindex !== null){
             for(let msgindex2 in msgindex){
                 let indexnum = msgindex[msgindex2].split(new RegExp(`\\$\\(message\\[`))[1].split(new RegExp(`\\]\\)`))[0];
-                msg = msg.replace(msgindex[msgindex2], (j.message.message.messageText.split(" ")[indexnum] || ""));
+                msg = msg.replace(msgindex[msgindex2], (j_.message.message.messageText.split(" ")[indexnum] || ""));
             }
         } else {
             msg = msg.replace(msgindexreg, `[Error: Internal Error]`);
@@ -189,7 +188,7 @@ async function replacevariables(){
                     function exec_(resolve){
                         "use strict";
                         let b = "b";
-                        // Object.assign(this.j, undefined);
+                        // Object.assign(this.j_, undefined);
                         // Object.assign(this.require, undefined);
                         var msgevalexec = eval(msgeval_);
                         return resolve(msgevalexec);
@@ -220,7 +219,7 @@ async function replacevariables(){
                 let msgcountidtest = _regex.j_id_custom_counterreg().test(msgcountname);
                 switch (msgcountopt){
                     case "increment": {
-                        await customcounter(5, j, false, j.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
+                        await customcounter(5, j_, false, j_.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
                         .then(counter => {
                             msg = msg.replace(msgcountmatch[msgcount2], counter.num);
                         })
@@ -231,7 +230,7 @@ async function replacevariables(){
                     }
 
                     case "get": {
-                        await customcounter(0, j, false, j.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
+                        await customcounter(0, j_, false, j_.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
                         .then(counter => {
                             msg = msg.replace(msgcountmatch[msgcount2], counter.num);
                         })
@@ -243,7 +242,7 @@ async function replacevariables(){
 
                     case "set":
                     case "update": {
-                        await customcounter(4, j, false, j.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
+                        await customcounter(4, j_, false, j_.message.channel.id, (msgcountidtest ? msgcountname : undefined), (msgcountidtest ? undefined : msgcountname), msgcountnum)
                         .then(counter => {
                             msg = msg.replace(msgcountmatch[msgcount2], counter.num);
                         })

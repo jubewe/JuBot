@@ -16,35 +16,36 @@ const _splitmsg = require("./_splitmsg");
  */
 
 async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
-  let j;
+  let j_;
   if(typeof schan === "object"){
-    j = schan;
+    j_ = schan;
     schan = null;
   } else {
-    j = require("../variables/j");
+    // j_ = require("../variables/j");
   }
-  schan = j.variables().nonarr.includes(schan) ? j.message._.chan : schan;
-  smulti = ([null, undefined].includes(smulti) ? undefined : smulti);
+  let j = require("../variables/j");
+  schan = global.variables.varstatic.nonarr.includes(schan) ? j_.message._.chan : schan;
+  smulti = global.variables.varstatic.nonarr.includes(smulti) ? undefined : smulti;
 
-  if(j.message._.type === "WHISPER"){
+  if(j_.message._.type === "WHISPER"){
     smode = 1;
-    schan = j.message.userstate.username;
+    schan = j_.message.userstate.username;
   };
 
-  if(j.message._.modified_channel){
+  if(j_.message._.modified_channel){
     smode = 0;
-    schan = j.message._.chan;
+    schan = j_.message._.chan;
   }
 
   let sendtrys = 1+1;
   let sendretrytimeout = 3000;
 
   if([3, "tag"].includes(smode)){
-    smsg = j.message._.usertag_ + smsg;
+    smsg = j_.message._.usertag_ + smsg;
   }
 
   if(sreplacer){
-    smsg = await replacevariables(j, smsg);
+    smsg = await replacevariables(j_, smsg);
   }
 
   smsg = smsg.replace(new RegExp("\n|\\n", "g"), "\\\n");
@@ -115,7 +116,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
         }
       };
     } else if ([2, "reply"].includes(_smode)) {
-      _sparentid = (j.variables().nonarr.includes(_sparentid) ? j.message.message.id : _sparentid);
+      _sparentid = (global.variables.varstatic.nonarr.includes(_sparentid) ? j_.message.message.id : _sparentid);
       _reply();
       function _reply(){
         if(sendtrys > 0){

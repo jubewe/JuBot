@@ -12,20 +12,18 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.msg.split(" ")[1] !== undefined){
-            let joinchan = j.message._.msg.split(" ")[1].toLowerCase();
+    exec: async (j_, j) => {
+        if(j_.message._.msg.split(" ")[1] !== undefined){
+            let joinchan = j_.message._.msg.split(" ")[1].toLowerCase();
             j.join(joinchan)
             .then(jc => {
-                j.send(2, j, `Successfully joined ${pixelize(joinchan)}`);
+                j.send(2, j_, `Successfully joined ${pixelize(joinchan)}`);
             })
             .catch(e => {
-                j.send(2, j, `Error: Could not join ${pixelize(joinchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`);
+                j.send(2, j_, `Error: Could not join ${pixelize(joinchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`);
             })
         } else {
-            j.send(2, j, `Error: No Channel given`);
+            j.send(2, j_, `Error: No Channel given`);
         }
     }
 }

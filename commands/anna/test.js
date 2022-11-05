@@ -10,9 +10,7 @@ module.exports = {
     permission: j.c().perm.bothigh,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../../variables/j");
-
-        j.send(2, j, `VoHiYo Test`);
+    exec: async (j_, j) => {
+        j.send(2, j_, `VoHiYo Test`);
     }
 }

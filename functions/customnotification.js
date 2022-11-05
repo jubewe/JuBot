@@ -2,10 +2,23 @@ const paths = require("../variables/paths");
 const _rf = require("./_rf");
 const _wf = require("./_wf");
 
-async function customnotification(opt, j, noreturn, channelid, notificationname, notificationmessage, notificationsettings, notificationstate){
+/**
+ * 
+ * @param {number} opt 
+ * @param {object | undefined} j_ 
+ * @param {boolean | null} noreturn 
+ * @param {number | string} channelid 
+ * @param {string} notificationname 
+ * @param {string} notificationmessage 
+ * @param {any} notificationsettings 
+ * @param {0 | 1} notificationstate 
+ * @returns {promise}
+ */
+
+async function customnotification(opt, j_, noreturn, channelid, notificationname, notificationmessage, notificationsettings, notificationstate){
     return new Promise((resolve, reject) => {
         let channels = _rf(paths.channels, true);
-        j = j || require("../variables/j");
+        let j = require("../variables/j");
         switch (opt) {
             case 0: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});

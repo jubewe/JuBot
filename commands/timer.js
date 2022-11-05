@@ -14,29 +14,27 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 10000,
     cooldown_user: 5000,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.msg.split(" ")[1]){
-            let ttime = _converttime(j.message._.msg.split(" ")[1], false);
+    exec: async (j_, j) => {
+        if(j_.message._.msg.split(" ")[1]){
+            let ttime = _converttime(j_.message._.msg.split(" ")[1], false);
             let tmsg = "";
 
-            if(j.message._.msg.split(" ")[2]){
-                tmsg = j.message._.msg;
+            if(j_.message._.msg.split(" ")[2]){
+                tmsg = j_.message._.msg;
                 tmsg = tmsg.split(tmsg.split(" ").splice(0, 2).join(" ") + " ")[1];
             }
 
             if(!isNaN(ttime)){
-                _timer(1, j.message.userstate.id, ttime, tmsg, j.message.channel.name, true)
+                _timer(1, j_.message.userstate.id, ttime, tmsg, j_.message.channel.name, true)
                 .then(t => {
                     let timecl = _cleantime(ttime, 5, 2);
-                    j.send(2, j, `Successfully set timer (${timecl.time.join(" ")})`);
+                    j.send(2, j_, `Successfully set timer (${timecl.time.join(" ")})`);
                 })
             } else {
-                j.send(2, j, `Error: Invalid time format`);
+                j.send(2, j_, `Error: Invalid time format`);
             }
         } else {
-            j.send(2, j, `Error: Expected time at arg 1`);
+            j.send(2, j_, `Error: Expected time at arg 1`);
         }
     }
 }

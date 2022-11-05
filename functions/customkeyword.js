@@ -10,7 +10,7 @@ const _wf = require("./_wf");
 /**
  * 
  * @param {number} opt 
- * @param {object} j 
+ * @param {object | undefined} j_ 
  * @param {boolean | null} noreturn 
  * @param {number | null} channelid 
  * @param {string | null} keywordid 
@@ -24,10 +24,10 @@ const _wf = require("./_wf");
  * @returns {promise}
  */
 
-async function customkeyword(opt, j, noreturn, channelid, keywordid, keywordname, keywordresponse, keywordaliases, keywordstate, keywordpermission, keywordcooldown, keywordcooldownuser){
+async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordname, keywordresponse, keywordaliases, keywordstate, keywordpermission, keywordcooldown, keywordcooldownuser){
     return new Promise((resolve, reject) => {
         if(nonarr.includes(opt)) return reject({path:[0],msg:"opt is undefined"});
-        j = j || require("../variables/j");
+        let j = require("../variables/j");
 
         let permissions = _rf(paths.permissions, true);
 

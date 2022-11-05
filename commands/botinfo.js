@@ -12,14 +12,12 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 30000,
     cooldown_user: 15000,
-    exec: async () => {
-        j = require("../variables/j");
-
+    exec: async (j_, j) => {
         let pingstart = Date.now();
         await j.client.ping().then(() => {
             let ping = (Date.now()-pingstart);
             
-            j.send(2, j, `[BOTINFO] Ping: ${_cleantime(ping, 5, 1).time.join(" ")}, Uptime: ${uptime().join(" and ")}`)
+            j.send(2, j_, `[BOTINFO] Ping: ${_cleantime(ping, 5, 1).time.join(" ")}, Uptime: ${uptime().join(" and ")}`)
         })
     }
 }

@@ -11,21 +11,19 @@ module.exports = {
     send_msg_noperm: true,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async () => {
-        j = require("../variables/j");
-
-        if(j.message._.msg.split(" ")[1] !== undefined){
-            let evalmsg = j.message._.msg.split(" ");
+    exec: async (j_, j) => {
+        if(j_.message._.msg.split(" ")[1] !== undefined){
+            let evalmsg = j_.message._.msg.split(" ");
             evalmsg.shift();
             evalmsg = evalmsg.join(" ");
             try {
                 let eval_ = await eval(`(async () => {${evalmsg}})()`);
-                j.send(2, j, `Successfully executed code [${typeof eval_}]> ${eval_}`);
+                j.send(2, j_, `Successfully executed code [${typeof eval_}]> ${eval_}`);
             } catch(e){
-                j.send(2, j, `Error: Could not execute code: ${e.message}`);
+                j.send(2, j_, `Error: Could not execute code: ${e.message}`);
             }
         } else {
-            j.send(2, j, `Error: Nothing to execute given`);
+            j.send(2, j_, `Error: Nothing to execute given`);
         }
     }
 };
