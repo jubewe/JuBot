@@ -1,5 +1,5 @@
-const { _rf, _wf } = require("../functions/_");
 const _pixelize = require("../functions/_pixelize");
+const _wf = require("../functions/_wf");
 let j = require("../variables/j");
 const paths = require("../variables/paths");
 
@@ -14,7 +14,7 @@ module.exports = {
     cooldown: -1,
     cooldown_user: -1,
     exec: async (j_, j) => {
-        let channels = _rf(paths.clientchannels, true);
+        let channels = j.files().clientchannels;
 
         if(j_.message._.args()[0]){
             let viewchan = j_.message._.args()[0].toLowerCase();

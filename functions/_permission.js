@@ -1,5 +1,5 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
-const _syncfile = require("./_syncfile");
 const _wf = require("./_wf");
 
 /**
@@ -18,7 +18,7 @@ function _permission(permopt, permnum, permuser) {
      * 1    set
      * 2    delete
      */
-    let permissions = _syncfile(5, paths.permissions);
+    let permissions = files.permissions;
     switch (permopt) {
       default:
       case 0: {

@@ -1,5 +1,5 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
-const _rf = require("./_rf");
 const _wf = require("./_wf");
 
 async function _channel(opt, id, key, value, noreturn){
@@ -7,7 +7,7 @@ async function _channel(opt, id, key, value, noreturn){
         if([null, undefined].includes(opt)) return reject({path:[0],msg:"no opt given"});
         if(![0].includes(opt) && !id) return reject({path:[1,0],msg:"no id given"});
 
-        let channels = _rf(paths.channels, true);
+        let channels = files.channels;
 
         switch (opt) {
             case 0: {

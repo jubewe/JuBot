@@ -1,10 +1,6 @@
-let j = require("../variables/j");
-
 function _checkenv(checkenv, checkvar, checkopt, checkval){
-    j = require("../variables/j");
-
-    let nonarr = j.variables().nonarr;
-    let e = (nonarr.includes(checkenv) ? j.e() : checkenv);
+    let nonarr = [null, undefined];
+    let e = (nonarr.includes(checkenv) ? process.env : checkenv);
     
     try {
         if(!nonarr.includes(checkopt)){
@@ -30,7 +26,6 @@ function _checkenv(checkenv, checkvar, checkopt, checkval){
         }
     } catch(e){
         throw new Error(e);
-        return false;
     }
 };
 

@@ -1,13 +1,12 @@
 const paths = require("../variables/paths");
 const _id = require("./_id");
-const _rf = require("./_rf");
 const _wf = require("./_wf");
 
-async function remind(opt, j, noreturn, sender_userid, target_userid, reminder_id, message){
+async function remind(opt, j_, noreturn, sender_userid, target_userid, reminder_id, message){
     return new Promise((resolve, reject) => {
-        j = j || require("../variables/j");
-        sender_userid = (!global.variables.varstatic.nonarr.includes(sender_userid) ? sender_userid : j.message.userstate.id);
-        let reminders = _rf(paths.reminders, true);
+        let j = require("../variables/j");
+        sender_userid = (!global.variables.varstatic.nonarr.includes(sender_userid) ? sender_userid : j_.message.userstate.id);
+        let reminders = j.files().reminders;
         let search_userid = (!global.variables.varstatic.nonarr.includes(target_userid) ? target_userid : sender_userid) || undefined;
         if(!Object.keys(reminders).includes("users")) reminders["users"] = {};
         if(!Object.keys(reminders).includes("ids")) reminders["ids"] = {};

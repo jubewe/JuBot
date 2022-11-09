@@ -20,16 +20,14 @@ const _combineArr = require("./functions/_combineArr");
 const remind = require("./functions/remind");
 const getuser = require("./functions/getuser");
 const paths = require("./variables/paths");
-const _rf = require("./functions/_rf");
 const messageargs = require("./functions/twitch/messageargs");
 let subcache = {
   "masssubgift":{},
   "subgift":{}
 };
 
-j.client.on("PRIVMSG", (response) => {
-  (async () => {
-    let j_ = {"message":{"_":{}}};
+j.client.on("PRIVMSG", async (response) => {
+  let j_ = {"message":{"_":{}}};
     let privmsg = privmsg_parser(response);
     privmsg.message.messageText = privmsg.message.messageText.replace(/(^\s|\s$)/g, "").replace(/[\s]{2,}/g, " ");
     let modified_channel = j_.message._.modified_channel = false;
@@ -73,12 +71,14 @@ j.client.on("PRIVMSG", (response) => {
     let chan = j_.message._.chan = channel.name;
     let _type = j_.message._.type = response.ircCommand;
     let usertag = j_.message._.usertag = `${user} > `;
-    let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && j.functions().regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
+    let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && j.functions()._regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
     let userperm = j_.message._.userperm = await getuserperm(j_.message.userstate.id);
-    let userperms = j_.message._.userperms = await userperms_(j_, j);
+    let userperms = j_.message._.userperms = await userperms_(j_);
     let args = j_.message._.args = () => {return messageargs(j_, j)};
 
     _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
+
+    // console.log(j_);
 
     if(j_.message.userstate.id == j.env().T_USERID) return;
 
@@ -163,45 +163,41 @@ j.client.on("PRIVMSG", (response) => {
         })();
       } 
     })
-  })();
 });
 
-j.client.on("WHISPER", response => {
-  (async () => {
-    let whisper = whisper_parser(response);
-
-    let message = j_.message.message = whisper.message;
-    let userstate = j_.message.userstate = whisper.userstate;
-    let channel = j_.message.channel = whisper.channel;
-    let server = j_.message.server = whisper.server;
+j.client.on("WHISPER", async (response) => {
+  let j_ = {"message":{"_":{}}};
+  let whisper = whisper_parser(response);
+  let message = j_.message.message = whisper.message;
+  let userstate = j_.message.userstate = whisper.userstate;
+  let channel = j_.message.channel = whisper.channel;
+  let server = j_.message.server = whisper.server;
+  
+  let msg = j_.message._.msg = message.messageText;
+  let user = j_.message._.user = userstate.username;
+  let chan = j_.message._.chan = channel.name;
+  let _type = j_.message._.type = response.ircCommand;
+  let usertag = j_.message._.usertag = `${user} > `;
+  let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && j.functions().regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
+  let userperm = j_.message._.userperm = await getuserperm(j_.message.userstate.id);
+  let userperms = j_.message._.userperms = userperms_();
+  _log(0, `${_staticspacer(1, "[W] <-")} ${_staticspacer(2, user)} ${msg}`);
+  if(new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
+    let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().prefix)[1] : msg.split(j.c().prefix)[1];
     
-    let msg = j_.message._.msg = message.messageText;
-    let user = j_.message._.user = userstate.username;
-    let chan = j_.message._.chan = channel.name;
-    let _type = j_.message._.type = response.ircCommand;
-    let usertag = j_.message._.usertag = `${user} > `;
-    let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && j.functions().regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
-    let userperm = j_.message._.userperm = await getuserperm(j_.message.userstate.id);
-    let userperms = j_.message._.userperms = userperms_();
-
-    _log(0, `${_staticspacer(1, "[W] <-")} ${_staticspacer(2, user)} ${msg}`);
-
-    if(new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
-      let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().prefix)[1] : msg.split(j.c().prefix)[1];
-      
-      (async () => {
-        dm_commandhandler(j_, j);
-      })();
-    } else if(new RegExp(`^${j.c().anna.prefix}+[\\w]+`).test(msg)){
-      let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().anna.prefix)[1] : msg.split(j.c().anna.prefix)[1];
-      (async () => {
-        anna_dm_commandhandler(j_, j);
-      })();
-    }
-  })();
+    (async () => {
+      dm_commandhandler(j_, j);
+    })();
+  } else if(new RegExp(`^${j.c().anna.prefix}+[\\w]+`).test(msg)){
+    let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().anna.prefix)[1] : msg.split(j.c().anna.prefix)[1];
+    (async () => {
+      anna_dm_commandhandler(j_, j);
+    })();
+  }
 });
 
-j.client.on("USERNOTICE", response => {
+j.client.on("USERNOTICE", async (response) => {
+  let j_ = {"message":{"_":{}}};
   if(!j.c().modules.notifications) return;
   let privmsg = privmsg_parser(response);
 
@@ -210,7 +206,7 @@ j.client.on("USERNOTICE", response => {
   let channel = j_.message.channel = privmsg.channel;
   let server = j_.message.server = privmsg.server;
 
-  let channels = _rf(paths.channels, true);
+  let channels = j.files().channels;
   let channelnotifications = (channels.channels[response.channelID] && channels.channels[response.channelID]["notifications"] ? channels.channels[response.channelID]["notifications"] : {});
   (async () => {
     if(response.isCheer()){

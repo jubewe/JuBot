@@ -1,8 +1,8 @@
 const paths = require("../variables/paths");
 const token = require("./token");
-const _rf = require("./_rf");
 const _wf = require("./_wf");
 const { nonarr } = require("../variables/varstatic");
+const j = require("../variables/j");
 
 /**
  * 
@@ -17,7 +17,7 @@ async function _usertoken(uopt, uid, utoken, ureturn){
     return new Promise(function(resolve, reject){
         // 0 = get, 1 = set, 2 = delete, 3 = revoke
         uid = (!nonarr.includes(uid) ? uid.toString() : undefined);
-        let usertokens = _rf(paths.usertokens, true);
+        let usertokens = j.files().usertokens;
         switch (uopt) {
             case 0: {
                 if(!uid) return reject({path:[uopt,0],msg:"uid is undefined"});

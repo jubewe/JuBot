@@ -1,4 +1,4 @@
-let { nonarr } = require("../variables/varstatic");
+let nonarr = [null, undefined];
 const _pad2 = require("./_pad2");
 
 /**

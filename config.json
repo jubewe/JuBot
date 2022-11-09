@@ -17,6 +17,10 @@
         "cache": 300000,
         "afk": {
             "resume": 300000
+        },
+        "trackers": {
+            "live_check": 3600000,
+            "activemods_check": 900000
         }
     },
     "intervals":{
@@ -25,10 +29,18 @@
             "ws": 1800000
         },
         "errors": 1800000,
-        "live_check": 900000
+        "live_check": 900000,
+        "trackers": {
+            "live": 900000,
+            "activemods": 900000
+        }
     },
     "raspi": {
         "led_pin": "27"
+    },
+    "buffers": {
+        "live_check": 300000,
+        "active_mods": 30000
     },
     "connect": {
         "discord": false,
@@ -37,6 +49,10 @@
         "twitch_notifications": false,
         "ws": {
             "api": false
+        },
+        "trackers": {
+            "live": true,
+            "activemods": true
         }
     },
     "modules": {
@@ -56,7 +72,7 @@
     "notifications":{
         "names": ["live", "follow", "subscription", "resub", "cheer", "subgift", "masssubgift"],
         "defaultmessages": {
-            "live": "$(live.user_login) is now Live playing $(live.game_name): $(live.title)",
+            "live": "$(live.broadcaster_name) is now Live playing $(live.game_name): $(live.title)",
             "cheer": "$(sender) just cheered $(messagebits)"
         }
     }

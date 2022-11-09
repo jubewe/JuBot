@@ -1,10 +1,10 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
-const _rf = require("./_rf");
 const _wf = require("./_wf");
 
 async function _cache(cacheopt, cachekey, cachevalue){
     return new Promise(function(resolve, reject) {
-        let cache = _rf(paths.cache, true);
+        let cache = files.cache;
 
         (async() => {
             switch (cacheopt) {

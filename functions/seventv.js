@@ -6,9 +6,9 @@ const _appf = require("./_appf");
 const paths = require("../variables/paths");
 const _stackname = require("./_stackname");
 
-async function seventv(opt, j, noreturn, channelid, discord_serverid, emoteids){
+async function seventv(opt, j_, noreturn, channelid, discord_serverid, emoteids){
     return new Promise((resolve, reject) => {
-        j = j || require("../variables/j");
+        let j = require("../variables/j");
         switch (opt){
             case 0: {
                 // get and cache channel 
@@ -118,7 +118,7 @@ async function seventv(opt, j, noreturn, channelid, discord_serverid, emoteids){
                                                     guild.emojis.create(
                                                         addemotes[addemote].urls2[0],
                                                         addemotes[addemote].name.replace(new RegExp(`[^\\w]`, "g"), ""), 
-                                                        {reason:`Add via chat command by ${j.message.userstate.username}`}
+                                                        {reason:`Add via chat command by ${j_.message.userstate.username}`}
                                                     )
                                                     .then(em => {
                                                         addemotes2.resolve[addemotes[addemote].name] = em;

@@ -8,9 +8,8 @@
  * @returns {object | array}
  */
 
+const files = require("../variables/files");
 const paths = require("../variables/paths");
-const { nonarr } = require("../variables/varstatic");
-const _syncfile = require("./_syncfile");
 const _wf = require("./_wf");
 
 async function _cooldown(copt, cchan, cid, cuser, creject){
@@ -19,7 +18,7 @@ async function _cooldown(copt, cchan, cid, cuser, creject){
         // {"global":{},"channels":{"<chanid>":{"<id>":{"all":0,"users":{}}}}}
         let cname = "channels";
 
-        let cooldowns = _syncfile(5, paths.cooldowns);
+        let cooldowns = files.cooldowns;
         let cglobal = ["global"];
         let cpath = cooldowns[cname];
 

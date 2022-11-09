@@ -1,5 +1,4 @@
 const paths = require("../variables/paths");
-const _rf = require("./_rf");
 const _wf = require("./_wf");
 
 /**
@@ -17,7 +16,7 @@ const _wf = require("./_wf");
 
 async function customnotification(opt, j_, noreturn, channelid, notificationname, notificationmessage, notificationsettings, notificationstate){
     return new Promise((resolve, reject) => {
-        let channels = _rf(paths.channels, true);
+        let channels = j.files().channels;
         let j = require("../variables/j");
         switch (opt) {
             case 0: {

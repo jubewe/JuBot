@@ -1,11 +1,11 @@
 const paths = require("../variables/paths");
-const _rf = require("./_rf");
 const _wf = require("./_wf");
 const c = require("../config.json");
+const files = require("../variables/files");
 
 async function _afk(amode, auserid, amsg, aopt, perm, areturn){
     return new Promise((resolve, reject) => {
-        let afks = _rf(paths.afkusers, true);
+        let afks = files.afkusers;
         aopt = aopt || "AFK";
 
         switch (amode) {

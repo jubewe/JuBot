@@ -4,8 +4,8 @@
  * @returns {object}
  */
 
-async function userperms(j_, j){
-  j = j || require("../variables/j");
+async function userperms(j_){
+  let j = require("../variables/j");
   return {
     "_bot":(j_.message._.userperm.num == j.c().perm.bot),
     "_default":(j_.message._.userperm.num == j.c().perm.botdefault),

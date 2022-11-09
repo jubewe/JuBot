@@ -2,6 +2,7 @@ let urls = {
     "_files": "/mnt/MSD128_NAS/files/upload",
     "api": {
         "_base": "http://192.168.2.170",
+        // "_base": "http://127.0.0.0",
         // "_base": "http://127.0.0.1",
         "_port": 6969,
         "_endpoints": {
@@ -72,9 +73,10 @@ let urls = {
                 "method": "DELETE"
             },
         },
-        "streams": {
-            "get": "https://api.twitch.tv/helix/streams"
-        }
+        "channels": {
+            "get": "https://api.twitch.tv/helix/channels"
+        },
+        "chatters": "https://tmi.twitch.tv/group/user/${channel}/chatters"
     }
     
 };

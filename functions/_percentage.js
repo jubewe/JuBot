@@ -1,3 +1,5 @@
+const nonarr = [null, undefined];
+
 /**
  * 
  * 0: c * b, 1: b of a, 2: c% of a
@@ -5,8 +7,6 @@
  * @param {number | null} b part value
  * @param {number | null} c percentage
  */
-
-const { nonarr } = require("../variables/varstatic");
 
 function _percentage(a, b, c, fixednum){
     fixednum = (!nonarr.includes(fixednum) ? fixednum : 2);

@@ -11,6 +11,7 @@ const _wf = require("./_wf");
 
 function _rf(rfpath, parse_json){
     if(!rfpath) throw new Error(`_rf: rfpath is undefined`);
+    // console.log(_mainpath(rfpath));
 
     try {
         if(fs.existsSync(_mainpath(rfpath))){
@@ -28,7 +29,7 @@ function _rf(rfpath, parse_json){
                 return file;
             }
         } else {
-            throw new Error(`_rf: File does not exist`);
+            throw new Error(`_rf: File does not exist\nPath: ${rfpath}`);
         }
     } catch(e){
         throw new Error(`_rf: Could not read file\n${e}`);

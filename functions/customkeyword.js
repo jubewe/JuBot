@@ -3,7 +3,6 @@ const { nonarr } = require("../variables/varstatic");
 const _appf = require("./_appf");
 const _id = require("./_id");
 const _nonarr = require("./_nonarr");
-const _rf = require("./_rf");
 const _stackname = require("./_stackname");
 const _wf = require("./_wf");
 
@@ -29,9 +28,10 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
         if(nonarr.includes(opt)) return reject({path:[0],msg:"opt is undefined"});
         let j = require("../variables/j");
 
-        let permissions = _rf(paths.permissions, true);
+        let permissions = j.files().permissions;
+        let channels = j.files().channels;
 
-        channelid = _nonarr(channelid, j.message.channel.id);
+        channelid = _nonarr(channelid, j_.message.channel.id);
         keywordaliases = _nonarr(keywordaliases, []);
         // keywordstate = _nonarr(keywordstate, 1);
         keywordstate = (global.variables.varstatic.nonarr.includes(keywordstate) ? 1 : keywordstate);
@@ -47,7 +47,6 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
             }
         }
 
-        let channels = _rf(paths.channels, true);
         switch (opt){
             case 0: {
                 if(!Object.keys(channels.channels).includes(channelid)){
@@ -85,7 +84,7 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                         id: id[0],
                         aliases: keywordaliases,
                         state: keywordstate,
-                        add_user: j.message.userstate.id,
+                        add_user: j_.message.userstate.id,
                         permission: keywordpermission,
                         create_time: Date.now(),
                         update_time: Date.now(),

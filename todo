@@ -30,7 +30,8 @@ command to get channel
 new splitmsg
 <anna commands:
 <mod/unmod, vip/unvip
-notifications
+<notifications
 <7tv
-livenotifications: prevent duplicate
-subgiftnotification: prevent spam
+<livenotifications: prevent duplicate
+<subgiftnotification: prevent spam
+crossban command

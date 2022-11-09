@@ -10,6 +10,7 @@ module.exports = {
     timer: require("./timer"),
     tuck: require("./tuck"),
     rank: require("./_valorantrank"),
+    rank2: require("./_valorantrank2"),
     
     botinfo: require("./botinfo"),
     serverinfo: require("./server"),

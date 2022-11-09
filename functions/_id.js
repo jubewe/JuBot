@@ -1,7 +1,7 @@
+const j = require("../variables/j");
 const paths = require("../variables/paths");
 const { nonarr } = require("../variables/varstatic");
 const _nonarr = require("./_nonarr");
-const _syncfile = require("./_syncfile");
 const _wf = require("./_wf");
 
 /**
@@ -20,7 +20,7 @@ async function _id(idopt, idtype, idchan, idkey) {
   return new Promise(function (resolve, reject) {
     idchan = nonarr.includes(idchan) ? undefined : idchan.toString();
     idkey = _nonarr(idkey, undefined);
-    let ids = _syncfile(5, paths.ids);
+    let ids = j.files().ids;
     switch (idopt) {
       case 0: {
         if (Object.keys(ids).includes(idtype)) {

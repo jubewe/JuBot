@@ -1,9 +1,9 @@
 const paths = require("../variables/paths");
 const getuser = require("./getuser");
-const _executetimers = require("./_executetimers");
+const executetimers = require("./executetimers");
 const _id = require("./_id");
-const _syncfile = require("./_syncfile");
 const _wf = require("./_wf");
+const files = require("../variables/files");
 
 /**
  * 
@@ -18,10 +18,7 @@ const _wf = require("./_wf");
 
 async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
     return new Promise(function(resolve, reject){
-        /**
-         * get, set, delete
-         */
-        let tfile = _syncfile(5, paths.timers)
+        let timers = files.timers;
         if(!tmode) return reject({"path":[tmode,0],"msg":"tmode is undefined"});
         if([1].includes(tmode) && !tuser) return reject({"path":[tmode,1,0],"msg":"tuser is undefined"});
         if([1].includes(tmode) && !targ2) return reject({"path":[tmode,1,1,0],"msg":"targ2 is undefined"});
@@ -30,8 +27,8 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
         switch (tmode) {
             case 0: {
                 if(targ){
-                    if(tfile.ids.includes(targ)){
-                        return resolve(tfile.ids[targ]);
+                    if(timers.ids.includes(targ)){
+                        return resolve(timers.ids[targ]);
                     } else {
                         if(!treturn){
                             return resolve();
@@ -39,8 +36,8 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                         return reject({"path":[tmode,1,0],"msg":"targ not found in timers.ids"});
                     }
                 } else if(tuser){
-                    if(Object.keys(tfile.users).includes(tuser)){
-                        return resolve(tfile.users[tuser]);
+                    if(Object.keys(timers.users).includes(tuser)){
+                        return resolve(timers.users[tuser]);
                     } else {
                         if(!treturn){
                             return resolve();
@@ -59,7 +56,7 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                     .then(u => {
                         _id(1, "timers", null, "timers")
                         .then(i => {
-                            tfile.ids[i[1].toString()] = {
+                            timers.ids[i[1].toString()] = {
                                 "id":i[1].toString(),
                                 "set_time":Date.now().toString(),
                                 "channel":{
@@ -74,17 +71,17 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                                 }
                             };
 
-                            if(!tfile.users[tuser] || !Array.isArray(tfile.users[tuser])){
-                                tfile.users[tuser] = [];
+                            if(!timers.users[tuser] || !Array.isArray(timers.users[tuser])){
+                                timers.users[tuser] = [];
                             };
 
-                            tfile.users[tuser].push(i[1]);
+                            timers.users[tuser].push(i[1]);
 
-                            _wf(paths.timers, tfile);
+                            _wf(paths.timers, timers);
 
-                            _executetimers(i[1]);
+                            executetimers(i[1]);
 
-                            return resolve(tfile.ids[i[1]])
+                            return resolve(timers.ids[i[1]])
                         })
                         .catch(e => {
                             throw e;
@@ -104,17 +101,17 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
             case 2: {
                 if(!targ) return reject({"path":[tmode,0],"msg":"targ is undefined"});
 
-                if(Object.keys(tfile.ids).includes(targ)){
-                    delete tfile.ids[targ];
+                if(Object.keys(timers.ids).includes(targ)){
+                    delete timers.ids[targ];
 
-                    _wf(paths.timers, tfile);
+                    _wf(paths.timers, timers);
 
                     return resolve();
                 } else {
                     if(!treturn){
                         return resolve();
                     }
-                    return reject({"path":[tmode,0,0],"msg":"targ not found in tfile.ids"});
+                    return reject({"path":[tmode,0,0],"msg":"targ not found in timers.ids"});
                 }
 
                 break;

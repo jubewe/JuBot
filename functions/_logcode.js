@@ -1,15 +1,15 @@
 const fs = require("fs");
-let { codelog: codelogpath } = require("../variables/paths");
-const { date } = require("../variables/varstatic");
+const paths = require("../variables/paths");
+function date_(){return new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset())).toISOString().split(".")[0].replace("T", " ")};
 
 function logcode(lcdata){
-    if(fs.existsSync(codelogpath)){
-        fs.appendFile(codelogpath, `\n${date().toISOString()}\t${lcdata}`, function(e){
-            console.error(e)
+    if(fs.existsSync(paths.logcode)){
+        fs.appendFile(paths.logcode, `\n${date_()}\t${lcdata}`, function(e){
+            console.error(e);
         })
     } else {
-        fs.appendFile(codelogpath, `${date().toISOString()}\t${lcdata}`, function(e){
-            console.error(e)
+        fs.appendFile(paths.logcode, `${date_()}\t${lcdata}`, function(e){
+            console.error(e);
         })
     }
 };

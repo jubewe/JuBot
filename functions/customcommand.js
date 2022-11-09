@@ -3,7 +3,6 @@ const { nonarr } = require("../variables/varstatic");
 const _appf = require("./_appf");
 const _id = require("./_id");
 const _nonarr = require("./_nonarr");
-const _rf = require("./_rf");
 const _stackname = require("./_stackname");
 const _wf = require("./_wf");
 
@@ -29,9 +28,10 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
         if(nonarr.includes(opt)) return reject({path:[0],msg:"opt is undefined"});
         let j = require("../variables/j");
 
-        let permissions = _rf(paths.permissions, true);
+        let permissions = j.files().permissions;
+        let channels = j.files().channels;
 
-        channelid = _nonarr(channelid, j.message.channel.id);
+        channelid = _nonarr(channelid, j_.message.channel.id);
         commandaliases = _nonarr(commandaliases, []);
         // commandstate = _nonarr(commandstate, 0);
         commandstate = (global.variables.varstatic.nonarr.includes(commandstate) ? 1 : commandstate);
@@ -47,7 +47,6 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
             }
         }
 
-        let channels = _rf(paths.channels, true);
         switch (opt){
             case 0: {
                 if(!Object.keys(channels.channels).includes(channelid)){
@@ -86,7 +85,7 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                         id: id[0],
                         aliases: commandaliases,
                         state: commandstate,
-                        add_user: j.message.userstate.id,
+                        add_user: j_.message.userstate.id,
                         permission: commandpermission,
                         create_time: Date.now(),
                         update_time: Date.now(),

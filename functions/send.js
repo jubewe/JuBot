@@ -23,16 +23,17 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
   } else {
     // j_ = require("../variables/j");
   }
+  // console.log(j_.message.channel);
   let j = require("../variables/j");
   schan = global.variables.varstatic.nonarr.includes(schan) ? j_.message._.chan : schan;
   smulti = global.variables.varstatic.nonarr.includes(smulti) ? undefined : smulti;
 
-  if(j_.message._.type === "WHISPER"){
+  if(j_ && j_.message._.type === "WHISPER"){
     smode = 1;
     schan = j_.message.userstate.username;
   };
 
-  if(j_.message._.modified_channel){
+  if(j_ && j_.message._.modified_channel){
     smode = 0;
     schan = j_.message._.chan;
   }
@@ -44,7 +45,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
     smsg = j_.message._.usertag_ + smsg;
   }
 
-  if(sreplacer){
+  if(j_ && sreplacer){
     smsg = await replacevariables(j_, smsg);
   }
 
@@ -73,66 +74,69 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
   }
   
   async function _send(_smode, _schan, _smsg, _sparentid, _sfirst){
+    function _send(){
+      if(sendtrys > 0){
+        sendtrys--;
+        j.client.privmsg(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
+        .catch(e => {
+          console.error(new Error(e));
+          (async () => {
+            setTimeout(() => {
+              _send();
+            }, sendretrytimeout);
+          })();
+        })
+      } else {
+        return;
+      }
+    };
+    
+    function _whisper(){
+      if(sendtrys > 0){
+        sendtrys--;
+        j.client.whisper(
+          _schan,
+          j.vars().botnamebeta() + _smsg
+        )
+        .then(w => {
+          _log(0, `${_staticspacer(1, "[W] ->")} ${_staticspacer(2, _schan)} ${_smsg}`);
+        })
+        .catch((e) => {
+          console.error(new Error(e));
+          (async () => {
+            setTimeout(() => {
+              _whisper();
+            }, sendretrytimeout);
+          })();
+        })
+      } else {
+        return;
+      }
+    };
+    
+    function _reply(){
+      if(sendtrys > 0){
+        sendtrys--;
+        j.client.reply(_schan, _sparentid, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg).catch((e) => {
+          console.error(new Error(e));
+          (async () => {
+            setTimeout(() => {
+              _send();
+            }, sendretrytimeout);
+          })();
+        });
+      } else {
+        return;
+      }
+    };
+    
     if ([null, undefined, 0, "channel", 3, "user"].includes(_smode)) {
       _send();
-      function _send(){
-        if(sendtrys > 0){
-          sendtrys--;
-          j.client.privmsg(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
-          .catch(e => {
-            console.error(new Error(e));
-            (async () => {
-              setTimeout(() => {
-                _send();
-              }, sendretrytimeout);
-            })();
-          })
-        } else {
-          return;
-        }
-      }
     } else if ([1, "whisper", "dm"].includes(_smode)) {
       _whisper();
-      function _whisper(){
-        if(sendtrys > 0){
-          sendtrys--;
-          j.client.whisper(
-            _schan,
-            j.vars().botnamebeta() + _smsg
-          )
-          .then(w => {
-            _log(0, `${_staticspacer(1, "[W] ->")} ${_staticspacer(2, _schan)} ${_smsg}`);
-          })
-          .catch((e) => {
-            console.error(new Error(e));
-            (async () => {
-              setTimeout(() => {
-                _whisper();
-              }, sendretrytimeout);
-            })();
-          })
-        } else {
-          return;
-        }
-      };
     } else if ([2, "reply"].includes(_smode)) {
       _sparentid = (global.variables.varstatic.nonarr.includes(_sparentid) ? j_.message.message.id : _sparentid);
       _reply();
-      function _reply(){
-        if(sendtrys > 0){
-          sendtrys--;
-          j.client.reply(_schan, _sparentid, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg).catch((e) => {
-            console.error(new Error(e));
-            (async () => {
-              setTimeout(() => {
-                _reply();
-              }, sendretrytimeout);
-            })();
-          });
-        } else {
-          return;
-        }
-      };
     }
   }
 };

@@ -2,7 +2,6 @@ const customcommand = require("../functions/customcommand");
 const _cleantime = require("../functions/_cleantime");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
-const _rf = require("../functions/_rf");
 let j = require("../variables/j");
 const paths = require("../variables/paths");
 
@@ -17,7 +16,7 @@ module.exports = {
     cooldown: 1000,
     cooldown_user: 2000,
     exec: async (j_, j) => {
-        let permissions = _rf(paths.permissions, true);
+        let permissions = j.files().permissions;
         let cmdstates = ["disabled", "enabled"];
 
         switch (j_.message._.command){

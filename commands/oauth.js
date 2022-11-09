@@ -4,7 +4,6 @@ const token = require("../functions/token");
 const _pixelize = require("../functions/_pixelize");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
-const _rf = require("../functions/_rf");
 const _usertoken = require("../functions/_usertoken");
 let j = require("../variables/j");
 const paths = require("../variables/paths");

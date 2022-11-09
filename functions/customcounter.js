@@ -1,7 +1,6 @@
 const paths = require("../variables/paths");
 const _appf = require("./_appf");
 const _id = require("./_id");
-const _rf = require("./_rf");
 const _stackname = require("./_stackname");
 const _wf = require("./_wf");
 
@@ -20,10 +19,10 @@ const _wf = require("./_wf");
 async function customcounter(opt, j_, noreturn, channelid, counterid, countername, counternum){
     return new Promise((resolve, reject) => {
         let j = require("../variables/j");
-        channelid = channelid || j.message.channel.id;
+        channelid = channelid || j_.message.channel.id;
         counternum = (!global.variables.varstatic.nonarr.includes(counternum) ? parseInt(counternum) : undefined);
 
-        let channels = _rf(paths.channels, true);
+        let channels = j.files().channels;
 
         switch (opt) {
             case 0: {

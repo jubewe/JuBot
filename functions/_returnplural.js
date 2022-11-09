@@ -1,4 +1,4 @@
-let nonarr = [null, undefined];
+const nonarr = [null, undefined];
 
 /**
  * 

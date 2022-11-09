@@ -1,1 +1,81 @@
-{"permissions":{"1":{"desc":"Bot","tag":["bot"]},"10":{"desc":"Regular","tag":["default"]},"11":{"desc":"Approved-Bot","tag":["approvedbot"]},"20":{"desc":"Twitch-Channel-Bit-Donator","name":"bits","tag":["bits"]},"21":{"desc":"Twitch-Channel-Subscriber","name":"subscriber","tag":["subscriber","sub"]},"22":{"desc":"Twitch-Channel-VIP","name":"vip","tag":["vip"]},"25":{"desc":"Twitch-Channel-Moderator","name":"moderator","tag":["moderator","mod"]},"30":{"desc":"Twitch-Channel-Broadcaster","name":"broadcaster","tag":["broadcaster","streamer"]},"40":{"desc":"Twitch-Staff","name":"staff"},"60":{"desc":"Bot-Supervisor"},"61":{"desc":"Bot-Moderator"},"62":{"desc":"Bot-Admin"},"69":{"desc":"Owner"}},"users":{"263830208":"69","412150332":"62","662967825":"62"}}
+{
+    "permissions": {
+        "1": {
+            "desc": "Bot",
+            "tag": [
+                "bot"
+            ]
+        },
+        "10": {
+            "desc": "Regular",
+            "tag": [
+                "default"
+            ]
+        },
+        "11": {
+            "desc": "Approved-Bot",
+            "tag": [
+                "approvedbot"
+            ]
+        },
+        "20": {
+            "desc": "Twitch-Channel-Bit-Donator",
+            "name": "bits",
+            "tag": [
+                "bits"
+            ]
+        },
+        "21": {
+            "desc": "Twitch-Channel-Subscriber",
+            "name": "subscriber",
+            "tag": [
+                "subscriber",
+                "sub"
+            ]
+        },
+        "22": {
+            "desc": "Twitch-Channel-VIP",
+            "name": "vip",
+            "tag": [
+                "vip"
+            ]
+        },
+        "25": {
+            "desc": "Twitch-Channel-Moderator",
+            "name": "moderator",
+            "tag": [
+                "moderator",
+                "mod"
+            ]
+        },
+        "30": {
+            "desc": "Twitch-Channel-Broadcaster",
+            "name": "broadcaster",
+            "tag": [
+                "broadcaster",
+                "streamer"
+            ]
+        },
+        "40": {
+            "desc": "Twitch-Staff",
+            "name": "staff"
+        },
+        "60": {
+            "desc": "Bot-Supervisor"
+        },
+        "61": {
+            "desc": "Bot-Moderator"
+        },
+        "62": {
+            "desc": "Bot-Admin"
+        },
+        "69": {
+            "desc": "Owner"
+        }
+    },
+    "users": {
+        "263830208": "69",
+        "412150332": "62",
+        "662967825": "62"
+    }
+}

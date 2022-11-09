@@ -1,3 +1,5 @@
+const nonarr = [null, undefined];
+
 /**
  * 
  * @param {*} e 
@@ -6,8 +8,6 @@
  */
 
 function _returnerr(e, eopt){
-    let j = require("../variables/j");
-
     if(typeof e === "object" && !Object.keys(e)){
         /*if(j.lasterror !== e){
             j.lasterror = e;
@@ -18,7 +18,7 @@ function _returnerr(e, eopt){
         return `Fatal Error: ${e.message}`
     } else {
         try {
-            if(!j.variables().nonarr.includes(eopt)){
+            if(!nonarr.includes(eopt)){
                 switch (eopt){
                     case 0:{
                         if(e.msg) return e.msg;

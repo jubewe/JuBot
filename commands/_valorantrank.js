@@ -1,4 +1,5 @@
 const { _channel } = require("../functions/_");
+const _sleep = require("../functions/_sleep");
 let j = require("../variables/j");
 const urls = require("../variables/urls");
 
@@ -23,9 +24,9 @@ module.exports = {
                         let dat = JSON.parse(r.body);
 
                         if(r.statusCode === 200){
-                            j.send(3, j_, `${j.message._.chan}'s Valorant Rank: ${dat.data}`);
+                            j.send(3, j_, `${j_.message._.chan}'s Valorant Rank: ${dat.data}`);
                         } else {
-                            j.send(2, j_, `${j.message._.chan}'s Valorant Rank Error: ${dat.data} (${dat.e})`);
+                            j.send(2, j_, `${j_.message._.chan}'s Valorant Rank Error: ${dat.data} (${dat.e})`);
                         }
                     }
                 })
