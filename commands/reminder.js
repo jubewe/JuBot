@@ -13,7 +13,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: 10000,
     cooldown_user: 5000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         switch (j_.message._.command){
             case "remind":{
                 if(j_.message._.args()[0]){

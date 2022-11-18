@@ -3,7 +3,6 @@ const _cleantime = require("../functions/_cleantime");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
 let j = require("../variables/j");
-const paths = require("../variables/paths");
 
 module.exports = {
     name: "customkeyword",
@@ -15,7 +14,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         let permissions = j.files().permissions;
         let keystates = ["disabled", "enabled"];
 
@@ -55,7 +54,7 @@ module.exports = {
         };
 
         async function addkeyword(num){
-            if(j.message._.args()[num]){
+            if(j_.message._.args()[num]){
                 let keyname = j_.message._.args()[num].toLowerCase();
                 await customkeyword(0, j_, true)
                 .then(keys => {

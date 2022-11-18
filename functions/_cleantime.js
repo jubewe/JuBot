@@ -95,7 +95,7 @@ function _cleantime(time, timeopt, timedigits) {
       let cte = t[Object.keys(t)[i]].time;
       if (
         (["auto"].includes(timedigits) &&
-          !["milliseconds"].includes(Object.keys(t)[i])) ||
+          (!["milliseconds"].includes(Object.keys(t)[i]) || dat["time"].length === 0)) && dat["time"].length < 2 ||
         timedigits > 0
       ) {
         if (cte >= 1 || [0].includes(ctlast) || ![undefined].includes(ctlast)) {

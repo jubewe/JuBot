@@ -15,7 +15,7 @@ function custom_commandhandler(j_, j){
                     if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || j_.message._.userperms._default){
                         if(j_.message._.userperms._default || c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user)){
                             j.send(0, j_, command.response, undefined, undefined, undefined, true);
-                            if(command.cooldown > 0 || command.cooldown_user > 0){
+                            if((command.cooldown > 0 || command.cooldown_user > 0) && !j_.message._.userperms._default){
                                 _cooldown(1, j_.message.channel.id, command.id, j_.message.userstate.id, true)
                                 .then(c2 => {})
                                 .catch(e => {throw e});

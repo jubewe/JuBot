@@ -3,7 +3,6 @@ const _permission = require("../functions/_permission");
 const _pixelize = require("../functions/_pixelize");
 const _returnerr = require("../functions/_returnerr");
 let j = require("../variables/j");
-const paths = require("../variables/paths");
 
 module.exports = {
     name: "permission",
@@ -15,7 +14,7 @@ module.exports = {
     permission: j.c().perm.botowner,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         let permissions = j.files().permissions;
 
         if(j_.message._.args()[0]){

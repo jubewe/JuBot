@@ -122,7 +122,7 @@ async function seventv(opt, j_, noreturn, channelid, discord_serverid, emoteids)
                                                     )
                                                     .then(em => {
                                                         addemotes2.resolve[addemotes[addemote].name] = em;
-                                                        _appf(paths.seventvlog, `\n${Date.now()} ${_stackname(0, "seventv", "add")} ${channelid} ${discord_serverid} ${addemotes[addemote].name} ${em.id} animated:${em.animated}`)
+                                                        _appf(paths.seventv, `\n${Date.now()} ${_stackname(0, "seventv", "add")} ${channelid} ${discord_serverid} ${addemotes[addemote].name} ${em.id} animated:${em.animated}`)
                                                         return resolve2(em);
                                                     })
                                                     .catch(e => {

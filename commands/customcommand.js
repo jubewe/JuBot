@@ -15,7 +15,7 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 1000,
     cooldown_user: 2000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         let permissions = j.files().permissions;
         let cmdstates = ["disabled", "enabled"];
 

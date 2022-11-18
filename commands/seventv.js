@@ -13,7 +13,7 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 15000,
     cooldown_user: 5000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         let discord_serverid;
         await _channel(0, j_.message.channel.id, "discord_serverid")
         .then(dcsid => {

@@ -1,6 +1,4 @@
-const request = require("request");
 const api_requestheaders = require("../functions/api/api_requestheaders");
-const _wf = require("../functions/_wf");
 let j = require("../variables/j");
 
 module.exports = {
@@ -13,7 +11,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(j_.message._.args()[0]){
             j.send(2, j_, `Started downloading, this might take some time Waiting`);
             let url = j_.message._.args()[0];

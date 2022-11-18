@@ -27,6 +27,7 @@ module.exports = {
   _returnplural: require("./_returnplural"),
   _rf: require("./_rf"),
   _sleep: require("./_sleep"),
+  _splitafter: require("./_splitafter"),
   _splitmsg: require("./_splitmsg"),
   _stackname: require("./_stackname"),
   _staticspacer: require("./_staticspacer"),
@@ -39,7 +40,7 @@ module.exports = {
   _regex: require("./_regex"),
 
   badgestoarr: require("./badgestoarr"),
-  createclip: require("./createclip"),
+  clip: require("./twitch/clip"),
   checktoken: require("./gettoken"),
   privmsg_parser: require("./privmsg_parser"),
   remind: require("./remind"),
@@ -50,7 +51,7 @@ module.exports = {
   getuserbyid: require("./getuserbyid"),
   getuserid: require("./getuserid"),
   getuserperm: require("./getuserperm"),
-  send: require("./send"),
+  // send: require("./twitch/send"),
   token: require("./token"),
   uptime: require("./uptime"),
   userperms: require("./userperms"),
@@ -58,5 +59,10 @@ module.exports = {
   api: {
     api_requestheaders: require("./api/api_requestheaders"),
     
+  },
+
+  discord: {
+    messageembed: require("./discord/messageembed"),
+
   }
 };

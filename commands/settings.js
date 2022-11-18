@@ -1,5 +1,6 @@
-const { _channel } = require("../functions/_");
+const _channel = require("../functions/_channel");
 const _returnerr = require("../functions/_returnerr");
+const _splitafter = require("../functions/_splitafter");
 let j = require("../variables/j");
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     permission: j.c().perm.broadcaster,
     cooldown: 1000,
     cooldown_user: 1000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(!j_.message._.args()[0]){
             j.send(2, j_, `Error: No option given`);
             return;
@@ -128,14 +129,15 @@ module.exports = {
                     return;
                 }
 
-                let tag = j_.message._.args()[1];
+                let tag = _splitafter(j_.message._.msg, 2).toLowerCase();
+                console.log(tag)
 
                 if(!tag.includes("#")){
                     j.send(2, j_, `Error: Invalid format - expected: <riotid>#<tagline>`);
                     return;
                 } 
 
-                _channel(1, j_.message.channel.id, "valoranttag", tag)
+                _channel(1, j_.message.channel.id, "valoranttag", encodeURI(tag))
                 .then(t => {
                     j.send(2, j_, `Successfully set valoranttag to ${tag}`);
                 })
@@ -173,6 +175,69 @@ module.exports = {
                 } else {
                     j.send(2, j_, `Error: Given ID id not a number (Expected: Server-ID)`);
                 }
+                break;
+            }
+
+            case "discord_clipchannel": 
+            case "clipchannel": {
+                if(!j_.message._.args()[1]){
+                    j.send(2, j_, `Error: No ID given`);
+                    break;
+                }
+
+                let discord_clipchannelid = j_.message._.args()[1];
+
+                if(!j.functions()._regex.numregex().test(discord_clipchannelid)){
+                    j.send(2, j_, `Error: Channel does not match ChannelID-Regex`);
+                    return;
+                }
+
+                _channel(1, j_.message.channel.id, "discord_clipchannelid", discord_clipchannelid)
+                .then(t => {
+                    j.send(2, j_, `Successfully set discord clipchannelid to ${discord_clipchannelid}`);
+                })
+                .catch(e => {
+                    j.send(2, j_, `Error: Could not set discord clipchannelid: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                })
+
+                break;
+            }
+
+            case "youtube_channel":
+            case "youtubechannel": {
+                if(!j_.message._.args()[1]){
+                    j.send(2, j_, `Error: No ChannelID given`);
+                    break;
+                }
+
+                let youtube_channelid = j_.message._.args()[1];
+
+                if(!j.functions()._regex.yt_channelreg().test(youtube_channelid)){
+                    j.send(2, j_, `Error: Channel does not match ChannelID-Regex`);
+                    return;
+                }
+
+                _channel(1, j_.message.channel.id, "youtube_channelid", youtube_channelid)
+                .then(t => {
+                    j.send(2, j_, `Successfully set youtube channelid to ${youtube_channelid}`);
+                })
+                .catch(e => {
+                    j.send(2, j_, `Error: Could not set youtube channelid: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                })
+
+                break;
+            }
+
+            case "get": {
+                if(!j_.message._.args()[1]) return j.send(2, j_, `Error: No setting to get given`);
+
+                _channel(0, j_.message.channel.id, j_.message._.args()[1])
+                .then(sett => {
+                    j.send(2, j_, `Setting ${j_.message._.args()[1]}: ${sett}`);
+                })
+                .catch(e => {
+                    j.send(2, j_, `Error: Could not get setting ${j_.message._.args()[1]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                })
                 break;
             }
 

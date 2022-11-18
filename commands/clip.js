@@ -1,4 +1,5 @@
-const createclip = require("../functions/createclip");
+const clip = require("../functions/twitch/clip");
+const messageembed = require("../functions/discord/messageembed");
 const getuser = require("../functions/getuser");
 const _pixelize = require("../functions/_pixelize");
 const _regex = require("../functions/_regex");
@@ -16,8 +17,9 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 10000,
     cooldown_user: 5000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         let clipchan = j_.message._.chan;
+        let j = require("../variables/j")
         
         if(j_.message._.msg.split(" ")[1]){
             if(_regex.usernamereg().test(j_.message._.msg.split(" ")[1])){
@@ -33,9 +35,18 @@ module.exports = {
             _usertoken(0, j_.message.userstate.id, null, true)
             .then(t => {
                 if(t.scopes.includes("clips:edit")){
-                    createclip(u[1], t.token, t.client_id)
+                    clip(u[1], t.token, t.client_id)
                     .then(c => {
                         j.send(2, j_, `Successfully created clip in ${_pixelize(clipchan)} (${u[1]}): ${c.edit_url.split("/edit")[0]}`);
+                        if(j.files().channels.channels[u[1]] && j.files().channels.channels[u[1]].discord_clipchannelid){
+                            j.dc.client.channels.fetch(j.files().channels.channels[u[1]].discord_clipchannelid)
+                            .then(channel => {
+                                channel.send({embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`)]})
+                            })
+                            .catch(e => {
+                                console.error(e);
+                            })
+                        }
                     })
                     .catch(e => {
                         j.send(2, j_, `Error: Could not create clip: ${(e.message ? e.message : "")}`);
@@ -46,9 +57,18 @@ module.exports = {
             })
             .catch(e => {
                 if(j_.message.userstate.ismod || j_.message.userstate.id === j_.message.channel.id){
-                    createclip(u[1])
+                    clip(u[1])
                     .then(c => {
                         j.send(2, j_, `Successfully created clip in ${_pixelize(clipchan)} (${u[1]}): ${c.edit_url.split("/edit")[0]}`);
+                        if(j.files().channels.channels[u[1]] && j.files().channels.channels[u[1]].discord_clipchannelid){
+                            j.dc.client.channels.fetch(j.files().channels.channels[u[1]].discord_clipchannelid)
+                            .then(channel => {
+                                channel.send({embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`, c.edit_url.split("/edit")[0])]})
+                            })
+                            .catch(e => {
+                                console.error(e);
+                            })
+                        }
                     })
                     .catch(e => {
                         j.send(2, j_, `Error: Could not create clip: ${(e.message ? e.message : "")}`);

@@ -1,9 +1,9 @@
-const paths = require("../variables/paths");
-const _wf = require("./_wf");
+const paths = require("../../variables/paths");
+const _wf = require("../_wf");
 
 async function part(partchan) {
   return new Promise(function (resolve, reject) {
-    let j = require("../variables/j");
+    let j = require("../../variables/j");
 
     let channels = j.files().channels;
 

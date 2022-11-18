@@ -4,6 +4,8 @@
         "prefix": "a!",
         "perm": 62
     },
+    "defaulthex": "#6441A5",
+    "defaulticon": "https://avatars.githubusercontent.com/u/66999984?v=4&s=48",
     "perm": {
         "bot": 1,
         "default": 10,
@@ -21,9 +23,10 @@
         "trackers": {
             "live_check": 3600000,
             "activemods_check": 900000
-        }
+        },
+        "sendretrytimeout": 500
     },
-    "intervals":{
+    "intervals": {
         "reconnect": {
             "client": 1800000,
             "ws": 1800000
@@ -32,7 +35,15 @@
         "live_check": 900000,
         "trackers": {
             "live": 900000,
-            "activemods": 900000
+            "activemods": 900000,
+            "youtube_video": 900000
+        }
+    },
+    "debug": {
+        "functions": {
+            "_rf": true,
+            "_wf": true,
+            "_appf": true
         }
     },
     "raspi": {
@@ -43,7 +54,7 @@
         "active_mods": 30000
     },
     "connect": {
-        "discord": false,
+        "discord": true,
         "twitch": true,
         "twitch_view": false,
         "twitch_notifications": false,
@@ -52,11 +63,21 @@
         },
         "trackers": {
             "live": true,
-            "activemods": true
+            "activemods": true,
+            "youtube_video": true
+        },
+        "express": {
+            "app": false
         }
     },
     "modules": {
-        "notifications": true
+        "notifications": true,
+        "log": {
+            "twitch": {
+                "privmsg": 2,
+                "whisper": 1
+            }
+        }
     }, 
     "commands": {
         "custom": {
@@ -69,11 +90,14 @@
             "max": 50
         }
     },
-    "notifications":{
+    "notifications": {
         "names": ["live", "follow", "subscription", "resub", "cheer", "subgift", "masssubgift"],
         "defaultmessages": {
-            "live": "$(live.broadcaster_name) is now Live playing $(live.game_name): $(live.title)",
+            "live": "$(live.user_login) is now Live playing $(live.game_name): $(live.title)",
             "cheer": "$(sender) just cheered $(messagebits)"
         }
+    },
+    "trackers": {
+        "names": ["activemods"]
     }
 }

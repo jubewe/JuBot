@@ -11,7 +11,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 5000,
     cooldown_user: 15000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(["afk", "gn"].includes(j_.message._.command)){
             let afkmessage = "No message";
             if(j_.message._.args()[0]){
@@ -27,7 +27,7 @@ module.exports = {
                 j.send(2, j_, `Error: Could not set AFK Status Sadge`);
             });
         } else if(["cafk", "rafk"].includes(j_.message._.command)){
-            _afk(3, j_.message.userstate.id, null, null, j.message._.userperm.num)
+            _afk(3, j_.message.userstate.id, null, null, j_.message._.userperm.num)
             .then(a => {
                 if([0, 1].includes(a.type)){
                     j.send(0, j_, `${j_.message._.usertag} Your old AFK status has been resumed: ${a.message}`);

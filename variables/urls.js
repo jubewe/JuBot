@@ -76,7 +76,55 @@ let urls = {
         "channels": {
             "get": "https://api.twitch.tv/helix/channels"
         },
-        "chatters": "https://tmi.twitch.tv/group/user/${channel}/chatters"
+        "streams": "https://api.twitch.tv/helix/streams",
+        "chatters": "https://tmi.twitch.tv/group/user/${channel}/chatters",
+        "moderation": {
+            "ban": {
+                "url": "https://api.twitch.tv/helix/moderation/bans",
+                "method": "POST"
+            },
+            "timeout": {
+                "url": "https://api.twitch.tv/helix/moderation/bans",
+                "method": "POST"
+            },
+            "unban": {
+                "url": "https://api.twitch.tv/helix/moderation/bans",
+                "method": "DELETE"
+            },
+            "untimeout": {
+                "url": "https://api.twitch.tv/helix/moderation/bans",
+                "method": "DELETE"
+            },
+            "delete": {
+                "url": "https://api.twitch.tv/helix/moderation/chat",
+                "method": "DELETE"
+            }
+        },
+        "clip": {
+            "create": {
+                "url": "https://api.twitch.tv/helix/clips",
+                "method": "POST"
+            }
+        }
+    },
+    "youtube": {
+        "search": {
+            "raw": "https://www.googleapis.com/youtube/v3/search",
+            // https://developers.google.com/youtube/v3/docs/search/list
+            "channels": {
+                "get": "https://www.googleapis.com/youtube/v3/search?q=${q}&type=channel&key=${env.YT_APIKEY}",
+                "get2": "https://www.googleapis.com/youtube/v3/search${channelid}&type=channel&key=${env.YT_APIKEY}"
+            },
+            "videos": {
+                "get": "https://www.googleapis.com/youtube/v3/search?q=${q}&type=video&channelid=${channelid}&key=${env.YT_APIKEY}",
+                "get2": "https://www.googleapis.com/youtube/v3/search${channelid}&type=video&key=${env.YT_APIKEY}"
+            }
+        },
+        "channels": {
+            "list": {
+                "raw": "https://developers.google.com/youtube/v3/docs/channels/list"
+            }
+        }
     }
     
 };

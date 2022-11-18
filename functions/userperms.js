@@ -8,7 +8,6 @@ async function userperms(j_){
   let j = require("../variables/j");
   return {
     "_bot":(j_.message._.userperm.num == j.c().perm.bot),
-    "_default":(j_.message._.userperm.num == j.c().perm.botdefault),
     "moderator":(j_.message._.userperm.num == j.c().perm.moderator),
     "moderator_":(j_.message._.userperm.num >= j.c().perm.moderator),
     "broadcaster":(j_.message._.userperm.num == j.c().perm.broadcaster),

@@ -1,5 +1,4 @@
-const j = require("../variables/j");
-const paths = require("../variables/paths");
+let j = require("../variables/j");
 const _checkmultiplevaliinobj = require("./_checkmultiplevalinobj");
 
 function gettrkoptchannels(){

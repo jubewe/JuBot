@@ -13,13 +13,15 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         let channels = j.files().clientchannels;
 
         if(j_.message._.args()[0]){
             let unviewchan = j_.message._.args()[0].toLowerCase();
             if(channels.viewchannels.includes(unviewchan)){
-                j.viewclient.part(unviewchan);
+                if(j.viewclient){
+                    j.viewclient.part(unviewchan);
+                }
                 channels.viewchannels.splice(channels.viewchannels.indexOf(unviewchan, 1));
                 _wf(paths.clientchannels, channels);
                 j.send(2, j_, `Successfully stopped viewing ${_pixelize(unviewchan)}`);

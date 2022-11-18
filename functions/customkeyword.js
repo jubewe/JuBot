@@ -96,8 +96,9 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                     if(!Object.keys(channels.channels[channelid]).includes("keywords")) channels.channels[channelid]["keywords"] = {};
                     channels.channels[channelid]["keywords"][id[0]] = keyword;
                     _appf(paths.keywordlog, `\n${_stackname(0, "keywords", "add")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)}`);
+                    _appf(paths.log, `\n${_stackname(0, "keywords", "add")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)}`);
+                    
                     _wf(paths.channels, channels);
-
                     return resolve(keyword);
                 })
                 .catch(e => {
@@ -117,9 +118,10 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                             if(Object.keys(channels.channels[channelid]["keywords"]).includes(keywordid)){
                                 let keyword = channels.channels[channelid]["keywords"][keywordid];
                                 delete channels.channels[channelid]["keywords"][keywordid];
-                                _wf(paths.channels, channels);
                                 _appf(paths.keywordlog, `\n${Date.now()} ${_stackname(0, "keywords", "delete")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)}`);
-
+                                _appf(paths.log, `\n${Date.now()} ${_stackname(0, "keywords", "delete")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)}`);
+                                
+                                _wf(paths.channels, channels);
                                 return resolve(keyword);
                             } else {
                                 return reject({path:[opt,1,1,0],msg:"keywords of channel do not include keywordid"});
@@ -159,8 +161,9 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
 
                         channels.channels[channelid]["keywords"][keywordid] = keyword;
                         _appf(paths.keywordlog, `\n${Date.now()} ${_stackname(0, "keywords", "edit")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)} ${JSON.stringify(keyword_)}`);
+                        _appf(paths.log, `\n${Date.now()} ${_stackname(0, "keywords", "edit")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword)} ${JSON.stringify(keyword_)}`);
+                        
                         _wf(paths.channels, channels);
-
                         return resolve(keyword);
                     } else {
                         return reject({path:[opt,0],msg:"keywords of channel do not include keyword"});
@@ -186,6 +189,8 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                         let keyword_ = keyword;
                         keyword.name = keywordresponse;
                         _appf(paths.keywordlog, `\n${Date.now()} ${_stackname(0, "keywords", "rename")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword_)} ${JSON.stringify(keyword)}`);
+                        _appf(paths.log, `\n${Date.now()} ${_stackname(0, "keywords", "rename")[0]} ${channelid} ${keyword.id} ${keyword.name} ${JSON.stringify(keyword_)} ${JSON.stringify(keyword)}`);
+                        
                         _wf(paths.channels, channels);
                         return resolve(channels.channels[channelid]["keywords"][keywordid]);
                     } else {
@@ -199,6 +204,7 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
         function getkeywordidbyname(name){
             name = name || keywordname;
             let ret = undefined;
+            if(!channels.channels[channelid] || !channels.channels[channelid]["keywords"]) return ret;
             Object.keys(channels.channels[channelid]["keywords"]).map(cmdid => {
                 if(channels.channels[channelid]["keywords"][cmdid].name === name || channels.channels[channelid]["keywords"][cmdid].aliases.includes(name)){
                     ret = cmdid;

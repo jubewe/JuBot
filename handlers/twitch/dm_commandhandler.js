@@ -16,7 +16,7 @@ async function dm_commandhandler(j_, j) {
             if(c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user) || j_.message._.userperms._default){
               (async () => {
                 commands[j_.message._.command].exec(j_, j);
-                if(command.cooldown > 0 || command.cooldown_user > 0){
+                if((command.cooldown > 0 || command.cooldown_user > 0) && j_.message._.userperms._default){
                   _cooldown(1, j_.message.channel.id, commandid, j_.message.userstate.id, true)
                   .then(c2 => {})
                   .catch(e => {throw e});

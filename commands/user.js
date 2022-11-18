@@ -12,7 +12,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1]){
             getuser(1, j_.message._.msg.split(" ")[1])
             .then(u => {

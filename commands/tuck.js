@@ -10,7 +10,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 5000,
     cooldown_user: 10000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(j_.message._.args()[0]){
             j.send(0, j_, `${j_.message._.usertag} You tuck ${j_.message._.args()[0]} to Bed ${j_.message._.args()[1] || "OkayChamp"} 👉 🛌 Bedge`);
         } else {

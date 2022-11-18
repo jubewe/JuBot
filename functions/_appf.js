@@ -1,5 +1,8 @@
 const fs = require("fs");
+const isdebug = require("./isdebug");
+const _log = require("./_log");
 const _mainpath = require("./_mainpath");
+const _staticspacer = require("./_staticspacer");
 
 /**
  * 
@@ -9,6 +12,9 @@ const _mainpath = require("./_mainpath");
  */
 
 function _appf(apath, adata, anewline){
+    if(isdebug("functions", "_appf")){
+        _log(1, `${_staticspacer("debug", "_appf")} ${apath} (${Buffer.from(adata, "utf-8").byteLength} b)`);
+    }
     if(!apath) throw new Error(`_wf: apath is undefined`);
     if(!adata) throw new Error(`_wf: adata is undefined`);
 

@@ -97,8 +97,9 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                     if(!Object.keys(channels.channels[channelid]).includes("commands")) channels.channels[channelid]["commands"] = {};
                     channels.channels[channelid]["commands"][id[0]] = command;
                     _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "add")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
+                    _appf(paths.log, `\n${Date.now()} ${_stackname(0, "commands", "add")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
+                    
                     _wf(paths.channels, channels);
-
                     return resolve(command);
                 })
                 .catch(e => {
@@ -118,9 +119,10 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                             if(Object.keys(channels.channels[channelid]["commands"]).includes(commandid)){
                                 let command = channels.channels[channelid]["commands"][commandid];
                                 delete channels.channels[channelid]["commands"][commandid];
-                                _wf(paths.channels, channels);
                                 _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "delete")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
-
+                                _appf(paths.log, `\n${Date.now()} ${_stackname(0, "commands", "delete")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)}`);
+                                
+                                _wf(paths.channels, channels);
                                 return resolve(command);
                             } else {
                                 return reject({path:[opt,1,1,0],msg:"commands of channel do not include commandid"});
@@ -160,6 +162,8 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
 
                         channels.channels[channelid]["commands"][commandid] = command;
                         _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "edit")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
+                        _appf(paths.log, `\n${Date.now()} ${_stackname(0, "commands", "edit")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
+                        
                         _wf(paths.channels, channels);
 
                         return resolve(command);
@@ -187,6 +191,8 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                         let command_ = command;
                         command.name = commandresponse;
                         _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "rename")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command_)} ${JSON.stringify(command)}`);
+                        _appf(paths.log, `\n${Date.now()} ${_stackname(0, "commands", "rename")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command_)} ${JSON.stringify(command)}`);
+
                         _wf(paths.channels, channels);
                         return resolve(channels.channels[channelid]["commands"][commandid]);
                     } else {
@@ -200,6 +206,7 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
         function getcommandidbyname(name){
             name = name || commandname;
             let ret = undefined;
+            if(!channels.channels[channelid] || !channels.channels[channelid]["commands"]) return ret;
             Object.keys(channels.channels[channelid]["commands"]).map(cmdid => {
                 if(channels.channels[channelid]["commands"][cmdid].name === name || channels.channels[channelid]["commands"][cmdid].aliases.includes(name)){
                     ret = cmdid;

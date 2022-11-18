@@ -1,5 +1,8 @@
 const fs = require("fs");
+const isdebug = require("./isdebug");
+const _log = require("./_log");
 const _mainpath = require("./_mainpath");
+const _staticspacer = require("./_staticspacer");
 const _wf = require("./_wf");
 
 /**
@@ -10,8 +13,11 @@ const _wf = require("./_wf");
  */
 
 function _rf(rfpath, parse_json){
+    if(isdebug("functions", "_rf")){
+        _log(1, `${_staticspacer("debug", "_rf")} ${rfpath} (JSON: ${parse_json || false})`);
+    }
+    
     if(!rfpath) throw new Error(`_rf: rfpath is undefined`);
-    // console.log(_mainpath(rfpath));
 
     try {
         if(fs.existsSync(_mainpath(rfpath))){

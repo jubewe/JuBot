@@ -14,7 +14,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         request(`${urls.api.__url("serverinfo", "GET")}`, {method: "GET", headers: j.vars().j_api_headeradmin()}, (e, r) => {
             if(e){
                 console.error(new Error(e));

@@ -6,7 +6,6 @@ const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
 const _usertoken = require("../functions/_usertoken");
 let j = require("../variables/j");
-const paths = require("../variables/paths");
 
 module.exports = {
     name: "oauth",
@@ -18,7 +17,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 5000,
     cooldown_user: 5000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1]){
             switch (j_.message._.msg.split(" ")[1]) {
                 case "get": {

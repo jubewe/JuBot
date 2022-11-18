@@ -1,5 +1,4 @@
 const request = require("request");
-const j = require("../../variables/j");
 const paths = require("../../variables/paths");
 const urls = require("../../variables/urls");
 const getuser = require("../getuser");
@@ -15,6 +14,7 @@ const _wf = require("../_wf");
 
 async function livechannels(){
     return new Promise((resolve, reject) => {
+        let j = require("../../variables/j");
         _log(1, `${_stackname("trackers")[3]} Executed`);
         let channels = j.files().channels;
 
@@ -32,7 +32,7 @@ async function livechannels(){
         let checklivechannels = _combineArr(checknotificationlive, checktrkactivemods);
 
         for(let i = 0; i < Math.ceil(checklivechannels.length / 100); i++){
-            request(urls.twitch.channels.get + _joinurlquery("broadcaster_id", checklivechannels.slice((100*i), ((100*i)+100))), _requestopts("GET"), (e, r) => {
+            request(urls.twitch.streams + _joinurlquery("user_id", checklivechannels.slice((100*i), ((100*i)+100)), true), _requestopts("GET"), (e, r) => {
                 if(e){
                     throw e;
                 } else {
@@ -43,16 +43,16 @@ async function livechannels(){
                         (async() => {
                             Object.keys(dat.data).forEach(async (ch) => {
                                 let ch_ = dat.data[ch];
-                                if(!channels.channels[ch_.broadcaster_id].trackers.data) channels.channels[ch_.broadcaster_id].trackers.data = {};
-                                if(!channels.channels[ch_.broadcaster_id].trackers.data.live) channels.channels[ch_.broadcaster_id].trackers.data.live = {};
-                                if(!channels.channels[ch_.broadcaster_id].trackers.data.live.last_live) channels.channels[ch_.broadcaster_id].trackers.data.live.last_live = -1;
+                                if(!channels.channels[ch_.user_id].trackers.data) channels.channels[ch_.user_id].trackers.data = {};
+                                if(!channels.channels[ch_.user_id].trackers.data.live) channels.channels[ch_.user_id].trackers.data.live = {};
+                                if(!channels.channels[ch_.user_id].trackers.data.live.last_live) channels.channels[ch_.user_id].trackers.data.live.last_live = -1;
                                 
-                                if(checknotificationlive.includes(ch_.broadcaster_id)){
-                                    if(Date.now() - (channels.channels[ch_.broadcaster_id].trackers.data.live.last_live) > j.c().intervals.trackers.live - j.c().buffers.live_check && Date.now() - (channels.channels[ch_.broadcaster_id].trackers.data.live.last_live) > j.c().timeouts.trackers.live_check){
-                                        if(!channels.channels[ch_.broadcaster_id].notifications.live.last_execution || Date.now()-channels.channels[ch_.broadcaster_id].notifications.live.last_execution > j.c().timeouts.trackers.live_check){
-                                            channels.channels[ch_.broadcaster_id].notifications.live.last_execution = Date.now();
+                                if(checknotificationlive.includes(ch_.user_id)){
+                                    if(Date.now() - (channels.channels[ch_.user_id].trackers.data.live.last_live) > j.c().intervals.trackers.live - j.c().buffers.live_check && Date.now() - (channels.channels[ch_.user_id].trackers.data.live.last_live) > j.c().timeouts.trackers.live_check){
+                                        if(!channels.channels[ch_.user_id].notifications.live.last_execution || Date.now()-channels.channels[ch_.user_id].notifications.live.last_execution > j.c().timeouts.trackers.live_check){
+                                            channels.channels[ch_.user_id].notifications.live.last_execution = Date.now();
                                             // console.log(ch_);
-                                            replacevariableslive(channels.channels[ch_.broadcaster_id].notifications.live.message || j.c().notifications.defaultmessages.live, ch_)
+                                            replacevariableslive(channels.channels[ch_.user_id].notifications.live.message || j.c().notifications.defaultmessages.live, ch_)
                                             .then(msg => {
                                                 replacevariables(undefined, msg)
                                                 .then(msg2 => {
@@ -66,30 +66,31 @@ async function livechannels(){
                                     }
                                 }
     
-                                if(checktrkactivemods.includes(ch_.broadcaster_id)){
-                                    if(!channels.channels[ch_.broadcaster_id].trackers.data.activemods) channels.channels[ch_.broadcaster_id].trackers.data.activemods = {};
-                                    if(!channels.channels[ch_.broadcaster_id].trackers.data.activemods.users) channels.channels[ch_.broadcaster_id].trackers.data.activemods.users = {};
-                                    
-                                    request(j.urls().twitch.chatters.replace("${channel}", ch_.broadcaster_login), _requestopts(), async (e2, r2) => {
+                                if(checktrkactivemods.includes(ch_.user_id)){
+                                    if(!channels.channels[ch_.user_id].trackers.data.activemods) channels.channels[ch_.user_id].trackers.data.activemods = {};
+                                    if(!channels.channels[ch_.user_id].trackers.data.activemods.users) channels.channels[ch_.user_id].trackers.data.activemods.users = {};
+
+                                    request(j.urls().twitch.chatters.replace("${channel}", ch_.user_login), {method: "GET"}, async (e2, r2) => {
                                         if(e2){
                                             throw e2;
                                         } else {
                                             let dat2 = JSON.parse(r2.body);
                                             for(let activemod in dat2.chatters.moderators){
                                                 let activemod_ = await getuser(1, dat2.chatters.moderators[activemod]);
-                                                if(!channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]]) channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]] = {};
-                                                if(channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]].last_active && (Date.now()-channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]].last_active) >= j.c().intervals.trackers.activemods - j.c().buffers.active_mods){
-                                                    channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]].active_time = (channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]].active_time || 0) + j.c().intervals.trackers.live;
+                                                if(!channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]]) channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]] = {};
+                                                if(channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].last_active && (Date.now()-channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].last_active) >= j.c().intervals.trackers.activemods - j.c().buffers.active_mods){
+                                                    channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].active_time = (channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].active_time || 0) + j.c().intervals.trackers.live;
                                                 }
-                                                channels.channels[ch_.broadcaster_id].trackers.data.activemods.users[activemod_[1]].last_active = Date.now();
+                                                channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].last_active = Date.now();
                                                 _wf(paths.channels, channels);
                                             }
                                         }
                                     })
                                 }
     
-                                channels.channels[ch_.broadcaster_id].trackers.data.live.last_live = Date.now();
-                                channels.channels[ch_.broadcaster_id].trackers.data.live.last = ch_;
+                                channels.channels[ch_.user_id].trackers.data.live.last_live = Date.now();
+                                channels.channels[ch_.user_id].trackers.data.live.live_time = (channels.channels[ch_.user_id].trackers.data.live.live_time || 0) + j.c().intervals.trackers.live;
+                                channels.channels[ch_.user_id].trackers.data.live.last = ch_;
     
                             });
 
@@ -107,15 +108,23 @@ async function livechannels(){
 
 /*
 {
-  broadcaster_id: '263830208',
-  broadcaster_login: 'jubewe',
-  broadcaster_name: 'Jubewe',
-  broadcaster_language: 'de',
-  game_id: '1469308723',
-  game_name: 'Software and Game Development',        
-  title: 'doing stuff | phil troll Kappa | original',
-  delay: 0
-}
+  "id": "41375541868",
+  "user_id": "459331509",
+  "user_login": "auronplay",
+  "user_name": "auronplay",
+  "game_id": "494131",
+  "game_name": "Little Nightmares",
+  "type": "live",
+  "title": "hablamos y le damos a Little Nightmares 1",
+  "viewer_count": 78365,
+  "started_at": "2021-03-10T15:04:21Z",
+  "language": "es",
+  "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_auronplay-{width}x{height}.jpg",
+  "tag_ids": [
+    "d4bb9c58-2141-4881-bcdc-3fe0505457d1"
+  ],
+  "is_mature": false
+},
  */
 
 module.exports = livechannels;

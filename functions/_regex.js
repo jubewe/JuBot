@@ -18,5 +18,6 @@ module.exports = {
     j_id_custom_counterreg: () => {return new RegExp(`[\\d]+\\_+counter+\\_+[\\d]+`)},
     seventv_emote_urlreg: () => {return new RegExp(`(h(t){2}ps\:(\/){2})7tv\.app\/emotes\/+\\b[\\w]+\\b`)},
     seventv_emote_urlreg_2: () => {return new RegExp(`(h(t){2}ps\:(\/){2})7tv\.app\/emotes\/+`)},
+    yt_channel_reg: () => {return new RegExp(`^\\w+$`)},
 
 };

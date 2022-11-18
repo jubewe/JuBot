@@ -1,5 +1,5 @@
-const { returnerr } = require("../functions/_");
 const pixelize = require("../functions/_pixelize");
+const _returnerr = require("../functions/_returnerr");
 let j = require("../variables/j");
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1] !== undefined){
             let joinchan = j_.message._.msg.split(" ")[1].toLowerCase();
             j.join(joinchan)
@@ -20,7 +20,7 @@ module.exports = {
                 j.send(2, j_, `Successfully joined ${pixelize(joinchan)}`);
             })
             .catch(e => {
-                j.send(2, j_, `Error: Could not join ${pixelize(joinchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`);
+                j.send(2, j_, `Error: Could not join ${pixelize(joinchan)} ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
             })
         } else {
             j.send(2, j_, `Error: No Channel given`);

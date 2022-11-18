@@ -1,14 +1,12 @@
-const paths = require("../variables/paths");
-const _wf = require("./_wf");
+const paths = require("../../variables/paths");
+const _wf = require("../_wf");
 
 async function join(jchan, jclient, channelkey) {
   return new Promise(function (resolve, reject) {
-    let j = require("../variables/j");
+    let j = require("../../variables/j");
     jclient = jclient || j.client;
     channelkey = channelkey || "channels";
     try {
-      let j = require("../variables/j");
-
       let clientchannels = j.files().clientchannels;
 
       if (Array.isArray(jchan)) {

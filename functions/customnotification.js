@@ -1,4 +1,6 @@
 const paths = require("../variables/paths");
+const _appf = require("./_appf");
+const _stackname = require("./_stackname");
 const _wf = require("./_wf");
 
 /**
@@ -16,8 +18,8 @@ const _wf = require("./_wf");
 
 async function customnotification(opt, j_, noreturn, channelid, notificationname, notificationmessage, notificationsettings, notificationstate){
     return new Promise((resolve, reject) => {
-        let channels = j.files().channels;
         let j = require("../variables/j");
+        let channels = j.files().channels;
         switch (opt) {
             case 0: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
@@ -30,7 +32,7 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                             return resolve(channels.channels[channelid].notifications);
                         } else {
                             if(noreturn) return resolve({});
-                            return reject({path:[opt,1,0],msg:"noitfication not found in channel notifications"});
+                            return reject({path:[opt,1,0],msg:"notification not found in channel notifications"});
                         }
                     } else {
                         return resolve(channels.channels[channelid].notifications);
@@ -41,6 +43,7 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 }
                 break;
             }
+            
             case 1: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!notificationname) return reject({path:[opt,1,0],msg:"notificationname is undefined"});
@@ -63,11 +66,15 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
 
                 channels.channels[channelid]["notifications"][notificationname] = notification;
 
+                _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "add")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)}`);
+                _appf(paths.log, `\n${_stackname(0, "notifications", "add")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)}`);
+
                 _wf(paths.channels, channels);
 
                 return resolve(notification)
                 break;
             }
+            
             case 2: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!notificationname) return reject({path:[opt,1,0],msg:"notificationname is undefined"});
@@ -82,9 +89,12 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 }
 
                 if(Object.keys(channels.channels[channelid]["notifications"]).includes(notificationname)){
+                    let notification_ = channels.channels[channelid]["notifications"][notificationname];
                     delete channels.channels[channelid]["notifications"][notificationname];
-                    _wf(paths.channels, channels);
+                    _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "delete")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification_)}`);
+                    _appf(paths.log, `\n${_stackname(0, "notifications", "delete")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification_)}`);
 
+                    _wf(paths.channels, channels);
                     return resolve(true);
                 } else {
                     if(noreturn) return resolve(null);
@@ -92,6 +102,7 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 }
                 break;
             }
+
             case 3: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!notificationname) return reject({path:[opt,1,0],msg:"notificationname is undefined"});
@@ -116,11 +127,15 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
 
                 channels.channels[channelid]["notifications"][notificationname] = notification;
 
+                _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "update")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
+                _appf(paths.log, `\n${_stackname(0, "notifications", "update")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
+
                 _wf(paths.channels, channels);
 
-                return resolve(notification)
+                return resolve(notification);
                 break;
             }
+
             case 4: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!notificationname) return reject({path:[opt,1,0],msg:"notificationname is undefined"});
@@ -149,8 +164,10 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
 
                 channels.channels[channelid]["notifications"][notificationname] = notification;
 
+                _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "state")[0]} ${channelid} ${notificationname} ${notificationstate} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
+                _appf(paths.log, `\n${_stackname(0, "notifications", "state")[0]} ${channelid} ${notificationname} ${notificationstate} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
+                
                 _wf(paths.channels, channels);
-
                 return resolve(notification)
                 break;
             }

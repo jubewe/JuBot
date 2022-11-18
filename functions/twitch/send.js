@@ -1,7 +1,8 @@
-let replacevariables = require("./replacevariables");
-const _log = require("./_log");
-const _staticspacer = require("./_staticspacer");
-const _splitmsg = require("./_splitmsg");
+let replacevariables = require("../replacevariables");
+const _log = require("../_log");
+const _staticspacer = require("../_staticspacer");
+const _splitmsg = require("../_splitmsg");
+const _pixelize = require("../_pixelize");
 
 /**
  * 
@@ -12,7 +13,6 @@ const _splitmsg = require("./_splitmsg");
  * @param {boolean | null | undefined} sfirst 
  * @param {boolean | undefined} smulti 
  * @param {boolean | null | undefined} sreplacer
- * @returns 
  */
 
 async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
@@ -20,11 +20,9 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
   if(typeof schan === "object"){
     j_ = schan;
     schan = null;
-  } else {
-    // j_ = require("../variables/j");
-  }
+  } 
   // console.log(j_.message.channel);
-  let j = require("../variables/j");
+  let j = require("../../variables/j");
   schan = global.variables.varstatic.nonarr.includes(schan) ? j_.message._.chan : schan;
   smulti = global.variables.varstatic.nonarr.includes(smulti) ? undefined : smulti;
 
@@ -34,12 +32,13 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
   };
 
   if(j_ && j_.message._.modified_channel){
-    smode = 0;
-    schan = j_.message._.chan;
+    smode = 2;
+    schan = j_.message._.modified_channel.name;
+    smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;
   }
 
-  let sendtrys = 1+1;
-  let sendretrytimeout = 3000;
+  let sendtrys = 3;
+  let sendretrytimeout = j.c().timeouts.sendretrytimeout;
 
   if([3, "tag"].includes(smode)){
     smsg = j_.message._.usertag_ + smsg;

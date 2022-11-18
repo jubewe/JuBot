@@ -1,4 +1,3 @@
-const j = require("../variables/j");
 const paths = require("../variables/paths");
 const { nonarr } = require("../variables/varstatic");
 const _nonarr = require("./_nonarr");
@@ -14,10 +13,8 @@ const _wf = require("./_wf");
  */
 
 async function _id(idopt, idtype, idchan, idkey) {
-  /**
-   * idtype = channel/"global"
-   */
   return new Promise(function (resolve, reject) {
+    let j = require("../variables/j");
     idchan = nonarr.includes(idchan) ? undefined : idchan.toString();
     idkey = _nonarr(idkey, undefined);
     let ids = j.files().ids;

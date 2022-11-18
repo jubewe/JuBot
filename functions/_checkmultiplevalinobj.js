@@ -1,5 +1,3 @@
-const _checkvalinobj = require("./_checkvalinobj");
-
 /**
  * 
  * @param {object} obj 

@@ -1,4 +1,4 @@
-function date_(){return new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset())).toISOString().split(".")[0].replace("T", " ")};
+function date_(){return new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset())).toISOString().split("Z")[0].replace("T", " ")};
 const _returner = require("./_returner.js");
 
 /**

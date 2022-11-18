@@ -95,7 +95,10 @@ async function remind(opt, j_, noreturn, sender_userid, target_userid, reminder_
                     reminders_.push(reminders.ids[reminder_]);
                 });
                 reminders.users[search_userid] = [];
-                _wf(paths.reminders, reminders);
+                
+                if(reminders_.length > 0){
+                    _wf(paths.reminders, reminders);
+                }
 
                 return resolve(reminders_);
             }

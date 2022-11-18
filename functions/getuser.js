@@ -1,4 +1,4 @@
-const j = require("../variables/j");
+let j = require("../variables/j");
 const paths = require("../variables/paths");
 let { replacer } = require("../variables/varstatic");
 const getuserbyid = require("./getuserbyid");

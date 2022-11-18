@@ -5,7 +5,7 @@ function _requestopts(romethod, rotoken, roclientid){
             method: romethod,
             headers: {
                 'Client-ID' : (roclientid ? roclientid : j.env().T_CLIENTID),
-                'Accept' : 'application/vnd.twitchtv.v5+json',
+                'Accept' : 'application/json',
                 'Authorization' : `Bearer ${!rotoken || rotoken === 0 ? j.env().T_TOKEN : rotoken}`,
             }
         }
@@ -14,7 +14,7 @@ function _requestopts(romethod, rotoken, roclientid){
             method: "GET",
             headers: {
                 'Client-ID' : j.env().T_CLIENTID,
-                'Accept' : 'application/vnd.twitchtv.v5+json',
+                'Accept' : 'application/json',
                 'Authorization' : `Bearer ${j.env().T_TOKEN}`,
             }
         }

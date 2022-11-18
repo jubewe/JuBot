@@ -1,5 +1,8 @@
 const fs = require("fs");
+const isdebug = require("./isdebug");
+const _log = require("./_log");
 const _mainpath = require("./_mainpath");
+const _staticspacer = require("./_staticspacer");
 
 /**
  * 
@@ -9,6 +12,10 @@ const _mainpath = require("./_mainpath");
  */
 
 function _wf(wfpath, wffile){
+    if(isdebug("functions", "_wf")){
+        _log(1, `${_staticspacer("debug", "_wf")} ${wfpath} (JSON: ${typeof wffile === "object"}) (${Buffer.from((typeof wffile === "object" ? JSON.stringify(wffile) : wffile), "utf-8").byteLength} b)`);
+    }
+
     if(!wfpath) throw new Error(`_wf: wfpath is undefined`);
     if(!wffile) throw new Error(`_wf: wffile is undefined`);
 

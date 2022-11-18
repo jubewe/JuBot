@@ -1,1 +1,24 @@
-{"times":{},"users":{"263830208":["45"]},"ids":{"45":{"id":"45","set_time":"1664923804338","channel":{"name":"jubewe","id":"263830208"},"time":1664924404338,"message":"Bedge","user":{"name":"jubewe","id":"263830208"}}}}
+{
+    "times": {},
+    "users": {
+        "263830208": [
+            "45"
+        ]
+    },
+    "ids": {
+        "45": {
+            "id": "45",
+            "set_time": "1664923804338",
+            "channel": {
+                "name": "jubewe",
+                "id": "263830208"
+            },
+            "time": 1664924404338,
+            "message": "Bedge",
+            "user": {
+                "name": "jubewe",
+                "id": "263830208"
+            }
+        }
+    }
+}

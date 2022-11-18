@@ -12,11 +12,11 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 3000,
     cooldown_user: 1000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         if(j_.message._.args()[0]){
             switch (j_.message._.command){
                 case "notification": {
-                    switch (j.message._.args()[0]){
+                    switch (j_.message._.args()[0]){
                         case "add": {addnotification(1); break;}
         
                         case "remove": 
@@ -32,6 +32,8 @@ module.exports = {
                         }
                     }
                 }
+
+                case "notifications": {getnotifications(); break;}
 
                 case "addnotification": {addnotification(0); break;}
                 case "deletenotification":
@@ -52,12 +54,14 @@ module.exports = {
                         j.send(2, j_, `Successfully added notification`);
                     })
                     .catch(e => {
+                        console.error(e);
                         j.send(2, j_, `Error: Could not add notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
                     j.send(2, j_, `Error: No notificationname given`);
                 }
             };
+
             async function editnotification(num){
                 if(j_.message._.args()[num]){
                     let notificationname = j_.message._.args()[num];
@@ -65,15 +69,16 @@ module.exports = {
                     
                     customnotification(3, j_, false, j_.message.channel.id, notificationname, notificationmessage, null, null)
                     .then(n => {
-                        j.send(2, j_, `Successfully added notification`);
+                        j.send(2, j_, `Successfully edited notification`);
                     })
                     .catch(e => {
-                        j.send(2, j_, `Error: Could not add notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                        j.send(2, j_, `Error: Could not edit notification: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
                     j.send(2, j_, `Error: No notificationname given`);
                 }
             };
+
             async function statenotification(num, state){
                 if(j_.message._.args()[num]){
                     let notificationname = j_.message._.args()[num];
@@ -88,6 +93,7 @@ module.exports = {
                     j.send(2, j_, `Error: No notificationname given`);
                 }
             };
+
             async function deletenotification(num){
                 if(j_.message._.args()[num]){
                     let notificationname = j_.message._.args()[num];
@@ -103,8 +109,19 @@ module.exports = {
                     j.send(2, j_, `Error: No notificationname given`);
                 }
             };
+
+            async function getnotifications(){
+                customnotification(0, j_, false, j_.message.channel.id)
+                .then(n => {
+                    console.log(n);
+                    j.send(2, j_, `Notifications in this channel: `);
+                })
+                .catch(e => {
+                    j.send(2, j_, `Error: Could not get notifications: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                })
+            };
         } else {
-            j.send(2, j_, `Error: No option given`)
+            j.send(2, j_, `Error: No option given`);
         }
     }
 }

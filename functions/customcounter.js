@@ -21,6 +21,7 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
         let j = require("../variables/j");
         channelid = channelid || j_.message.channel.id;
         counternum = (!global.variables.varstatic.nonarr.includes(counternum) ? parseInt(counternum) : undefined);
+        counterid = (!global.variables.varstatic.nonarr.includes(counterid) ? counterid : undefined);
 
         let channels = j.files().channels;
 
@@ -87,6 +88,7 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
 
                     _wf(paths.channels, channels);
                     _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "delete")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
+                    _appf(paths.log, `\n${Date.now()} ${_stackname(0, "counters", "delete")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
 
                     return resolve(counter);
                 } else {
@@ -115,6 +117,7 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
                     _wf(paths.channels, channels);
 
                     _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "rename")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.name} ${counter.name} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
+                    _appf(paths.log, `\n${Date.now()} ${_stackname(0, "counters", "rename")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.name} ${counter.name} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
                     return resolve(counter);
                 } else {
                     if(noreturn) return resolve({});
@@ -134,73 +137,70 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
 
                 counterid = counterid || getcounteridbyname();
 
-                if(!counterid){
-                    createcounter()
-                    .then(() => {
-                        updatecounter();
-                    })
-                } else {
-                    updatecounter();
-                }
+                updatecounter();
 
                 break;
             }
         }
 
         async function createcounter(){
-            _id(1, "channel", channelid, "counters")
-            .then(id => {
-                let counter = {
-                    name: countername || `counter${id[1]}`,
-                    id: id[0],
-                    num: counternum || 0,
-                };
+            return new Promise((resolve, reject) => {
+                _id(1, "channel", channelid, "counters")
+                .then(id => {
+                    const counter = {
+                        name: countername || `counter${id[1]}`,
+                        id: id[0],
+                        num: counternum || 0,
+                    };
 
-                counterid = id[0];
+                    counterid = id[0];
 
-                channels.channels[channelid]["counters"][id[0]] = counter;
-
-                _wf(paths.channels, channels);
-                _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "add")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
-
-                return resolve(counter);
-            })
-            .catch(e => {
-                console.error(e);
-                return reject({path:[opt,0],msg:"could not create id"});
+                    channels.channels[channelid]["counters"][id[0]] = counter;
+                    
+                    _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "add")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
+                    _appf(paths.log, `\n${Date.now()} ${_stackname(0, "counters", "add")[0]} ${channelid} ${counter.id} ${counter.name} ${JSON.stringify(counter)}`);
+                    
+                    _wf(paths.channels, channels);
+                    return resolve(counter);
+                })
+                .catch(e => {
+                    console.error(e);
+                    return reject({path:[opt,0],msg:"could not create id"});
+                })
             })
         };
 
         async function updatecounter(){
-            if(Object.keys(channels.channels[channelid]["counters"]).includes(counterid)){
-                let counter = channels.channels[channelid]["counters"][counterid];
-                let counter_ = counter;
-                if(opt === 4){
-                    counter.num = counternum || 0;
-                } else if(opt === 5){
-                    counter.num += counternum || 1;
-                }
-
-                _wf(paths.channels, channels);
-
-                _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "update")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.num} ${counter.num} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
-                return resolve(counter);
+            if(!counterid || !Object.keys(channels.channels[channelid]["counters"]).includes(counterid)){
+                createcounter()
+                .then(counter => {
+                    updatecounter2(counter);
+                })
             } else {
-                if(noreturn) return resolve({});
-                return reject({path:[opt,0],msg:"counter not found"});
+                updatecounter2();
             }
+        };
+
+        async function updatecounter2(counter){
+            counter = counter || channels.channels[channelid]["counters"][counterid];
+            let counter_ = counter;
+            if(opt === 4){
+                counter.num = counternum || 0;
+            } else if(opt === 5){
+                counter.num += counternum || 1;
+            }
+
+            _appf(paths.counterlog, `\n${Date.now()} ${_stackname(0, "counters", "update")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.num} ${counter.num} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
+            _appf(paths.log, `\n${Date.now()} ${_stackname(0, "counters", "update")[0]} ${channelid} ${counter.id} ${counter.name} ${counter_.num} ${counter.num} ${JSON.stringify(counter)} ${JSON.stringify(counter_)}`);
+            
+            _wf(paths.channels, channels);
+            return resolve(counter);
         };
 
         function getcounteridbyname(name){
             name = name || countername;
             let ret = undefined;
-            if(!Object.keys(channels.channels).includes(channelid)){
-                channels.channels[channelid] = {};
-            }
-
-            if(!Object.keys(channels.channels[channelid]).includes("counters")){
-                channels.channels[channelid]["counters"] = {};
-            }
+            if(!channels.channels[channelid] || !channels.channels[channelid]["counters"]) return ret;
             Object.keys(channels.channels[channelid]["counters"]).map(cntid => {
                 if(channels.channels[channelid]["counters"][cntid].name === name){
                     ret = cntid;

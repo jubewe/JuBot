@@ -1,6 +1,6 @@
 const _cleantime = require("../functions/_cleantime");
 const _converttime = require("../functions/_converttime");
-const _regex = require("../functions/_regex");
+const _splitafter = require("../functions/_splitafter");
 const _timer = require("../functions/_timer");
 let j = require("../variables/j");
 
@@ -14,14 +14,13 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 10000,
     cooldown_user: 5000,
-    exec: async (j_, j) => {
-        if(j_.message._.msg.split(" ")[1]){
-            let ttime = _converttime(j_.message._.msg.split(" ")[1], false);
+    exec: async (j_) => {
+        if(j_.message._.args()[0]){
+            let ttime = _converttime(j_.message._.args()[0], false);
             let tmsg = "";
 
-            if(j_.message._.msg.split(" ")[2]){
-                tmsg = j_.message._.msg;
-                tmsg = tmsg.split(tmsg.split(" ").splice(0, 2).join(" ") + " ")[1];
+            if(j_.message._.args()[1]){
+                tmsg = _splitafter(j_.message._.msg, 1)
             }
 
             if(!isNaN(ttime)){

@@ -9,8 +9,8 @@ module.exports = {
     user: require("./user"),
     timer: require("./timer"),
     tuck: require("./tuck"),
-    rank: require("./_valorantrank"),
-    rank2: require("./_valorantrank2"),
+    rank: require("./valorantrank"),
+    rank2: require("./valorantrank2"),
     
     botinfo: require("./botinfo"),
     serverinfo: require("./server"),
@@ -50,6 +50,7 @@ module.exports = {
     getkey: require("./customkeyword"),
 
     notification: require("./customnotification"),
+    notifications: require("./customnotification"),
     addnotification: require("./customnotification"),
     deletenotification: require("./customnotification"),
     removenotification: require("./customnotification"),
@@ -60,6 +61,20 @@ module.exports = {
     permission: require("./permission"),
 
     remind: require("./reminder"),
+    reminder: require("./reminder"),
     remindme: require("./reminder"),
+
+    phrase: require("./phrase"),
+    randomphrase: require("./phrase"),
+
+    logchannel: require("./logchannel"),
+    logchannels: require("./logchannel"),
+    todo: require("./todo"),
+    
+    restart: require("./poweroptions"),
+
+    tracker: require("./customtracker"),
+    activemods: require("./trackers/activemods"),
+
 
 }

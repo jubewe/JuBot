@@ -1,4 +1,4 @@
-const j = require("../variables/j");
+let j = require("../variables/j");
 
 module.exports = {
     name: "test",
@@ -10,7 +10,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 30000,
     cooldown_user: 45000,
-    exec: async (j_, j) => {
+    exec: async (j_) => {
         j.send(2, j_, `Test VoHiYo $(message[1])`, null, null, null, true);
     }
 }

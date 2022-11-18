@@ -13,15 +13,15 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
-        let channels = j.files().clientchannels;
-
+    exec: async (j_) => {
         if(j_.message._.args()[0]){
             let viewchan = j_.message._.args()[0].toLowerCase();
-            if(!channels.viewchannels.includes(viewchan)){
-                j_.viewclient.join(viewchan);
-                channels.viewchannels.push(viewchan);
-                _wf(paths.clientchannels, channels);
+            if(!j.files().clientchannels.viewchannels.includes(viewchan)){
+                if(j.viewclient){
+                    j.viewclient.join(viewchan);
+                }
+                j.files().clientchannels.viewchannels.push(viewchan);
+                _wf(paths.clientchannels, j.files().clientchannels);
                 j.send(2, j_, `Successfully started viewing ${_pixelize(viewchan)}`);
             } else {
                 j.send(2, j_, `Error: Already viewing ${_pixelize(viewchan)}`)

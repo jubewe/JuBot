@@ -1,3 +1,10 @@
+global.test = "test";
+global.variables = {
+    varstatic: require("./variables/varstatic"),
+    vars: require("./variables/vars")
+};
+global.functions = require("./functions/_");
+
 const request = require("request");
 const api_requestheaders = require("./functions/api/api_requestheaders");
 const _error = require("./functions/_error");
@@ -8,15 +15,16 @@ const c = require("./config.json");
 const urls = require("./variables/urls");
 const _checkenv = require("./functions/_checkenv");
 const livechannels = require("./functions/trackers/livechannels");
+const youtubevideo = require("./functions/trackers/youtubevideo");
+const _wf = require("./functions/_wf");
+let j = require("./variables/j");
+const _mainpath = require("./functions/_mainpath");
 let queuedreconnect = -1;
-let livenotifications = {};
 
-global.test = "test";
-global.variables = {
-    varstatic: require("./variables/varstatic"),
-    vars: require("./variables/vars")
-};
-global.functions = require("./functions/_");
+if(_checkenv(null, "OS", 0, "Windows_NT")){
+    _log(1, `${_stackname("script", "test")[3]} executed`);
+    require(_mainpath("./test.js"))();
+}
 
 function _init(){
     let j = require("./variables/j");
@@ -37,8 +45,14 @@ function _init(){
 
         j.client.on("ready", () => {
             _log(1, `${_stackname("client", "connect")[3]} Successful`);
+            if(j.files().startup.reconnect){
+                j.send(0, j.e().T_USERNAME, `Successfully reconnected`);
+                j.files().startup.reconnect = false;
+                _wf(j.paths().startup, j.files().startup);
+            }
             // setTimeout(() => {_pi_blink();setInterval(_pi_blink, 2000)}, ((Date.now().toString().slice(-5, -1))%10000))
         });
+
         j.client.on("error", error => {
             if(error){
                 _log(2, `${_stackname("client", "error")[3]} ${error.message}`);
@@ -66,6 +80,11 @@ function _init(){
             livechannels();
             setInterval(livechannels, j.c().intervals.trackers.activemods);
         };
+
+        if(j.c().connect.trackers.youtube_video){
+            youtubevideo();
+            setInterval(youtubevideo, j.c().intervals.trackers.youtube_video);
+        }
     };
 
     if(c.connect.twitch_view){
