@@ -11,10 +11,15 @@ const _staticspacer = require("./_staticspacer");
  * @returns nothing
  */
 
-function _wf(wfpath, wffile){
-    if(isdebug("functions", "_wf")){
-        _log(1, `${_staticspacer("debug", "_wf")} ${wfpath} (JSON: ${typeof wffile === "object"}) (${Buffer.from((typeof wffile === "object" ? JSON.stringify(wffile) : wffile), "utf-8").byteLength} b)`);
+function _wf(wfpath, wffile, filechange){
+    if(require("../config.json").handlers.filechange && !filechange){
+        return;
     }
+    
+    if(isdebug("functions", "_wf")){
+        _log(1, `${_staticspacer("debug", "_wf")} ${wfpath} (JSON: ${typeof wffile === "object"}, Filechange: ${filechange || "false"}) (${Buffer.from((typeof wffile === "object" ? JSON.stringify(wffile) : wffile), "utf-8").byteLength} b)`);
+    }
+
 
     if(!wfpath) throw new Error(`_wf: wfpath is undefined`);
     if(!wffile) throw new Error(`_wf: wffile is undefined`);

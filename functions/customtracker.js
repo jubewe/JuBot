@@ -1,3 +1,4 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
 const _appf = require("./_appf");
 const _stackname = require("./_stackname");
@@ -20,21 +21,19 @@ async function customtracker(opt, j_, noreturn, channelid, trackername, trackers
         let j = require("../variables/j");
         channelid = channelid || j_.message.channel.id;
 
-        let channels = j.files().channels;
-
         switch (opt) {
             case 0: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
-                if(Object.keys(channels.channels).includes(channelid)){
-                    if(Object.keys(channels.channels[channelid]).includes("trackers")){
+                if(Object.keys(files.channels.channels).includes(channelid)){
+                    if(Object.keys(files.channels.channels[channelid]).includes("trackers")){
                         if(trackername){
-                            if(Object.keys(channels.channels[channelid]["trackers"]).includes(trackername)){
-                                return resolve(channels.channels[channelid]["trackers"][trackername]);
+                            if(Object.keys(files.channels.channels[channelid]["trackers"]).includes(trackername)){
+                                return resolve(files.channels.channels[channelid]["trackers"][trackername]);
                             } else {
                                 return reject({path:[opt,1,1,1,0],msg:"channel trackers do not include tracker"});
                             }
                         } else {
-                            return resolve(channels.channels[channelid]["trackers"]);
+                            return resolve(files.channels.channels[channelid]["trackers"]);
                         }
                     } else {
                         if(trackername){
@@ -61,20 +60,20 @@ async function customtracker(opt, j_, noreturn, channelid, trackername, trackers
                     return reject({path:[opt,1,1,0],msg:"trackername invalid (not found)"})
                 }
 
-                if(!Object.keys(channels.channels).includes(channelid)) channels.channels[channelid] = {};
-                if(!Object.keys(channels.channels[channelid]).includes("trackers")) channels.channels[channelid]["trackers"] = {};
+                if(!Object.keys(files.channels.channels).includes(channelid)) files.channels.channels[channelid] = {};
+                if(!Object.keys(files.channels.channels[channelid]).includes("trackers")) files.channels.channels[channelid]["trackers"] = {};
 
                 let tracker = {
                     state: trackerstate || 1,
                     settings: trackersettings || {}
                 };
 
-                channels.channels[channelid]["trackers"][trackername] = tracker;
+                files.channels.channels[channelid]["trackers"][trackername] = tracker;
                 
                 _appf(paths.trackerlog, `\n${Date.now()} ${_stackname(0, "trackers", "add")[0]} ${channelid} ${trackername} ${JSON.stringify(tracker)}`);
                 _appf(paths.log, `\n${Date.now()} ${_stackname(0, "trackers", "add")[0]} ${channelid} ${trackername} ${JSON.stringify(tracker)}`);
                 
-                _wf(paths.channels, j.files().channels);
+                _wf(paths.channels, files.channels);
 
                 return resolve(tracker);
                 break;
@@ -85,14 +84,14 @@ async function customtracker(opt, j_, noreturn, channelid, trackername, trackers
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!trackername) return reject({path:[opt,1,0],msg:"trackername is undefined"});
 
-                if(Object.keys(channels.channels[channelid]["trackers"]).includes(trackername)){
-                    let tracker = channels.channels[channelid]["trackers"][trackername];
-                    delete channels.channels[channelid]["trackers"][trackername];
+                if(Object.keys(files.channels.channels[channelid]["trackers"]).includes(trackername)){
+                    let tracker = files.channels.channels[channelid]["trackers"][trackername];
+                    delete files.channels.channels[channelid]["trackers"][trackername];
 
                     _appf(paths.trackerlog, `\n${Date.now()} ${_stackname(0, "trackers", "delete")[0]} ${channelid} ${trackername} ${JSON.stringify(tracker)}`);
                     _appf(paths.log, `\n${Date.now()} ${_stackname(0, "trackers", "delete")[0]} ${channelid} ${trackername} ${JSON.stringify(tracker)}`);
                     
-                    _wf(paths.channels, channels);
+                    _wf(paths.channels, files.channels);
                     return resolve(tracker);
                 } else {
                     if(noreturn) return resolve({});
@@ -108,8 +107,8 @@ async function customtracker(opt, j_, noreturn, channelid, trackername, trackers
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!trackername) return reject({path:[opt,1,0],msg:"trackername is undefined"});
 
-                if(Object.keys(channels.channels[channelid]["trackers"]).includes(trackername)){
-                    let tracker = channels.channels[channelid]["trackers"][trackername];
+                if(Object.keys(files.channels.channels[channelid]["trackers"]).includes(trackername)){
+                    let tracker = files.channels.channels[channelid]["trackers"][trackername];
                     let tracker_ = tracker;
                     
                     tracker.state = (!global.variables.varstatic.nonarr.includes(trackerstate) ? trackerstate : 1);
@@ -117,7 +116,7 @@ async function customtracker(opt, j_, noreturn, channelid, trackername, trackers
                     _appf(paths.trackerlog, `\n${Date.now()} ${_stackname(0, "trackers", "state")[0]} ${channelid} ${trackername} ${JSON.stringify(tracker)} ${JSON.stringify(tracker_)}`);
                     _appf(paths.log, `\n${Date.now()} ${_stackname(0, "trackers", "state")[0]} ${channelid} ${trackername} ${JSON.stringify(tracker)} ${JSON.stringify(tracker_)}`);
 
-                    _wf(paths.channels, channels);
+                    _wf(paths.channels, files.channels);
                     return resolve(tracker);
                 } else {
                     if(noreturn) return resolve({});

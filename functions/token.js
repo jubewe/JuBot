@@ -11,13 +11,12 @@ const validatetoken = require("./validatetoken");
  */
 
 async function token(topt, ttoken, tclientid, treturn){
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve, reject) => {
         // 0 = get token, 1 = get valid, 2 = get scopes, 3 = validate, 4 = revoke
     
         switch (topt) {
             case 0: 
-            case 2:
-            {
+            case 2: {
                 gettoken(ttoken)
                 .then(t => {
                     if(topt === 0){

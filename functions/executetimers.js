@@ -1,3 +1,4 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
 const getuser = require("./getuser");
 const _cleantime = require("./_cleantime");
@@ -13,7 +14,7 @@ let set_timers = [];
 
 function executetimers(tid){
     let j = require("../variables/j");
-    let timers = j.files().timers;
+    let timers = files.timers;
 
     if(tid){
         if(!set_timers.includes(tid)){
@@ -21,7 +22,7 @@ function executetimers(tid){
         } 
     } else {
         for(i = 0; i < Object.keys(timers.times).length; i++){
-            timers.times[Object.keys(timers.times)[i]].forEach(i2 => {
+            files.timers.times[Object.keys(timers.times)[i]].forEach(i2 => {
                 settimer(i2);
             })
         }
@@ -29,8 +30,8 @@ function executetimers(tid){
     }
 
     function settimer(id){
-        if(Object.keys(timers.ids).includes(id)){
-            let tobj = timers.ids[id];
+        if(Object.keys(files.timers.ids).includes(id)){
+            let tobj = files.timers.ids[id];
             if((tobj.time - Date.now()) < 1000){
                 executetimer(id);
             } else {
@@ -44,8 +45,8 @@ function executetimers(tid){
     };
 
     function executetimer(id){
-        if(!Object.keys(timers.ids).includes(id)) return reject();
-        let tobj = timers.ids[id];
+        if(!Object.keys(files.timers.ids).includes(id)) return reject();
+        let tobj = files.timers.ids[id];
         getuser(1, tobj.channel.id)
         .then(ch => {
             getuser(1, tobj.user.id)
@@ -53,9 +54,9 @@ function executetimers(tid){
                 try {
                     j.send(0, ch[0], `[TIMER] ${u[0]}, Timer from ${_cleantime(Date.now()-parseInt(tobj.set_time), 5, 2).time.join(", ")} ago: ${tobj.message}`);
 
-                    delete timers.ids[id];
-                    timers.users[tobj.user.id].splice(timers.users[tobj.user.id].indexOf(tobj.id), 1);
-                    _wf(paths.timers, timers);
+                    delete files.timers.ids[id];
+                    files.timers.users[tobj.user.id].splice(files.timers.users[tobj.user.id].indexOf(tobj.id), 1);
+                    _wf(paths.timers, files.timers);
                 } catch(e) {
                     throw e;
                 }

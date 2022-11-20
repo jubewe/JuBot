@@ -1,3 +1,11 @@
+/**
+ * 
+ * @param {string} pinput 
+ * @param {number | undefined} piindex 
+ * @param {string | undefined} ppixel 
+ * @returns {string}
+ */
+
 function _pixelize(pinput, piindex, ppixel){
     if(pinput !== undefined){
       let pindex = 3;

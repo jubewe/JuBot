@@ -1,3 +1,4 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
 const _appf = require("./_appf");
 const _stackname = require("./_stackname");
@@ -19,23 +20,24 @@ const _wf = require("./_wf");
 async function customnotification(opt, j_, noreturn, channelid, notificationname, notificationmessage, notificationsettings, notificationstate){
     return new Promise((resolve, reject) => {
         let j = require("../variables/j");
-        let channels = j.files().channels;
+        let channels = files.channels;
+        
         switch (opt) {
             case 0: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
-                if(Object.keys(channels.channels).includes(channelid)){
-                    if(!Object.keys(channels.channels[channelid]).includes("notifications")){
-                        channels.channels[channelid]["notifications"] = {};
+                if(Object.keys(files.channels.channels).includes(channelid)){
+                    if(!Object.keys(files.channels.channels[channelid]).includes("notifications")){
+                        files.channels.channels[channelid]["notifications"] = {};
                     }
                     if(notificationname){
-                        if(Object.keys(channels.channels.notifications).includes(notificationname)){
-                            return resolve(channels.channels[channelid].notifications);
+                        if(Object.keys(files.channels.channels.notifications).includes(notificationname)){
+                            return resolve(files.channels.channels[channelid].notifications);
                         } else {
                             if(noreturn) return resolve({});
                             return reject({path:[opt,1,0],msg:"notification not found in channel notifications"});
                         }
                     } else {
-                        return resolve(channels.channels[channelid].notifications);
+                        return resolve(files.channels.channels[channelid].notifications);
                     }
                 } else {
                     if(noreturn) return resolve({});
@@ -51,11 +53,11 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 if(!j.c().notifications.names.includes(notificationname)) return reject({path:[opt,1,1,1,0],msg:"invalid notification type"});
                 notificationname = notificationname.toLowerCase();
 
-                if(!Object.keys(channels.channels).includes(channelid)){
-                    channels.channels[channelid] = {};
+                if(!Object.keys(files.channels.channels).includes(channelid)){
+                    files.channels.channels[channelid] = {};
                 }
-                if(!Object.keys(channels.channels[channelid]).includes("notifications")){
-                    channels.channels[channelid]["notifications"] = {};
+                if(!Object.keys(files.channels.channels[channelid]).includes("notifications")){
+                    files.channels.channels[channelid]["notifications"] = {};
                 }
 
                 let notification = {
@@ -64,12 +66,12 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                     "settings": (!global.variables.varstatic.nonarr.includes(notificationsettings) ? notificationsettings : {}) || {}
                 };
 
-                channels.channels[channelid]["notifications"][notificationname] = notification;
+                files.channels.channels[channelid]["notifications"][notificationname] = notification;
 
-                _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "add")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)}`);
-                _appf(paths.log, `\n${_stackname(0, "notifications", "add")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)}`);
+                _appf(paths.notificationlog, `\n${Date.now()} ${_stackname(0, "notifications", "add")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)}`);
+                _appf(paths.log, `\n${Date.now()} ${_stackname(0, "notifications", "add")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)}`);
 
-                _wf(paths.channels, channels);
+                _wf(paths.channels, files.channels);
 
                 return resolve(notification)
                 break;
@@ -81,20 +83,20 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 if(!j.c().notifications.names.includes(notificationname)) return reject({path:[opt,1,1,1,0],msg:"invalid notification type"});
                 notificationname = notificationname.toLowerCase();
 
-                if(!Object.keys(channels.channels).includes(channelid)){
-                    channels.channels[channelid] = {};
+                if(!Object.keys(files.channels.channels).includes(channelid)){
+                    files.channels.channels[channelid] = {};
                 }
-                if(!Object.keys(channels.channels[channelid]).includes("notifications")){
-                    channels.channels[channelid]["notifications"] = {};
+                if(!Object.keys(files.channels.channels[channelid]).includes("notifications")){
+                    files.channels.channels[channelid]["notifications"] = {};
                 }
 
-                if(Object.keys(channels.channels[channelid]["notifications"]).includes(notificationname)){
-                    let notification_ = channels.channels[channelid]["notifications"][notificationname];
-                    delete channels.channels[channelid]["notifications"][notificationname];
-                    _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "delete")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification_)}`);
-                    _appf(paths.log, `\n${_stackname(0, "notifications", "delete")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification_)}`);
+                if(Object.keys(files.channels.channels[channelid]["notifications"]).includes(notificationname)){
+                    let notification_ = files.channels.channels[channelid]["notifications"][notificationname];
+                    delete files.channels.channels[channelid]["notifications"][notificationname];
+                    _appf(paths.notificationlog, `\n${Date.now()} ${_stackname(0, "notifications", "delete")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification_)}`);
+                    _appf(paths.log, `\n${Date.now()} ${_stackname(0, "notifications", "delete")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification_)}`);
 
-                    _wf(paths.channels, channels);
+                    _wf(paths.channels, files.channels);
                     return resolve(true);
                 } else {
                     if(noreturn) return resolve(null);
@@ -110,14 +112,14 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 if(!j.c().notifications.names.includes(notificationname)) return reject({path:[opt,1,1,1,0],msg:"invalid notification type"});
                 notificationname = notificationname.toLowerCase();
 
-                if(!Object.keys(channels.channels).includes(channelid)){
-                    channels.channels[channelid] = {};
+                if(!Object.keys(files.channels.channels).includes(channelid)){
+                    files.channels.channels[channelid] = {};
                 }
-                if(!Object.keys(channels.channels[channelid]).includes("notifications")){
-                    channels.channels[channelid]["notifications"] = {};
+                if(!Object.keys(files.channels.channels[channelid]).includes("notifications")){
+                    files.channels.channels[channelid]["notifications"] = {};
                 }
 
-                let notification_ = channels.channels[channelid]["notifications"][notificationname] || {};
+                let notification_ = files.channels.channels[channelid]["notifications"][notificationname] || {};
 
                 let notification = {
                     "state": (!global.variables.varstatic.nonarr.includes(notificationstate) ? notificationstate : notification_.state) || 1,
@@ -125,12 +127,12 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                     "settings": (!global.variables.varstatic.nonarr.includes(notificationsettings) ? notificationsettings : notification_.settings) || {}
                 };
 
-                channels.channels[channelid]["notifications"][notificationname] = notification;
+                files.channels.channels[channelid]["notifications"][notificationname] = notification;
 
                 _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "update")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
                 _appf(paths.log, `\n${_stackname(0, "notifications", "update")[0]} ${channelid} ${notificationname} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
 
-                _wf(paths.channels, channels);
+                _wf(paths.channels, files.channels);
 
                 return resolve(notification);
                 break;
@@ -143,18 +145,18 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                 if(!j.c().notifications.names.includes(notificationname)) return reject({path:[opt,1,1,1,0],msg:"invalid notification type"});
                 notificationname = notificationname.toLowerCase();
 
-                if(!Object.keys(channels.channels).includes(channelid)){
-                    channels.channels[channelid] = {};
+                if(!Object.keys(files.channels.channels).includes(channelid)){
+                    files.channels.channels[channelid] = {};
                 }
-                if(!Object.keys(channels.channels[channelid]).includes("notifications")){
-                    channels.channels[channelid]["notifications"] = {};
+                if(!Object.keys(files.channels.channels[channelid]).includes("notifications")){
+                    files.channels.channels[channelid]["notifications"] = {};
                 }
 
-                if(!Object.keys(channels.channels[channelid]["notifications"]).includes(notificationname)){
+                if(!Object.keys(files.channels.channels[channelid]["notifications"]).includes(notificationname)){
                     return reject({path:[opt,0],msg:"notification not found"});
                 }
 
-                let notification_ = channels.channels[channelid]["notifications"][notificationname];
+                let notification_ = files.channels.channels[channelid]["notifications"][notificationname];
 
                 let notification = {
                     "state": notificationstate,
@@ -162,12 +164,12 @@ async function customnotification(opt, j_, noreturn, channelid, notificationname
                     "settings": notification_.settings
                 };
 
-                channels.channels[channelid]["notifications"][notificationname] = notification;
+                files.channels.channels[channelid]["notifications"][notificationname] = notification;
 
-                _appf(paths.notificationlog, `\n${_stackname(0, "notifications", "state")[0]} ${channelid} ${notificationname} ${notificationstate} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
-                _appf(paths.log, `\n${_stackname(0, "notifications", "state")[0]} ${channelid} ${notificationname} ${notificationstate} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
+                _appf(paths.notificationlog, `\n${Date.now()} ${_stackname(0, "notifications", "state")[0]} ${channelid} ${notificationname} ${notificationstate} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
+                _appf(paths.log, `\n${Date.now()} ${_stackname(0, "notifications", "state")[0]} ${channelid} ${notificationname} ${notificationstate} ${JSON.stringify(notification)} ${JSON.stringify(notification_)}`);
                 
-                _wf(paths.channels, channels);
+                _wf(paths.channels, files.channels);
                 return resolve(notification)
                 break;
             }

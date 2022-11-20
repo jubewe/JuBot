@@ -158,7 +158,7 @@ module.exports = {
                 // console.log(discord_serverid)
 
                 if(!isNaN(discord_serverid)){
-                    j_.dc.client.guilds.fetch(discord_serverid)
+                    j.dc.client.guilds.fetch(discord_serverid)
                     .then(() => {
                         _channel(1, j_.message.channel.id, "discord_serverid", discord_serverid)
                         .then(t => {

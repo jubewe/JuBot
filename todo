@@ -40,5 +40,6 @@ new splitmsg
 crossban command
 badgestoarr
 fix customnotification error and success message
-clear cache(s) command
+<clear cache(s) command>
 filemanager: sync files on change
+cafk for admins

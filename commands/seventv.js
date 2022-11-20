@@ -33,10 +33,10 @@ module.exports = {
                         .then(e => {
                             // console.log(e)
                             if(Object.keys(e.resolve).length === 0){
-                                j.send(2, j_, `Error: Could not add ${emotes.length} emote${_returnplural(emotes)} to discord (${e.reject[Object.keys(e.reject)[0]].message})`);
+                                j.send(2, j_, `Error: Could not add ${emotes.length} emote${_returnplural(emotes)} to discord (${e.reject[Object.keys(e.reject)[0]].message || "-"})`);
                             } else {
                                 j.send(2, j_, `Successfully added [${Object.keys(e.resolve).length}] emote${_returnplural(e.resolve)} to discord ${Object.keys(e.resolve).join(", ")} `+
-                                `${(Object.keys(e.reject).length > 0 ? `(Failed [${emotes.length}]: ${Object.keys(e.reject).join(", ")}) (${e.reject[Object.keys(e.reject)[0]].message})` : "")}`);
+                                `${(Object.keys(e.reject).length > 0 ? `(Failed [${emotes.length}]: ${Object.keys(e.reject).join(", ")}) (${e.reject[Object.keys(e.reject)[0]].message || "-"})` : "")}`);
                             }
                         })
                         .catch(e => {

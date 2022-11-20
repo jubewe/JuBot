@@ -1,8 +1,8 @@
-let j = require("../variables/j");
+const files = require("../variables/files");
 const _checkmultiplevaliinobj = require("./_checkmultiplevalinobj");
 
 function gettrkoptchannels(){
-    let channels = j.files().channels;
+    let channels = files.channels;
     let searchparams = ["live","activemods"];
     if([...arguments].length > 1){
         searchparams = [...arguments];

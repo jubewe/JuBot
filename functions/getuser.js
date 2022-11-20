@@ -1,4 +1,4 @@
-let j = require("../variables/j");
+const files = require("../variables/files");
 const paths = require("../variables/paths");
 let { replacer } = require("../variables/varstatic");
 const getuserbyid = require("./getuserbyid");
@@ -10,20 +10,20 @@ const _wf = require("./_wf");
 async function getuser(gumode, guinput){
     // [name, id]
     return new Promise(function(resolve, reject){
-        let userids = j.files().userids;
+        let userids = files.userids;
         function appendids(ainum){
-            _wf(paths.userids, userids);
+            _wf(paths.userids, files.userids);
             return resolve(ainum);
         };
 
         if(!regex.numregex().test(guinput)){
             // name
             guinput = guinput.toLowerCase().replace(replacer, "");
-            if(Object.keys(userids.names).includes(guinput)){
+            if(Object.keys(files.userids.names).includes(guinput)){
                 if(gumode === 0){
                     return resolve([gumode,1,1]);
                 } else if(gumode === 1){
-                    return resolve([guinput,userids.names[guinput]]);
+                    return resolve([guinput,files.userids.names[guinput]]);
                 }
             } else {
                 if(gumode === 0){
@@ -31,20 +31,20 @@ async function getuser(gumode, guinput){
                 } else if(gumode === 1){
                     getuserid(guinput)
                     .then(id => {
-                        if(userids.errors.includes(id.toString())){
-                            userids.errors.splice(userids.errors.indexOf(id.toString()), 1);
-                            _wf(paths.userids, userids);
+                        if(files.userids.errors.includes(id.toString())){
+                            files.userids.errors.splice(files.userids.errors.indexOf(id.toString()), 1);
+                            _wf(paths.userids, files.userids);
                             logcode(`@type=founduser;@data=msg:found+user,user:${id.toString()}`);
                         }
                         id = id.toString();
-                        userids.names[guinput] = id;
-                        userids.ids[id] = guinput;
+                        files.userids.names[guinput] = id;
+                        files.userids.ids[id] = guinput;
                         appendids([guinput,id]);
                     })
                     .catch(e => {
-                        if(!userids.errors.includes(guinput)){
-                            userids.errors.push(guinput);
-                            _wf(paths.userids, userids);
+                        if(!files.userids.errors.includes(guinput)){
+                            files.userids.errors.push(guinput);
+                            _wf(paths.userids, files.userids);
                         }
                         return reject([gumode,1,0]);
                     })
@@ -53,11 +53,11 @@ async function getuser(gumode, guinput){
         } else if(regex.numregex().test(guinput)) {
             // id
             guinput = guinput.toString();
-            if(Object.keys(userids.ids).includes(guinput)){
+            if(Object.keys(files.userids.ids).includes(guinput)){
                 if(gumode === 0){
                     return resolve([gumode,1,1]);
                 } else if(gumode === 1){
-                    return resolve([userids.ids[guinput], guinput]);
+                    return resolve([files.userids.ids[guinput], guinput]);
                 }
             } else {
                 if(gumode === 0){
@@ -65,19 +65,19 @@ async function getuser(gumode, guinput){
                 } else if(gumode === 1){
                     getuserbyid(guinput)
                     .then(name => {
-                        if(userids.errors.includes(name)){
-                            userids.errors.splice(userids.errors.indexOf(name), 1);
-                            _wf(paths.userids, userids);
+                        if(files.userids.errors.includes(name)){
+                            files.userids.errors.splice(files.userids.errors.indexOf(name), 1);
+                            _wf(paths.userids, files.userids);
                             logcode(`@type=founduser;@data=msg:found+user,user:${name}`);
                         }
-                        userids.names[name] = guinput;
-                        userids.ids[guinput] = name;
+                        files.userids.names[name] = guinput;
+                        files.userids.ids[guinput] = name;
                         appendids([name,guinput]);
                     })
                     .catch(err => {
-                        if(!userids.errors.includes(guinput)){
-                            userids.errors.push(guinput);
-                            _wf(paths.userids, userids);
+                        if(!files.userids.errors.includes(guinput)){
+                            files.userids.errors.push(guinput);
+                            _wf(paths.userids, files.userids);
                         }
                         return reject([gumode,1,0]);
                     })

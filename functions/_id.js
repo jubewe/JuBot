@@ -1,3 +1,4 @@
+const files = require("../variables/files");
 const paths = require("../variables/paths");
 const { nonarr } = require("../variables/varstatic");
 const _nonarr = require("./_nonarr");
@@ -14,26 +15,25 @@ const _wf = require("./_wf");
 
 async function _id(idopt, idtype, idchan, idkey) {
   return new Promise(function (resolve, reject) {
-    let j = require("../variables/j");
     idchan = nonarr.includes(idchan) ? undefined : idchan.toString();
     idkey = _nonarr(idkey, undefined);
-    let ids = j.files().ids;
+
     switch (idopt) {
       case 0: {
-        if (Object.keys(ids).includes(idtype)) {
+        if (Object.keys(files.ids).includes(idtype)) {
           if (!idchan) {
             if (idkey) {
-              return resolve(ids[idtype][idkey]);
+              return resolve(files.ids[idtype][idkey]);
             } else {
-              return resolve(ids[idtype]);
+              return resolve(files.ids[idtype]);
             }
           }
 
-          if (ids[idtype][idchan]) {
-            if (!idkey) return resolve(ids[idtype][idchan]);
+          if (files.idsids[idtype][idchan]) {
+            if (!idkey) return resolve(files.ids[idtype][idchan]);
             return resolve([
-              `${idchan}_${idkey}_${ids[idtype][idchan][idkey]}`,
-              ids[idtype][idchan][idkey],
+              `${idchan}_${idkey}_${files.ids[idtype][idchan][idkey]}`,
+              files.ids[idtype][idchan][idkey],
             ]);
           } else {
             return reject({
@@ -48,16 +48,16 @@ async function _id(idopt, idtype, idchan, idkey) {
       }
 
       case 1: {
-        if (!Object.keys(ids).includes(idtype)) ids[idtype] = {};
+        if (!Object.keys(files.ids).includes(idtype)) files.ids[idtype] = {};
         let idreturn = [];
 
         if (idchan) {
-          if (!Object.keys(ids[idtype]).includes(idchan)) ids[idtype][idchan] = {};
-          if (!Object.keys(ids[idtype][idchan]).includes(idkey)) ids[idtype][idchan][idkey] = 0;
+          if (!Object.keys(files.ids[idtype]).includes(idchan)) files.ids[idtype][idchan] = {};
+          if (!Object.keys(files.ids[idtype][idchan]).includes(idkey)) files.ids[idtype][idchan][idkey] = 0;
           
-          ids[idtype][idchan][idkey]++;
+          files.ids[idtype][idchan][idkey]++;
           
-          let idnum = ids[idtype][idchan][idkey];
+          let idnum = files.ids[idtype][idchan][idkey];
           idreturn = [
             `${idchan}_${idkey}_${idnum}`,
             idnum.toString(),
@@ -69,13 +69,13 @@ async function _id(idopt, idtype, idchan, idkey) {
               msg: "idchan and idkey are undefined",
             });
 
-          if (Object.keys(ids[idtype]).includes(idkey) === false) ids[idtype][idkey] = 0;
-          ids[idtype][idkey]++;
-          let idnum = ids[idtype][idkey];
+          if (Object.keys(files.ids[idtype]).includes(idkey) === false) files.ids[idtype][idkey] = 0;
+          files.ids[idtype][idkey]++;
+          let idnum = files.ids[idtype][idkey];
           idreturn = [`global_${idkey}_${idnum}`, idnum.toString()];
         }
 
-        _wf(paths.ids, ids);
+        _wf(paths.ids, files.ids);
 
         return resolve(idreturn);
 
@@ -88,16 +88,5 @@ async function _id(idopt, idtype, idchan, idkey) {
     }
   });
 }
-
-// _id(1, "channels", 263830208, "commands")
-//   .then((i) => {
-//     console.log(`\nReturn:`)
-//     console.log(i);
-//   })
-//   .catch((e) => {
-//     console.error(e);
-//   });
-
-
 
 module.exports = _id;

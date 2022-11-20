@@ -3,20 +3,18 @@ const paths = require("../variables/paths");
 const _wf = require("./_wf");
 
 async function _cache(cacheopt, cachekey, cachevalue){
-    return new Promise(function(resolve, reject) {
-        let cache = files.cache;
-
+    return new Promise((resolve, reject) => {
         (async() => {
             switch (cacheopt) {
                 case 0: {
                     if(cachekey){
-                        if(Object.keys(cache).includes(cachekey)){
-                            return resolve(cache[cachekey]);
+                        if(Object.keys(files.cache).includes(cachekey)){
+                            return resolve(files.cache[cachekey]);
                         } else {
                             return reject({"path":[cacheopt,1,0],"msg":"cache does not include cachekey"});
                         }
                     } else {
-                        return resolve(cache);
+                        return resolve(files.cache);
                     }
     
                     break;
@@ -25,26 +23,26 @@ async function _cache(cacheopt, cachekey, cachevalue){
                 case 1: {
                     if(!cachekey) return reject({"path":[cacheopt,0],"msg":"cachekey is undefined"});
                     if(!cachevalue) return reject({"path":[cacheopt,1,0],"msg":"cachevalue is undefined"});
-                    cache[cachekey] = {
+                    files.cache[cachekey] = {
                         "data": cachevalue,
                         "_cache": {
                             "add_time": Date.now()
                         }
                     };
-                    _wf(paths.cache, cache);
+                    _wf(paths.cache, files.cache);
 
-                    return resolve(cache[cachekey]);
+                    return resolve(files.cache[cachekey]);
 
                     break;
                 }
 
                 case 2: {
                     if(!cachekey) return reject({"path":[cacheopt,0],"msg":"cachekey is undefined"});
-                    if(Object.keys(cache).includes(cachekey)){
-                        delete cache[cachekey];
-                        _wf(paths.cache, cache);
+                    if(Object.keys(files.cache).includes(cachekey)){
+                        delete files.cache[cachekey];
+                        _wf(paths.cache, files.cache);
 
-                        return resolve(cache[cachekey]);
+                        return resolve(files.cache[cachekey]);
                     } else {
                         return reject({"path":[cacheopt,1,0],"msg":"cache does not include cachekey"});
                     }

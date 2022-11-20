@@ -1,19 +1,19 @@
 const paths = require("../variables/paths");
 const _wf = require("./_wf");
 const c = require("../config.json");
-const files = require("../variables/files");
+let j = require("../variables/j");
+// const files = require("../variables/files");
 
 async function _afk(amode, auserid, amsg, aopt, perm, areturn){
     return new Promise((resolve, reject) => {
-        let afks = files.afkusers;
         aopt = aopt || "AFK";
 
         switch (amode) {
             case 0: {
                 if(!auserid) return reject({"path":[amode,0],"msg":"No userid given"});
     
-                if(Object.keys(afks.users).includes(auserid)){
-                    return afks.users[auserid];
+                if(Object.keys(j.files().afkusers.users).includes(auserid)){
+                    return j.files().afkusers.users[auserid];
                 } else {
                     if(!areturn){
                         return resolve({});
@@ -28,7 +28,7 @@ async function _afk(amode, auserid, amsg, aopt, perm, areturn){
                 if(!auserid) return reject({"path":[amode,0],"msg":"No userid given"});
                 amsg = (amsg ? amsg : "");
     
-                afks.users[auserid] = {
+                j.files().afkusers.users[auserid] = {
                     "message":amsg,
                     "start":Date.now(),
                     "end":-1,
@@ -36,23 +36,23 @@ async function _afk(amode, auserid, amsg, aopt, perm, areturn){
                     "opt":aopt
                 };
 
-                _wf(paths.afkusers, afks);
+                _wf(paths.afkusers, j.files().afkusers);
 
-                return resolve(afks.users[auserid]);
+                return resolve(j.files().afkusers.users[auserid]);
     
                 break;
             }
 
             case 2: {
                 if(!auserid) return reject({"path":[amode,0],"msg":"No userid given"});
-                if(Object.keys(afks.users).includes(auserid)){
-                    afks.old[auserid] = afks.users[auserid];
-                    afks.old[auserid].end = Date.now();
-                    delete afks.users[auserid];
+                if(Object.keys(j.files().afkusers.users).includes(auserid)){
+                    j.files().afkusers.old[auserid] = j.files().afkusers.users[auserid];
+                    j.files().afkusers.old[auserid].end = Date.now();
+                    delete j.files().afkusers.users[auserid];
 
-                    _wf(paths.afkusers, afks);
+                    _wf(paths.afkusers, j.files().afkusers);
 
-                    return resolve(afks.old[auserid]);
+                    return resolve(j.files().afkusers.old[auserid]);
                 } else {
                     if(areturn){
                         return resolve({});
@@ -65,20 +65,20 @@ async function _afk(amode, auserid, amsg, aopt, perm, areturn){
 
             case 3: {
                 if(!auserid) return reject({"path":[amode,0],"msg":"No userid given"});
-                if(Object.keys(afks.old).includes(auserid)){
-                    if(Date.now()-afks.old[auserid].end > c.timeouts.afk.resume || perm.num >= c.perm.botdefault){
-                        afks.old[auserid].start = Date.now();
-                        afks.old[auserid].end = -1;
-                        afks.old[auserid].type = 2;
+                if(Object.keys(j.files().afkusers.old).includes(auserid)){
+                    if(Date.now()-j.files().afkusers.old[auserid].end > c.timeouts.afk.resume || perm.num >= c.perm.botdefault){
+                        j.files().afkusers.old[auserid].start = Date.now();
+                        j.files().afkusers.old[auserid].end = -1;
+                        j.files().afkusers.old[auserid].type = 2;
                     } else {
-                        afks.old[auserid].type = 1;
+                        j.files().afkusers.old[auserid].type = 1;
                     }
-                    afks.users[auserid] = afks.old[auserid];
-                    delete afks.old[auserid];
+                    j.files().afkusers.users[auserid] = j.files().afkusers.old[auserid];
+                    delete j.files().afkusers.old[auserid];
 
-                    _wf(paths.afkusers, afks);
+                    _wf(paths.afkusers, j.files().afkusers);
 
-                    return resolve(afks.users[auserid]);
+                    return resolve(j.files().afkusers.users[auserid]);
                 } else {
                     if(!areturn){
                         return resolve({});

@@ -37,6 +37,9 @@
             "live": 900000,
             "activemods": 900000,
             "youtube_video": 900000
+        },
+        "handlers": {
+            "filechange": 15000
         }
     },
     "debug": {
@@ -83,7 +86,8 @@
         "custom": {
             "restricted": ["settings", "help"],
             "max": 50
-        }
+        },
+        "always_allowed": ["setting", "settings", "help"]
     },
     "keywords": {
         "custom": {
@@ -99,5 +103,11 @@
     },
     "trackers": {
         "names": ["activemods"]
+    },
+    "cache": {
+        "names": ["cooldowns"]
+    },
+    "handlers": {
+        "filechange": true
     }
 }

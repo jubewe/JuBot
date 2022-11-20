@@ -7,20 +7,18 @@ async function _channel(opt, id, key, value, noreturn){
         if([null, undefined].includes(opt)) return reject({path:[0],msg:"no opt given"});
         if(![0].includes(opt) && !id) return reject({path:[1,0],msg:"no id given"});
 
-        let channels = files.channels;
-
         switch (opt) {
             case 0: {
-                if(Object.keys(channels.channels).includes(id)){
+                if(Object.keys(files.channels.channels).includes(id)){
                     if(key){
-                        if(Object.keys(channels.channels[id]).includes(key)){
-                            return resolve(channels.channels[id][key]);
+                        if(Object.keys(files.channels.channels[id]).includes(key)){
+                            return resolve(files.channels.channels[id][key]);
                         } else {
                             if(noreturn) return resolve(undefined);
                             return reject({path:[opt,1,1,0],msg:"key not found in channel keys"});
                         }
                     } else {
-                        return resolve(channels.channels[id]);
+                        return resolve(files.channels.channels[id]);
                     }
                 } else {
                     if(noreturn) return resolve({});
@@ -30,13 +28,11 @@ async function _channel(opt, id, key, value, noreturn){
             }
 
             case 1: {
-                if(!Object.keys(channels.channels).includes(id)){
-                    channels.channels[id] = {};
-                }
+                if(!Object.keys(files.channels.channels).includes(id)) files.channels.channels[id] = {};
                 if(key){
                     if(value){
-                        channels.channels[id][key] = value;
-                        _wf(paths.channels, channels);
+                        files.channels.channels[id][key] = value;
+                        _wf(paths.channels, files.channels);
                         return resolve();
                     } else {
                         return reject({path:[opt,1,1,0],msg:"value is undefined"});
@@ -49,11 +45,12 @@ async function _channel(opt, id, key, value, noreturn){
             }
 
             case 2: {
-                if(Object.keys(channels.channels).includes(id)){
+                if(Object.keys(files.channels.channels).includes(id)){
                     if(key){
-                        if(Object.keys(channels.channels[id]).includes(key)){
-                            delete channels.channels[id][key];
-                            _wf(paths.channels, channels);
+                        if(Object.keys(files.channels.channels[id]).includes(key)){
+                            delete files.channels.channels[id][key];
+
+                            _wf(paths.channels, files.channels);
                             return resolve();
                         } else {
                             if(noreturn) return resolve(null);

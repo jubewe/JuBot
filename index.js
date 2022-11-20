@@ -24,6 +24,7 @@ let subcache = {
 };
 
 require("./_init")();
+require("./handlers/_")();
 
 if(j.c().connect.express.app){
   require("./express/index")();
@@ -74,7 +75,7 @@ j.client.on("PRIVMSG", async (response) => {
           }
         })
       })
-    }
+    };
 
     let msgusermatch = privmsg.message.messageText.match(new RegExp(`\-user\:[^\\s]+`, "i"));
     if(msgusermatch !== null){
@@ -109,7 +110,7 @@ j.client.on("PRIVMSG", async (response) => {
           }
         })
       })
-    }
+    };
 
     let message = j_.message.message = privmsg.message;
     let userstate = j_.message.userstate = privmsg.userstate;
@@ -129,8 +130,6 @@ j.client.on("PRIVMSG", async (response) => {
     if([1].includes(j.c().modules.log.twitch.privmsg) || [2].includes(j.c().modules.log.twitch.privmsg) && j.files().clientchannels.logchannels.includes(channel.id)){
       _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
     }
-
-    // console.log(j_);
 
     if(j_.message.userstate.id == j.env().T_USERID) return;
 
@@ -178,18 +177,19 @@ j.client.on("PRIVMSG", async (response) => {
     .then(ch => {
       prefix = j_.message._.prefix = (ch.prefix ? (new RegExp(`^${j.c().prefix}`).test(msg) ? j.c().prefix : ch.prefix) : j.c().prefix);
       if(new RegExp(`^${prefix}+[\\w]+`).test(msg) || new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
-        let always_allowed = ["setting", "settings"];
+        let always_allowed = j.c().commands.always_allowed;
         let command = j_.message._.command = msg.split(" ")[0].split(prefix)[1].toLowerCase();
-        if(new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg) && command in always_allowed ? msg.split(" ")[0].split(j.c().prefix)[1] : msg.split(j.c().prefix)[1]){
-          command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase() : msg.split(j.c().prefix)[1].toLowerCase(); 
+        if(new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
+          command = j_.message._.command = msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase();
         }
-        if(!ch.allowed_commands || command in always_allowed || command in ch.allowed_commands || userperms._default){
+        if(!ch.allowed_commands || always_allowed.includes(command) || ch.allowed_commands.includes(command) || userperms._default){
           (async () => {
             let command_ = [];
             if(ch.commands){
               command_ = _combineArr(...Object.keys(ch.commands).map(cmd => {return _combineArr(ch.commands[cmd].name, ch.commands[cmd].aliases)}));
             }
-            if(!command in always_allowed && !command in j.c().commands.custom.restricted && ch.commands && command_ && command in command_){
+
+            if(!always_allowed.includes(command) && !j.c().commands.custom.restricted.includes(command) && ch.commands && command_ && command_.includes(command)){
               custom_commandhandler(j_, j);
             } else {
               commandhandler(j_, j);

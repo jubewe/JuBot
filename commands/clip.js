@@ -41,7 +41,7 @@ module.exports = {
                         if(j.files().channels.channels[u[1]] && j.files().channels.channels[u[1]].discord_clipchannelid){
                             j.dc.client.channels.fetch(j.files().channels.channels[u[1]].discord_clipchannelid)
                             .then(channel => {
-                                channel.send({embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`)]})
+                                channel.send(`${c.edit_url.split("/edit")[0]}`, {embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`)]})
                             })
                             .catch(e => {
                                 console.error(e);
@@ -63,7 +63,7 @@ module.exports = {
                         if(j.files().channels.channels[u[1]] && j.files().channels.channels[u[1]].discord_clipchannelid){
                             j.dc.client.channels.fetch(j.files().channels.channels[u[1]].discord_clipchannelid)
                             .then(channel => {
-                                channel.send({embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`, c.edit_url.split("/edit")[0])]})
+                                channel.send(`${c.edit_url.split("/edit")[0]}`, {embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`, c.edit_url.split("/edit")[0])]})
                             })
                             .catch(e => {
                                 console.error(e);

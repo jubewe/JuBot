@@ -11,33 +11,27 @@ const _wf = require("./_wf");
  */
 
 function _permission(permopt, permnum, permuser) {
-  return new Promise(function (resolve, reject) {
-    /**
-     * permopts
-     * 0    get
-     * 1    set
-     * 2    delete
-     */
+  return new Promise((resolve, reject) => {
     let permissions = files.permissions;
     switch (permopt) {
       default:
       case 0: {
         if (permnum) {
           permnum = permnum.toString();
-          if (Object.keys(permissions.permissions).includes(permnum)) {
+          if (Object.keys(files.permissions.permissions).includes(permnum)) {
             return resolve({
               num: permnum,
-              desc: permissions.permissions[permnum].desc,
+              desc: files.permissions.permissions[permnum].desc,
               name:
-                permissions.permissions[permnum].name !== undefined
-                  ? permissions.permissions[permnum].name
+                files.permissions.permissions[permnum].name !== undefined
+                  ? files.permissions.permissions[permnum].name
                   : null,
             });
           }
         }
         return resolve({
           num: 10,
-          desc: permissions.permissions[10].desc,
+          desc: files.permissions.permissions[10].desc,
           name: null,
         });
         break;
@@ -46,8 +40,8 @@ function _permission(permopt, permnum, permuser) {
       case 1: {
         if (permnum) {
           if (permuser) {
-            permissions.users[permuser] = permnum;
-            _wf(paths.permissions, permissions);
+            files.permissions.users[permuser] = permnum;
+            _wf(paths.permissions, files.permissions);
             return resolve({
               path: [1, 1, 1],
               msg: "Successfully set users perm",
@@ -63,8 +57,8 @@ function _permission(permopt, permnum, permuser) {
 
       case 2: {
         if (permuser) {
-          delete permissions.users[permuser];
-          _wf(paths.permissions, permissions);
+          delete files.permissions.users[permuser];
+          _wf(paths.permissions, files.permissions);
           return resolve({ path: [2, 1], msg: "Successfully deleted user" });
         } else {
           return reject({ path: [2, 0], msg: "permuser is indefuned" });

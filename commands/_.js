@@ -76,5 +76,6 @@ module.exports = {
     tracker: require("./customtracker"),
     activemods: require("./trackers/activemods"),
 
+    cache: require("./cache"),
 
 }

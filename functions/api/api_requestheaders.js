@@ -9,8 +9,8 @@
 const env = require("dotenv").config().parsed;
 
 function api_requestheaders(username, password, data){
-    username = username || env.API_USERNAME;
-    password = password || env.API_PASSWORD;
+    username = username || env.J_API_USERNAME;
+    password = password || env.J_API_PASSWORD;
     data = data || {};
     return {
         username: username,

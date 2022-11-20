@@ -18,7 +18,6 @@ const files = require("../variables/files");
 
 async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
     return new Promise(function(resolve, reject){
-        let timers = files.timers;
         if(!tmode) return reject({"path":[tmode,0],"msg":"tmode is undefined"});
         if([1].includes(tmode) && !tuser) return reject({"path":[tmode,1,0],"msg":"tuser is undefined"});
         if([1].includes(tmode) && !targ2) return reject({"path":[tmode,1,1,0],"msg":"targ2 is undefined"});
@@ -27,8 +26,8 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
         switch (tmode) {
             case 0: {
                 if(targ){
-                    if(timers.ids.includes(targ)){
-                        return resolve(timers.ids[targ]);
+                    if(files.timers.ids.includes(targ)){
+                        return resolve(files.timers.ids[targ]);
                     } else {
                         if(!treturn){
                             return resolve();
@@ -36,8 +35,8 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                         return reject({"path":[tmode,1,0],"msg":"targ not found in timers.ids"});
                     }
                 } else if(tuser){
-                    if(Object.keys(timers.users).includes(tuser)){
-                        return resolve(timers.users[tuser]);
+                    if(Object.keys(files.timers.users).includes(tuser)){
+                        return resolve(files.timers.users[tuser]);
                     } else {
                         if(!treturn){
                             return resolve();
@@ -56,7 +55,7 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                     .then(u => {
                         _id(1, "timers", null, "timers")
                         .then(i => {
-                            timers.ids[i[1].toString()] = {
+                            files.timers.ids[i[1].toString()] = {
                                 "id":i[1].toString(),
                                 "set_time":Date.now().toString(),
                                 "channel":{
@@ -71,17 +70,17 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
                                 }
                             };
 
-                            if(!timers.users[tuser] || !Array.isArray(timers.users[tuser])){
-                                timers.users[tuser] = [];
+                            if(!files.timers.users[tuser] || !Array.isArray(files.timers.users[tuser])){
+                                files.timers.users[tuser] = [];
                             };
 
-                            timers.users[tuser].push(i[1]);
+                            files.timers.users[tuser].push(i[1]);
 
-                            _wf(paths.timers, timers);
+                            _wf(paths.timers, files.timers);
 
                             executetimers(i[1]);
 
-                            return resolve(timers.ids[i[1]])
+                            return resolve(files.timers.ids[i[1]])
                         })
                         .catch(e => {
                             throw e;
@@ -101,10 +100,10 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
             case 2: {
                 if(!targ) return reject({"path":[tmode,0],"msg":"targ is undefined"});
 
-                if(Object.keys(timers.ids).includes(targ)){
-                    delete timers.ids[targ];
+                if(Object.keys(files.timers.ids).includes(targ)){
+                    delete files.timers.ids[targ];
 
-                    _wf(paths.timers, timers);
+                    _wf(paths.timers, files.timers);
 
                     return resolve();
                 } else {
@@ -123,13 +122,5 @@ async function _timer(tmode, tuser, targ, targ2, targ3, treturn){
         }
     });
 };
-
-// _timer(1, "263830208", "1664257470270", "test", "jubewe", false)
-// .then(t => {
-//     console.log(t);
-// })
-// .catch(e => {
-//     console.error(e);
-// })
 
 module.exports = _timer;
