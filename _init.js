@@ -106,6 +106,11 @@ function _init(){
         j.dc.client.on("ready", () => {
             _log(1, `${_stackname("discord", "connect")[3]} Successful`);
         });
+
+        // require("./handlers/discord/dc_createMessage")
+        // j.dc.client.on("messageCreate", message => {
+        //     if(message.content)
+        // });
     };
 
     function reconnect(){

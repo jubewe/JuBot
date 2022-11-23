@@ -23,10 +23,14 @@ async function livechannels(){
         Object.keys(channels.channels).forEach(ch => {
             let ch_ = channels.channels[ch];
             if(ch_.trackers && ch_.trackers.activemods && [1].includes(ch_.trackers.activemods.state)){
-                checktrkactivemods.push(ch);
+                if(!checknotificationlive.includes(ch)){
+                    checknotificationlive.push(ch);
+                }
             } 
             if(ch_.notifications && ch_.notifications.live && [1].includes(ch_.notifications.live.state)){
-                checknotificationlive.push(ch);
+                if(!checknotificationlive.includes(ch)){
+                    checknotificationlive.push(ch);
+                }
             }
         });
         let checklivechannels = _combineArr(checknotificationlive, checktrkactivemods);
@@ -93,6 +97,8 @@ async function livechannels(){
                                 channels.channels[ch_.user_id].trackers.data.live.last = ch_;
     
                             });
+
+                            _log(2, `${_stackname("trackers", "live")[3]} Live Channels: ${Object.keys(dat.data).map(a => {return `${dat.data[a].user_id} ${dat.data[a].user_login}`})}`);
 
                             _wf(paths.channels, channels);
                             return resolve(dat);

@@ -17,28 +17,28 @@ module.exports = {
                 case "clear": {
                     if(j_.message._.args()[1]){
                         let cachename = j_.message._.args()[1];
-                        if(!cachename in j.c().cache.names) return j.send(2, j_, `Error: Invalid cache name`);
+                        if(!cachename in j.c().cache.names) return j_.send(2, j_, `Error: Invalid cache name`);
                         
                         if(j.paths()[cachename]){
-                            _wf(j.paths()[cachename], {})
+                            _wf(j.paths()[cachename], {}, true)
                         } else {
-                            j.send(2, j_, `Error: Path of cache not found`);
+                            j_.send(2, `Error: Path of cache not found`);
                         }
-                        j.send(2, j_, `Successfully cleared cache`);
+                        j_.send(2, `Successfully cleared cache`);
                     } else {
-                        _wf(j.paths().cache, {});
-                        j.send(2, j_, `Successfully cleared cache`);
+                        _wf(j.paths().cache, {}, true);
+                        j_.send(2, `Successfully cleared cache`);
                     }
 
                     break;
                 }
 
                 default: {
-                    j.send(2, j_, `Error: Option not found`);
+                    j_.send(2, `Error: Option not found`);
                 }
             }
         } else {
-            j.send(2, j_, `Error: No option given`);
+            j_.send(2, `Error: No option given`);
         }
     }
 }

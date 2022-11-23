@@ -8,4 +8,15 @@ module.exports = {
     timeout: require("./timeout"),
     untimeout: require("./unban"),
 
+    clip: require("./clip"),
+    
+    getclips: require("./getclips"),
+    getvideos: require("./getvideos"),
+    getstreams: require("./getstreams"),
+
+    _parametercheck: require("./_parametercheck"),
+    _badgestoarr: require("./_badgestoarr"),
+
+    createpoll: require("./createpoll"),
+
 }

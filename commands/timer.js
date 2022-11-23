@@ -21,19 +21,21 @@ module.exports = {
 
             if(j_.message._.args()[1]){
                 tmsg = _splitafter(j_.message._.msg, 1)
+            } else {
+                tmsg = "No message";
             }
 
             if(!isNaN(ttime)){
                 _timer(1, j_.message.userstate.id, ttime, tmsg, j_.message.channel.name, true)
                 .then(t => {
                     let timecl = _cleantime(ttime, 5, 2);
-                    j.send(2, j_, `Successfully set timer (${timecl.time.join(" ")})`);
+                    j_.send(`Successfully set timer (${timecl.time.join(" ")})`);
                 })
             } else {
-                j.send(2, j_, `Error: Invalid time format`);
+                j_.send(`Error: Invalid time format`);
             }
         } else {
-            j.send(2, j_, `Error: Expected time at arg 1`);
+            j_.send(`Error: Expected time at arg 1`);
         }
     }
 }

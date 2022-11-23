@@ -17,13 +17,13 @@ module.exports = {
             let partchan = j_.message._.msg.split(" ")[1].toLowerCase();
             j.part(partchan)
             .then(pc => {
-                j.send(2, j_, `Successfully parted ${pixelize(partchan)} ${returnerr(pc, 1)}`);
+                j_.send(`Successfully parted ${pixelize(partchan)} ${returnerr(pc, 1)}`);
             })
             .catch(e => {
-                j.send(2, j_, `Error: Could not part ${pixelize(partchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`)
+                j_.send(`Error: Could not part ${pixelize(partchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`)
             })
         } else {
-            j.send(2, j_, `Error: No Channel given`);
+            j_.send(`Error: No Channel given`);
         }
     }
 }

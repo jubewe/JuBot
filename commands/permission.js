@@ -27,24 +27,24 @@ module.exports = {
                         _permission(1, permnum, u[1])
                         .then(p => {
                             console.log(p);
-                            j.send(2, j_, `Successfully set perm of ${_pixelize(permuser)} (${u[1]}) to ${permnum}`);
+                            j_.send(`Successfully set perm of ${_pixelize(permuser)} (${u[1]}) to ${permnum}`);
                         })
                         .catch(e => {
-                            j.send(2, j_, `Error: Could not set perm of ${_pixelize(permuser)} (${u[1]}) to ${permnum}: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                            j_.send(`Error: Could not set perm of ${_pixelize(permuser)} (${u[1]}) to ${permnum}: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                         })
                     })
                     .catch(e => {
                         console.error(e);
-                        j.send(2, j_, `Error: Could not get user: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                        j_.send(`Error: Could not get user: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
                     })
                 } else {
-                    j.send(2, j_, `Error: Invalid perm-number`);
+                    j_.send(`Error: Invalid perm-number`);
                 }
             } else {
-                j.send(2, j_, `Error: No perm given`);
+                j_.send(`Error: No perm given`);
             }
         } else {
-            j.send(2, j_, `Error: No user given`);
+            j_.send(`Error: No user given`);
         }
     }
 }

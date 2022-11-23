@@ -28,16 +28,16 @@ module.exports = {
 
                                 _wf(paths.clientchannels, j.files().clientchannels);
 
-                                j.send(2, j_, `Successfully added ${_pixelize(u[0])} (${u[1]}) to logchannels`);
+                                j_.send(`Successfully added ${_pixelize(u[0])} (${u[1]}) to logchannels`);
                             } else {
-                                j.send(2, j_, `Error: Channel already added`);
+                                j_.send(`Error: Channel already added`);
                             }
                         })
                         .catch(e => {
-                            j.send(2, j_, `Error: Could not get user: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                            j_.send(`Error: Could not get user: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
                         })
                     } else {
-                        j.send(2, j_, `Error: No channel to add given`);
+                        j_.send(`Error: No channel to add given`);
                     }
 
                     break;
@@ -52,23 +52,23 @@ module.exports = {
                                 j.files().clientchannels.logchannels.splice(j.files().clientchannels.logchannels.indexOf(u[1]), 1);
                                 _wf(paths.clientchannels, j.files().clientchannels.logchannels);
 
-                                j.send(2, j_, `Successfully removed ${_pixelize(u[1])} (${u[1]}) from logchannels`);
+                                j_.send(`Successfully removed ${_pixelize(u[1])} (${u[1]}) from logchannels`);
                             } else {
-                                j.send(2, j_, `Error: Channel is not in logchannels`);
+                                j_.send(`Error: Channel is not in logchannels`);
                             }
                         })
                         .catch(e => {
 
                         })
                     } else {
-                        j.send(2, j_, `Error: No channel to remove given`);
+                        j_.send(`Error: No channel to remove given`);
                     }
 
                     break;
                 }
             }
         } else {
-            j.send(2, j_, `Error: No option given`);
+            j_.send(`Error: No option given`);
         }
     }
 }

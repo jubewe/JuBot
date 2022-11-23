@@ -29,5 +29,10 @@ module.exports = {
   todo: _mainpath("./todo"),
 
   test: _mainpath("./test.txt"),
+
+  // riotgames_userids: _mainpath("./data/riotgames/userids.json"),
+
+  twitch_knownbots: _mainpath("./data/twitch/knownbots.json"),
+  
   
 };

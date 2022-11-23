@@ -11,6 +11,8 @@ module.exports = {
     add_version: "0.0.8",
     add_user: "jubewe",
     permission: j.c().perm.moderator,
+    parameters: ["channel"],
+    send_msg_nochan: true,
     cooldown: 15000,
     cooldown_user: 5000,
     exec: async (j_) => {
@@ -20,7 +22,7 @@ module.exports = {
             discord_serverid = dcsid;
         })
         .catch(e => {
-            j.send(2, j_, `Error: No serverid set`);
+            j_.send(2, `Error: No serverid set`);
             return;
         })
 
@@ -33,18 +35,18 @@ module.exports = {
                         .then(e => {
                             // console.log(e)
                             if(Object.keys(e.resolve).length === 0){
-                                j.send(2, j_, `Error: Could not add ${emotes.length} emote${_returnplural(emotes)} to discord (${e.reject[Object.keys(e.reject)[0]].message || "-"})`);
+                                j_.send(2, `Error: Could not add ${emotes.length} emote${_returnplural(emotes)} to discord (${e.reject[Object.keys(e.reject)[0]].message || "-"})`);
                             } else {
-                                j.send(2, j_, `Successfully added [${Object.keys(e.resolve).length}] emote${_returnplural(e.resolve)} to discord ${Object.keys(e.resolve).join(", ")} `+
+                                j_.send(2, `Successfully added [${Object.keys(e.resolve).length}] emote${_returnplural(e.resolve)} to discord ${Object.keys(e.resolve).join(", ")} `+
                                 `${(Object.keys(e.reject).length > 0 ? `(Failed [${emotes.length}]: ${Object.keys(e.reject).join(", ")}) (${e.reject[Object.keys(e.reject)[0]].message || "-"})` : "")}`);
                             }
                         })
                         .catch(e => {
                             console.error(e);
-                            j.send(2, j_, `Could not add emote${_returnplural(emotes)} to discord`);
+                            j_.send(2, `Could not add emote${_returnplural(emotes)} to discord`);
                         })
                     } else {
-                        j.send(2, j_, `Error: No emotes to add given`);
+                        j_.send(2, `Error: No emotes to add given`);
                     }
                     
                     break;
@@ -57,11 +59,11 @@ module.exports = {
                 // }
 
                 default: {
-                    j.send(2, j_, `Error: Option not found`);
+                    j_.send(2, `Error: Option not found`);
                 }
             }
         } else {
-            j.send(2, j_, `Error: No emote to add given`);
+            j_.send(2, `Error: No emote to add given`);
         }
     }
 }

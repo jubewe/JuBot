@@ -5,7 +5,6 @@ const _wf = require("./_wf");
 
 async function remind(opt, j_, noreturn, sender_userid, target_userid, reminder_id, message){
     return new Promise((resolve, reject) => {
-        let j = require("../variables/j");
         sender_userid = (!global.variables.varstatic.nonarr.includes(sender_userid) ? sender_userid : j_.message.userstate.id);
         let search_userid = (!global.variables.varstatic.nonarr.includes(target_userid) ? target_userid : sender_userid) || undefined;
         if(!Object.keys(files.reminders).includes("users")) files.reminders["users"] = {};

@@ -2,38 +2,30 @@ const getuserperm = require("../../functions/getuserperm");
 const _cooldown = require("../../functions/_cooldown");
 
 function commandhandler(j_, j) {
-  j = j || require("../../variables/j");
-  let commands = j.commands();
+    let [commands, message] = [j.commands(), j_.message];
+    let [command, commandid] = [commands[message._.command], (Object.keys(commands).includes(message._.command) ? `${message.channel.id}_${message._.command.id}` : message._.command.id)];
 
-  if (Object.keys(commands).includes(j_.message._.command)) {
-    let command = commands[j_.message._.command];
-    let commandid = (Object.keys(commands).includes(j_.message._.command) ? `${j_.message.channel.id}_${command.id}` : command.id);
-    
     if ([1].includes(command.state)) {
-      if (parseInt(j_.message._.userperm.num) >= command.permission) {
-        _cooldown(0, j_.message.channel.id, commandid, j_.message.userstate.id, false)
+      if (parseInt(message._.userperm.num) >= command.permission) {
+        _cooldown(0, message.channel.id, commandid, message.userstate.id, false)
         .then((c) => {
-          if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || j_.message._.userperms._default){
-            if(j_.message._.userperms._default || c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user)){
+          if (c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || message._.userperms._default) {
+            if (message._.userperms._default || c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user)) {
               command.exec(j_, j);
-              if((command.cooldown > 0 || command.cooldown_user > 0) && !j_.message._.userperms._default){
-                _cooldown(1, j_.message.channel.id, commandid, j_.message.userstate.id, true)
-                .then(c2 => {})
-                .catch(e => {throw e});
+              if ((command.cooldown > 0 || command.cooldown_user > 0) && !message._.userperms._default) {
+                _cooldown(1, message.channel.id, commandid, message.userstate.id, true)
+                .then(c2 => { })
+                .catch(e => { throw e });
               }
-              // (async () => {
-              // })();
             }
           }
         })
-
       } else {
-        if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-          j.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+        if (message._.userperm.num > j.c().perm.bot && command.send_msg_noperm) {
+          j_.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(message.userstate.id).num})`);
         }
       }
     }
-  }
 };
 
 module.exports = commandhandler;

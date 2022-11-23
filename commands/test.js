@@ -11,6 +11,6 @@ module.exports = {
     cooldown: 30000,
     cooldown_user: 45000,
     exec: async (j_) => {
-        j.send(2, j_, `Test VoHiYo $(message[1])`, null, null, null, true);
+        j_.send(`Test VoHiYo $(message[1])`, null, null, true);
     }
 }

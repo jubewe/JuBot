@@ -10,6 +10,7 @@ module.exports = {
     add_version: "0.1.5",
     add_user: "jubewe",
     permission: j.c().perm.botdefault,
+    parameters: ["channel"],
     cooldown: -1,
     cooldown_user: -1,
     exec: async (j_) => {
@@ -24,11 +25,11 @@ module.exports = {
                         case "disable": {statetracker(1, 0); break;}
         
                         default: {
-                            j.send(2, j_, `Error: Option not found`);
+                            j_.send(`Error: Option not found`);
                         }
                     }
                 } else {
-                    j.send(2, j_, `Error: No option given`);
+                    j_.send(`Error: No option given`);
                 }
                 break;
             }
@@ -39,16 +40,16 @@ module.exports = {
                 if(j.c().trackers.names.includes(j_.message._.args()[num])){
                     customtracker(1, j_, false, null, j_.message._.args()[num])
                     .then(t => {
-                        j.send(2, j_, `Successfully added tracker ${j_.message._.args()[num]}`);
+                        j_.send(`Successfully added tracker ${j_.message._.args()[num]}`);
                     })
                     .catch(e => {
-                        j.send(2, j_, `Error: Could not add tracker ${j_.message._.args()[num]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`)
+                        j_.send(`Error: Could not add tracker ${j_.message._.args()[num]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`)
                     })
                 } else {
-                    j.send(2, j_, `Error: Tracker not found`);
+                    j_.send(`Error: Tracker not found`);
                 }
             } else {
-                j.send(2, j_, `Error: No tracker to add given`);
+                j_.send(`Error: No tracker to add given`);
             }
         };
 
@@ -57,16 +58,16 @@ module.exports = {
                 if(j.c().trackers.names.includes(j_.message._.args()[num])){
                     customtracker(2, j_, false, null, j_.message._.args()[num])
                     .then(t => {
-                        j.send(2, j_, `Successfully removed tracker ${j_.message._.args()[num]}`);
+                        j_.send(`Successfully removed tracker ${j_.message._.args()[num]}`);
                     })
                     .catch(e => {
-                        j.send(2, j_, `Error: Could not remove tracker: ${j_.message._.args()[num]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`)
+                        j_.send(`Error: Could not remove tracker: ${j_.message._.args()[num]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`)
                     })
                 } else {
-                    j.send(2, j_, `Error: Tracker not found`);
+                    j_.send(`Error: Tracker not found`);
                 }
             } else {
-                j.send(2, j_, `Error: No tracker to add given`);
+                j_.send(`Error: No tracker to add given`);
             }
         };
 
@@ -77,16 +78,16 @@ module.exports = {
                 if(j.c().trackers.names.includes(j_.message._.args()[num])){
                     customtracker(3, j_, false, null, j_.message._.args()[num], state)
                     .then(t => {
-                        j.send(2, j_, `Successfully set tracker state of ${j_.message._.args()[num]} to ${trackerstates[state]}`);
+                        j_.send(`Successfully set tracker state of ${j_.message._.args()[num]} to ${trackerstates[state]}`);
                     })
                     .catch(e => {
-                        j.send(2, j_, `Error: Could not set tracker state of ${j_.message._.args()[num]} to ${trackerstates[state]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`)
+                        j_.send(`Error: Could not set tracker state of ${j_.message._.args()[num]} to ${trackerstates[state]}: ${_returnerr(e,0)} ${_returnerr(e,1)}`)
                     })
                 } else {
-                    j.send(2, j_, `Error: Tracker not found`);
+                    j_.send(`Error: Tracker not found`);
                 }
             } else {
-                j.send(2, j_, `Error: No tracker to add given`);
+                j_.send(`Error: No tracker to add given`);
             }
         };
     }

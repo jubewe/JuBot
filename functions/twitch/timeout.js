@@ -17,18 +17,18 @@ const _requestopts = require("../_requestopts");
 async function timeout(broadcaster_id, moderator_id, user_id, duration, reason, customtoken, customclientid){
     return new Promise((resolve, reject) => {
         let j = require("../../variables/j");
-        if(broadcaster_id in global.variables.varstatic.nonarr) return reject({path:[0],msg:"broadcaster_id is undefined"});
+        if(global.variables.varstatic.nonarr.includes(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is undefined"});
         if(!_regex.numregex().test(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is does not match number regex"});
-        if(user_id in global.variables.varstatic.nonarr) return reject({path:[1,0],msg:"user_id is undefined"});
+        if(global.variables.varstatic.nonarr.includes(user_id)) return reject({path:[1,0],msg:"user_id is undefined"});
         if(!_regex.numregex().test(user_id)) return reject({path:[0],msg:"user_id is does not match number regex"});
-        if(moderator_id in global.variables.varstatic.nonarr || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
+        if(global.variables.varstatic.nonarr.includes(moderator_id) || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
 
         if(!duration) duration = 600;
         if(duration < 1) duration = 1;
         if(duration > 1209600) duration = 1209600;
-        if(reason in global.variables.varstatic.nonarr) reason = "[Automated by JuBot]";
-        if(moderator_id in global.variables.varstatic.nonarr && customtoken in global.variables.varstatic.nonarr && customclientid in global.variables.varstatic.nonarr) moderator_id = j.e().T_USERID;
-        if(customtoken in global.variables.varstatic.nonarr || customclientid in global.variables.varstatic.nonarr) customtoken = undefined; customclientid = undefined;
+        if(global.variables.varstatic.nonarr.includes(reason)) reason = "[Automated by JuBot]";
+        if(global.variables.varstatic.nonarr.includes(moderator_id) && global.variables.varstatic.nonarr.includes(customtoken) && global.variables.varstatic.nonarr.includes(customclientid)) moderator_id = j.e().T_USERID;
+        if(global.variables.varstatic.nonarr.includes(customtoken) || global.variables.varstatic.nonarr.includes(customclientid)) customtoken = undefined; customclientid = undefined;
 
         let reqheaders = {
             ..._requestopts(urls.twitch.moderation.timeout.method, customtoken || undefined, customclientid || undefined), 

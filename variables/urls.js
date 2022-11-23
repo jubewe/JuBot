@@ -33,6 +33,16 @@ let urls = {
             return null;
         }
     },
+    "riotgames": {
+        "_base": {
+            "europe": "https://europe.api.riotgames.com",
+            "america": "https://americas.api.riotgames.com"
+        },
+        "account_v1": {
+            url: "/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}",
+            url_: (gameName, tagLine) => {return `/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`},
+        }
+    },
     "seventv": {
         "v2": {
             "channel": {
@@ -104,6 +114,22 @@ let urls = {
             "create": {
                 "url": "https://api.twitch.tv/helix/clips",
                 "method": "POST"
+            },
+            "get": {
+                "url": "https://api.twitch.tv/helix/clips",
+                "method": "GET"
+            }
+        },
+        "video": {
+            "get": {
+                "url": "https://api.twitch.tv/helix/videos",
+                "method": "GET"
+            }
+        },
+        "poll": {
+            "create": {
+                "url": "https://api.twitch.tv/helix/polls",
+                "method": "POST"
             }
         }
     },
@@ -125,6 +151,16 @@ let urls = {
                 "raw": "https://developers.google.com/youtube/v3/docs/channels/list"
             }
         }
+    },
+    "paauulli": {
+        "_base": "https://api.paauulli.me",
+        "bot": {
+            "bots": "/bot/bots"
+        }
+    },
+    "twitchbots_info": {
+        "_base": "https://api.twitchbots.info/v2",
+        "bot": "/bot"
     }
     
 };

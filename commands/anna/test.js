@@ -11,6 +11,6 @@ module.exports = {
     cooldown: -1,
     cooldown_user: -1,
     exec: async (j_, j) => {
-        j.send(2, j_, `VoHiYo Test`);
+        j_.send(2, j_, `VoHiYo Test`);
     }
 }

@@ -15,10 +15,10 @@ const _requestopts = require("../_requestopts");
 
 async function deletemessage(broadcaster_id, moderator_id, message_id, customtoken, customclientid){
     return new Promise((resolve, reject) => {
-        if(broadcaster_id in global.variables.varstatic.nonarr) return reject({path:[0],msg:"broadcaster_id is undefined"});
+        if(global.variables.varstatic.nonarr.includes(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is undefined"});
         if(!_regex.numregex().test(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is does not match number regex"});
-        if(moderator_id in global.variables.varstatic.nonarr || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
-        if(message_id in global.variables.varstatic.nonarr) return reject({path:[1,1,0],msg:"message_id is undefined"});
+        if(global.variables.varstatic.nonarr.includes(moderator_id) || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
+        if(global.variables.varstatic.nonarr.includes(message_id)) return reject({path:[1,1,0],msg:"message_id is undefined"});
 
         let reqheaders = {
             ..._requestopts(urls.twitch.moderation.delete.method, customtoken || undefined, customclientid || undefined), 

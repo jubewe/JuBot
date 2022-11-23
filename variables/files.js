@@ -26,4 +26,8 @@ module.exports = {
 
     test: _rf(paths.test, false),
 
+    // riotgames_userids: _rf(paths.riotgames_userids, true),
+
+    twitch_knownbots: _rf(paths.twitch_knownbots, true),
+
 }

@@ -11,6 +11,8 @@ module.exports = {
     add_version: "0.0.6",
     add_user: "jubewe",
     permission: j.c().perm.default,
+    parameters: ["channel"],
+    send_msg_nochan: true,
     cooldown: 3000,
     cooldown_user: 5000,
     exec: async (j_) => {
@@ -19,19 +21,19 @@ module.exports = {
             if(valoranttag){
                 j.modules.request(`${urls.api.__url("valorantrank", "GET").replace(":riotid", valoranttag.split("#")[0]).replace(":tagline", valoranttag.split("#")[1])}`, {headers: {...api_requestheaders(), "force": (j_.message._.msg.includes("-force") && j_.message._.userperms._default ? true : false)}}, function(e, r){
                     if(e){
-                        j.send(2, j_, `Error: Could not recieve rank`);
+                        j_.send(2, `Error: Could not recieve rank`);
                     } else {
                         let dat = JSON.parse(r.body);
 
                         if(dat.status === 200){
-                            j.send(3, j_, `${j_.message._.chan}'s Valorant Rank: ${dat.data.rank}`);
+                            j_.send(3, `${j_.message._.chan}'s Valorant Rank: ${dat.data.rank}`);
                         } else {
-                            j.send(2, j_, `Valorant Rank Error: ${dat.data} (${dat.e})`);
+                            j_.send(2, `Valorant Rank Error: ${dat.data} (${dat.e})`);
                         }
                     }
                 })
             } else {
-                j.send(2, j_, `Error: No valoranttag set`);
+                j_.send(2, `Error: No valoranttag set`);
             }
         })
     }

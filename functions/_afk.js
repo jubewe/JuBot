@@ -4,9 +4,10 @@ const c = require("../config.json");
 let j = require("../variables/j");
 // const files = require("../variables/files");
 
-async function _afk(amode, auserid, amsg, aopt, perm, areturn){
+async function _afk(amode, j_, auserid, amsg, aopt, perm, areturn){
     return new Promise((resolve, reject) => {
         aopt = aopt || "AFK";
+        auserid = auserid ?? j_.message.userstate.id;
 
         switch (amode) {
             case 0: {
@@ -66,7 +67,7 @@ async function _afk(amode, auserid, amsg, aopt, perm, areturn){
             case 3: {
                 if(!auserid) return reject({"path":[amode,0],"msg":"No userid given"});
                 if(Object.keys(j.files().afkusers.old).includes(auserid)){
-                    if(Date.now()-j.files().afkusers.old[auserid].end > c.timeouts.afk.resume || perm.num >= c.perm.botdefault){
+                    if(Date.now()-j.files().afkusers.old[auserid].end > c.timeouts.afk.resume && !j_.message._.userperms._default){
                         j.files().afkusers.old[auserid].start = Date.now();
                         j.files().afkusers.old[auserid].end = -1;
                         j.files().afkusers.old[auserid].type = 2;

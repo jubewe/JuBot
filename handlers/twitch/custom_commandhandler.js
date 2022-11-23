@@ -14,7 +14,7 @@ function custom_commandhandler(j_, j){
                 .then((c) => {
                     if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || j_.message._.userperms._default){
                         if(j_.message._.userperms._default || c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user)){
-                            j.send(0, j_, command.response, undefined, undefined, undefined, true);
+                            j_.send(0, j_, command.response, undefined, undefined, undefined, true);
                             if((command.cooldown > 0 || command.cooldown_user > 0) && !j_.message._.userperms._default){
                                 _cooldown(1, j_.message.channel.id, command.id, j_.message.userstate.id, true)
                                 .then(c2 => {})
@@ -30,7 +30,7 @@ function custom_commandhandler(j_, j){
                 })
             } else {
                 if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-                    j.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+                    j_.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
                 }
             }
         }

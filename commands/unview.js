@@ -24,12 +24,12 @@ module.exports = {
                 }
                 channels.viewchannels.splice(channels.viewchannels.indexOf(unviewchan, 1));
                 _wf(paths.clientchannels, channels);
-                j.send(2, j_, `Successfully stopped viewing ${_pixelize(unviewchan)}`);
+                j_.send(`Successfully stopped viewing ${_pixelize(unviewchan)}`);
             } else {
-                j.send(2, j_, `Error: Not viewing ${_pixelize(unviewchan)}`);
+                j_.send(`Error: Not viewing ${_pixelize(unviewchan)}`);
             }
         } else {
-            j.send(2, j_, `Error: No channel given`);
+            j_.send(`Error: No channel given`);
         }
     }
 }

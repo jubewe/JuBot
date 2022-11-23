@@ -16,7 +16,7 @@ module.exports = {
         await j.client.ping().then(() => {
             let ping = (Date.now()-pingstart);
 
-            j.send(2, j_, `[BOTINFO] Ping: ${_cleantime(ping, 5, 1).time.join(" ")}, Uptime: ${uptime().join(" and ")}, `
+            j_.send(2, `[BOTINFO] Ping: ${_cleantime(ping, 5, 1).time.join(" ")}, Uptime: ${uptime().join(" and ")}, `
             +`Version: ${global.variables.vars.botversion()}, `
             +`(Last GitHub commit: ${global.variables.vars.botgitrepository()}/commit/${global.variables.vars.botgitcommitid()})`)
         })

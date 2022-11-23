@@ -13,7 +13,7 @@ const _requestopts = require("../_requestopts");
 
 async function createclip(broadcaster_id, customtoken, customclientid){
     return new Promise(function(resolve, reject){
-        if(broadcaster_id in global.variables.varstatic.nonarr) return reject({path:[0],msg:"broadcaster_id is undefined"});
+        if(global.variables.varstatic.nonarr.includes(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is undefined"});
         if(!_regex.numregex().test(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is does not match number regex"});
 
         let reqheaders = {

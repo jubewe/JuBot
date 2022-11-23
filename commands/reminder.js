@@ -27,21 +27,21 @@ module.exports = {
                         .then(u => {
                             remind(1, j_, false, j_.message.userstate.id, u[1], null, remind_message)
                             .then(r => {
-                                j.send(2, j_, `Successfully set reminder`);
+                                j_.send(`Successfully set reminder`);
                             })
                             .catch(e => {
                                 console.error(e);
-                                j.send(2, j_, `Error: Could not set reminder ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                                j_.send(`Error: Could not set reminder ${_returnerr(e,0)} ${_returnerr(e,1)}`);
                             })
                         })
                         .catch(e => {
-                            j.send(2, j_, `Error: Could not get userid of given user`);
+                            j_.send(`Error: Could not get userid of given user`);
                         })
                     } else {
-                        j.send(2, j_, `Error: No message given`);
+                        j_.send(`Error: No message given`);
                     }
                 } else {
-                    j.send(2, j_, `Error: No user given`);
+                    j_.send(`Error: No user given`);
                 }
                 break;
             }
@@ -54,18 +54,18 @@ module.exports = {
                     .then(u => {
                         remind(1, j_, false, j_.message.userstate.id, u[1], null, remind_message)
                         .then(r => {
-                            j.send(2, j_, `Successfully set reminder`);
+                            j_.send(`Successfully set reminder`);
                         })
                         .catch(e => {
                             console.error(e);
-                            j.send(2, j_, `Error: Could not set reminder ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                            j_.send(`Error: Could not set reminder ${_returnerr(e,0)} ${_returnerr(e,1)}`);
                         })
                     })
                     .catch(e => {
-                        j.send(2, j_, `Error: Could not get userid of given user`);
+                        j_.send(`Error: Could not get userid of given user`);
                     })
                 } else {
-                    j.send(2, j_, `Error: No message given`);
+                    j_.send(`Error: No message given`);
                 }
             }
         }

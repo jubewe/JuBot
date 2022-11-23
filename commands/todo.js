@@ -19,19 +19,19 @@ module.exports = {
                 case "add": {
                     if(j_.message._.args()[1]){
                         _appf(paths.todo, `\n${_splitafter(j_.message._.msg, 2)}`);
-                        j.send(2, j_, `Successfully added ${_splitafter(j_.message._.msg, 1)} to todos`);
+                        j_.send(`Successfully added ${_splitafter(j_.message._.msg, 1)} to todos`);
                     } else {
-                        j.send(2, j_, `Error: Nothing to add given`);
+                        j_.send(`Error: Nothing to add given`);
                     }
                     break;
                 }
 
                 default: {
-                    j.send(2, j_, `Error: Option not found`);
+                    j_.send(`Error: Option not found`);
                 }
             }
         } else {
-            j.send(2, j_, `Error: No option given`);
+            j_.send(`Error: No option given`);
         }
     }
 }

@@ -22,12 +22,12 @@ module.exports = {
                 }
                 j.files().clientchannels.viewchannels.push(viewchan);
                 _wf(paths.clientchannels, j.files().clientchannels);
-                j.send(2, j_, `Successfully started viewing ${_pixelize(viewchan)}`);
+                j_.send(`Successfully started viewing ${_pixelize(viewchan)}`);
             } else {
-                j.send(2, j_, `Error: Already viewing ${_pixelize(viewchan)}`)
+                j_.send(`Error: Already viewing ${_pixelize(viewchan)}`)
             }
         } else {
-            j.send(2, j_, `Error: No channel given`);
+            j_.send(`Error: No channel given`);
         }
     }
 }

@@ -43,7 +43,10 @@ let j = {
     client: undefined
   },
   dc: {
-    client: undefined
+    // client: undefined
+    client: new Client({
+      intents: new Intents(32767)
+    })
   },
   viewclient: undefined,
   script: {

@@ -13,7 +13,7 @@ module.exports = {
     cooldown_user: -1,
     exec: async (j_) => {
         if(j_.message._.args()[0]){
-            j.send(2, j_, `Started downloading, this might take some time Waiting`);
+            j_.send(`Started downloading, this might take some time Waiting`);
             let url = j_.message._.args()[0];
             j.modules.request(`${j.urls().api.__url("upload", "POST")}`, {
                 method: "POST",
@@ -26,14 +26,14 @@ module.exports = {
             (e2, r2) => {
                 if(e2){
                     console.error(new Error(e2));
-                    j.send(2, j_, `Error: Could not download file ${e2.stack} ${e2.message}`);
+                    j_.send(`Error: Could not download file ${e2.stack} ${e2.message}`);
                 } else {
                     if(JSON.parse(r2.body) && JSON.parse(r2.body).status === 201){
                         let dat = JSON.parse(r2.body);
-                        j.send(2, j_, `Successfully downloaded file (Size: ${(dat.data.size/1048576).toFixed(2)} mb), Path: (Server) ${dat.data.path}, (Client) \\\\JUPI\\nas\\MSD128_NAS\\files\\upload\\${dat.data.name}`);
+                        j_.send(`Successfully downloaded file (Size: ${(dat.data.size/1048576).toFixed(2)} mb), Path: (Server) ${dat.data.path}, (Client) \\\\JUPI\\nas\\MSD128_NAS\\files\\upload\\${dat.data.name}`);
                     } else {
                         console.log(r2.body)
-                        j.send(2, j_, `Error: Could not upload file to server`);
+                        j_.send(`Error: Could not upload file to server`);
                     }
                 }
             })
@@ -41,7 +41,7 @@ module.exports = {
             j.modules.request.post(url, {method: "GET", encoding: null}, (e, r) => {
                 if(e){
                     console.error(new Error(e));
-                    j.send(2, j, `Error: Could not request url (${e.message})`);
+                    j_.send(j, `Error: Could not request url (${e.message})`);
                 } else {
                     console.log(r.caseless.get("content-type"));
                     console.log(r.body);
@@ -57,11 +57,11 @@ module.exports = {
                             console.log(r2.body);
                         }
                     })
-                    j.send(2, j, `👉 Console`);
+                    j_.send(j, `👉 Console`);
                 }
             })*/
         } else {
-            j.send(2, j_, `Error: No url given`);
+            j_.send(`Error: No url given`);
         }
     }
 }

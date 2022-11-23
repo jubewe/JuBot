@@ -78,4 +78,17 @@ module.exports = {
 
     cache: require("./cache"),
 
+    knownbots: require("./knownbots"),
+    addknownbot: require("./knownbots"),
+    removeknownbot: require("./knownbots"),
+    deleteknownbot: require("./knownbots"),
+    getknownbot: require("./knownbots"),
+    getknownbots: require("./knownbots"),
+
+    // crossban: require("./crossban"),
+
+    clipinfo: require("./getclip"),
+    videoinfo: require("./getvideo"),
+    streaminfo: require("./getstream"),
+
 }

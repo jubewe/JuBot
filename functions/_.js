@@ -4,8 +4,9 @@ module.exports = {
   _channel: require("./_channel"),
 
   _checkenv: require("./_checkenv"),
-  _checkvalinobj: require("./_checkvalinobj"),
   _checkmultiplevalinobj: require("./_checkmultiplevalinobj"),
+  _checkvalinobj: require("./_checkvalinobj"),
+  _chunkArr: require("./_chunkArray"),
   _cleantime: require("./_cleantime"),
   _combineArr: require("./_combineArr"),
   _converttime: require("./_converttime"),
@@ -40,7 +41,6 @@ module.exports = {
   _regex: require("./_regex"),
 
   badgestoarr: require("./badgestoarr"),
-  clip: require("./twitch/clip"),
   checktoken: require("./gettoken"),
   privmsg_parser: require("./privmsg_parser"),
   remind: require("./remind"),
@@ -51,10 +51,11 @@ module.exports = {
   getuserbyid: require("./getuserbyid"),
   getuserid: require("./getuserid"),
   getuserperm: require("./getuserperm"),
-  // send: require("./twitch/send"),
   token: require("./token"),
   uptime: require("./uptime"),
   userperms: require("./userperms"),
+
+  twitch: require("./twitch/_actions"),
   
   api: {
     api_requestheaders: require("./api/api_requestheaders"),

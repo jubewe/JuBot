@@ -20,17 +20,17 @@ module.exports = {
             case "randomphrase": {
                 if(!j_.message._.args()[0]){
                     let phrase = _pickrandom(j.files().phrases.phrases, 1);
-                    j.send(2, j_, `Random Phrase [${j.files().phrases.phrases.indexOf(phrase)}]: ${phrase}`);
+                    j_.send(`Random Phrase [${j.files().phrases.phrases.indexOf(phrase)}]: ${phrase}`);
                 } else {
                     switch (j_.message._.args()[0]){
                         case "add": {
                             if(!j_.message._.args()[1]){
-                                j.send(2, j_, `Error: No phrase to add given`);
+                                j_.send(`Error: No phrase to add given`);
                                 return;
                             }
 
                             if(j.files().phrases.phrases.includes(j_.message._.args()[1])){
-                                j.send(2, j_, `Error: phrase already added`);
+                                j_.send(`Error: phrase already added`);
                                 return;
                             }
 
@@ -38,14 +38,14 @@ module.exports = {
                             j.files().phrases.phrases.push(phrase);
                             _wf(paths.phrases, j.files().phrases);
 
-                            j.send(2, j_, `Successfully added phrase ${phrase}`);
+                            j_.send(`Successfully added phrase ${phrase}`);
                             break;
                         }
 
                         case "delete":
                         case "remove": {
                             if(!j_.message._.args()[1]){
-                                j.send(2, j_, `Error: No phrase to remove given`);
+                                j_.send(`Error: No phrase to remove given`);
                                 return;
                             }
                             
@@ -57,9 +57,9 @@ module.exports = {
                                     j.files().phrases.phrases.splice(parseInt(phrase), 1);
                                     _wf(paths.phrases, j.files().phrases);
 
-                                    j.send(2, j_, `Successfully deleted phrase [${phrase}]: ${phrase_}`)
+                                    j_.send(`Successfully deleted phrase [${phrase}]: ${phrase_}`)
                                 } else {
-                                    j.send(2, j_, `Error: Phrase not found (by id)`);
+                                    j_.send(`Error: Phrase not found (by id)`);
                                 }
                             } else {
                                 if(j.files().phrases.phrases.includes(phrase)){
@@ -67,16 +67,16 @@ module.exports = {
                                     j.files().phrases.phrases.splice(phrase_, 1);
                                     _wf(paths.phrases, j.files().phrases);
 
-                                    j.send(2, j_, `Successfully deleted phrase [${phrase_}]: ${phrase}`);
+                                    j_.send(`Successfully deleted phrase [${phrase_}]: ${phrase}`);
                                 } else {
-                                    j.send(2, j_, `Error: Phrase not found (by content)`);
+                                    j_.send(`Error: Phrase not found (by content)`);
                                 }
                             }
                             break;
                         }
 
                         case "list": {
-                            j.send(2, j_, `Phrases [${j.files().phrases.phrases.length}]: <in work>`)
+                            j_.send(`Phrases [${j.files().phrases.phrases.length}]: <in work>`)
                             break;
                         }
                         

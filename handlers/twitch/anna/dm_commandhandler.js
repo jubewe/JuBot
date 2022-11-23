@@ -25,7 +25,7 @@ async function dm_commandhandler(j_, j){
             
             } else {
                 if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-                    j.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+                    j_.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
                 }
             }
         }

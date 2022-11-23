@@ -13,9 +13,9 @@ module.exports = {
     exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1] !== undefined){
             let saymsg = j_.message._.msg.substring(j_.message._.msg.split(" ")[0].length, j_.message._.msg.length);
-            j.send(0, j_, saymsg, null, false);
+            j_.send(0, saymsg);
         } else {
-            j.send(2, j_, `Error: Nothing to say given`);
+            j_.send(`Error: Nothing to say given`);
         }
     }
 }

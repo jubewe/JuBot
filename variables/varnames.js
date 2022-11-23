@@ -6,6 +6,9 @@ module.exports = {
                     "emotes": (channel) => {return `seventv_emotes_channel_${channel}`}
                 }
             }
+        },
+        "twitch": {
+            "knownbots": "twitch_knownbots"
         }
     }
 };

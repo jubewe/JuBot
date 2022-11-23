@@ -12,9 +12,9 @@ module.exports = {
     cooldown_user: 10000,
     exec: async (j_) => {
         if(j_.message._.args()[0]){
-            j.send(0, j_, `${j_.message._.usertag} You tuck ${j_.message._.args()[0]} to Bed ${j_.message._.args()[1] || "OkayChamp"} 👉 🛌 Bedge`);
+            j_.send(0, `${j_.message._.usertag} You tuck ${j_.message._.args()[0]} to Bed ${j_.message._.args()[1] || "OkayChamp"} 👉 🛌 Bedge`);
         } else {
-            j.send(0, j_, `${j_.message._.usertag} You tuck someone to Bed OkayChamp 👉 🛌 Bedge`);
+            j_.send(0, `${j_.message._.usertag} You tuck someone to Bed OkayChamp 👉 🛌 Bedge`);
         }
     }
 }
