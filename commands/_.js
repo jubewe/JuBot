@@ -5,7 +5,7 @@ module.exports = {
     say: require("./say"),
     test: require("./test"),
     // test2: require("./test2"),
-    clip: require("./clip"),
+    clip: require("./createclip"),
     user: require("./user"),
     timer: require("./timer"),
     tuck: require("./tuck"),
@@ -37,6 +37,8 @@ module.exports = {
     enablecmd: require("./customcommand"),
     disablecmd: require("./customcommand"),
     getcmd: require("./customcommand"),
+    copycmd: require("./customcommand"),
+    yoinkcmd: require("./customcommand"),
 
     keyword: require("./customkeyword"),
     keywords: require("./customkeyword"),
@@ -48,6 +50,8 @@ module.exports = {
     enablekey: require("./customkeyword"),
     disablekey: require("./customkeyword"),
     getkey: require("./customkeyword"),
+    copykey: require("./customkeyword"),
+    yoinkkey: require("./customkeyword"),
 
     notification: require("./customnotification"),
     notifications: require("./customnotification"),
@@ -90,5 +94,9 @@ module.exports = {
     clipinfo: require("./getclip"),
     videoinfo: require("./getvideo"),
     streaminfo: require("./getstream"),
+
+    // poll: require("./createpoll"),
+
+    errors: require("./api/geterrors"),
 
 }

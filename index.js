@@ -38,52 +38,49 @@ j.client.on("PRIVMSG", async (response) => {
   let modified_channel = j_.message._.modified_channel = undefined;
 
   let msgchanmatch = privmsg.message.messageText.match(new RegExp(`(\-chan\:[^\\s]+|^${j.c().prefix}\\b\\w+\\b\:+\\w+)`, "i"));
-  if(msgchanmatch !== null){
-      await new Promise((resolve) => {
-        getuserperm(privmsg.userstate.id)
-        .then(uperm => {
-          if(uperm.num >= j.c().perm.botdefault){
-            let msgchanmatch0 = new RegExp(`(\-chan\:|^${j.c().prefix}\\b\\w+\\b\:)`, "i");
-            let msgchan = msgchanmatch[0].split(msgchanmatch[0].match(msgchanmatch0)[0])[1];
-
-            let msgchanmatchreplace = new RegExp(`\-chan\:[^\\s]+`, "i")
-            if(msgchanmatch[0].match(new RegExp(`^${j.c().prefix}\\b\\w+\\b\:+\\w+`, "i"))){
-              msgchanmatchreplace = `:${msgchan}`;
-            }
-
-            getuser(1, msgchan)
-            .then(u => {
-              if(privmsg.channel.id != u[1]){
-                j_.message._.modified_channel = {
-                  name: privmsg.channel.name,
-                  nameraw: privmsg.channel.nameraw,
-                  id: privmsg.channel.id,
-                };
-                privmsg.channel.name = u[0];
-                privmsg.channel.nameraw = u[0];
-                privmsg.channel.id = u[1];
-              }
-
-              privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatchreplace, "");
-              return resolve();
-            })
-            .catch(() => {
-              privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatchreplace, "");
-              return resolve();
-            })
-          } else {
-            return resolve();
-          }
-        })
-      })
-  };
-
   let msgusermatch = privmsg.message.messageText.match(new RegExp(`\-user\:[^\\s]+`, "i"));
-  if(msgusermatch !== null){
-    await new Promise((resolve) => {
-      getuserperm(privmsg.userstate.id)
-      .then(uperm => {
-        if(uperm.num >= j.c().perm.botdefault){
+  let msgsendoptmatch = privmsg.message.messageText.match(new RegExp(`\-send\:[^\\s]+`, "i"));
+
+  if(msgchanmatch ?? msgusermatch ?? msgsendoptmatch){
+    getuserperm(privmsg.userstate.id)
+    .then(async uperm => {
+      if(!(uperm.num >= j.c().perm.botdefault)) return;
+      
+      if(msgchanmatch !== null){
+        await new Promise((resolve) => {
+          let msgchanmatch0 = new RegExp(`(\-chan\:|^${j.c().prefix}\\b\\w+\\b\:)`, "i");
+          let msgchan = msgchanmatch[0].split(msgchanmatch[0].match(msgchanmatch0)[0])[1];
+  
+          let msgchanmatchreplace = new RegExp(`\-chan\:[^\\s]+`, "i")
+          if(msgchanmatch[0].match(new RegExp(`^${j.c().prefix}\\b\\w+\\b\:+\\w+`, "i"))){
+            msgchanmatchreplace = `:${msgchan}`;
+          }
+  
+          getuser(1, msgchan)
+          .then(u => {
+            if(privmsg.channel.id != u[1]){
+              j_.message._.modified_channel = {
+                name: privmsg.channel.name,
+                nameraw: privmsg.channel.nameraw,
+                id: privmsg.channel.id,
+              };
+              privmsg.channel.name = u[0];
+              privmsg.channel.nameraw = u[0];
+              privmsg.channel.id = u[1];
+            }
+  
+            privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatchreplace, "");
+            return resolve();
+          })
+          .catch(() => {
+            privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatchreplace, "");
+            return resolve();
+          })
+        })
+      };
+  
+      if(msgusermatch !== null){
+        await new Promise((resolve) => {
           let msguser = msgusermatch[0].split(new RegExp(`\-user\:`))[1].toLowerCase();
           if(![j.e().T_USERNAME, j.e().T_USERNAME_PV].includes(msguser) && [j.e().T_USERNAME, j.e().T_USERNAME_PV].includes(privmsg.userstate.username)){
             getuser(1, msguser)
@@ -94,7 +91,7 @@ j.client.on("PRIVMSG", async (response) => {
               };
               privmsg.userstate.username = u[0];
               privmsg.userstate.id = u[1];
-
+  
               privmsg.message.messageText = privmsg.message.messageText.replace(msgusermatch[0], "");
               return resolve();
             })
@@ -106,12 +103,20 @@ j.client.on("PRIVMSG", async (response) => {
             privmsg.message.messageText = privmsg.message.messageText.replace(msgusermatch[0], "NOIDONTTHINKSO du Frechdachs");
             return resolve();
           }
-        } else {
-          return resolve();
-        }
-      })
+        })
+      };
+
+      if(msgsendoptmatch !== null){
+        let msgsendopt = msgsendoptmatch[0].split(new RegExp(`\-send\:`))[1];
+
+        j_.message._.modified_send = msgsendopt;
+
+        privmsg.message.messageText = privmsg.message.messageText.replace(msgsendoptmatch[0], "");
+      };
+
     })
-  };
+    .catch(e => {})
+  }
 
   let message = j_.message.message = privmsg.message;
   let userstate = j_.message.userstate = privmsg.userstate;
@@ -211,7 +216,7 @@ j.client.on("PRIVMSG", async (response) => {
   })
   .catch(e => {
     if (new RegExp(`^${prefix}+[\\w]+`).test(msg)) {
-      let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().prefix)[1] : msg.split(j.c().prefix)[1];
+      let command = j_.message._.command = msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase();
       (async() => {
         commandhandler(j_, j);
       })();

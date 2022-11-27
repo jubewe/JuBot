@@ -15,7 +15,7 @@ async function custom_keywordhandler(j_, j){
                     if(c[0] === 0 || keyword.cooldown <= 0 || ((Date.now() - c[0]) >= keyword.cooldown) || j_.message._.userperms._default){
                         if(j_.message._.userperms._default || c[1] === 0 || keyword.cooldown_user <= 0 || ((Date.now() - c[0]) >= keyword.cooldown_user)){
                             (async () => {
-                                j_.send(0, j_, keyword.response, undefined, undefined, undefined, true);
+                                j.send(0, j_, keyword.response, undefined, undefined, undefined, true);
                                 if((keyword.cooldown > 0 || keyword.cooldown_user > 0) && j_.message._.userperms._default){
                                     _cooldown(1, j_.message.channel.id, keyword.id, j_.message.userstate.id, true)
                                     .then(c2 => {})
@@ -30,7 +30,7 @@ async function custom_keywordhandler(j_, j){
                 })
             } else {
                 if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-                    j_.send(2, j_, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+                    j_.send(`Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
                 }
             }
         }

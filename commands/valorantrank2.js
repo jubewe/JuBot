@@ -19,14 +19,14 @@ module.exports = {
             if(valoranttag.includes("#")){
                 j.modules.request(`${urls.api.__url("valorantrank", "GET").replace(":riotid", valoranttag.split("#")[0]).replace(":tagline", valoranttag.split("#")[1])}`, {method: "GET", headers: api_requestheaders()}, (e, r) => {
                     if(e){
-                        j_.send(2, `Error: Could not recieve rank`);
+                        j_.send(`Error: Could not recieve rank`);
                     } else {
                         let dat = JSON.parse(r.body);
 
                         if(dat.status === 200){
-                            j_.send(3, `${valoranttag}'s Valorant Rank: ${dat.data.rank}`);
+                            j_.send(`${valoranttag}'s Valorant Rank: ${dat.data.rank}`);
                         } else {
-                            j_.send(2, `Valorant Rank Error: ${dat.data} (${dat.e})`);
+                            j_.send(`Valorant Rank Error: ${dat.data} (${dat.e})`);
                         }
                     }
                 });

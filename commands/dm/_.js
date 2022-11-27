@@ -6,7 +6,7 @@ module.exports = {
     say: require("../say"),
     test: require("../test"),
     // test2: require("../test2"),
-    clip: require("../clip"),
+    clip: require("../createclip"),
     user: require("../user"),
     timer: require("../timer"),
     tuck: require("../tuck"),

@@ -13,21 +13,22 @@ module.exports = {
     cooldown: -1,
     cooldown_user: -1,
     exec: async (j_) => {
-        let title = (j_.message._.msg.split(";")[0]);
+        let title = (j_.message._.msg.split(";")[0].split(j_.message._.prefix + j_.message._.command)[1]);
         let choices = (j_.message._.msg.split(";"));
         choices.shift();
 
+        console.log(title);
+        console.log(choices);
+
         if(!title || !choices) return j_.send(`Error: No title or choices specified`);
 
-        j.functions().twitch.createpoll(j_.message.channel.id, title, choices.map(a => {return {"title":a}}))
+        j.functions().twitch.createpoll(j_.message.channel.id, title, choices)
         .then(p => {
-            console.log(p);
-
             j_.send(`Successfully created poll`);
         })
         .catch(e => {
             console.error(e);
-            j_.send(`Error: Could not create poll: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+            j_.send(`Error: Could not create poll: ${e.error || _returnerr(e,0)} ${e.message || _returnerr(e,1)}`);
         })
     }
 };

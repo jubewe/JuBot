@@ -24,6 +24,7 @@ module.exports = {
   _pi_gpio: require("./_pi_gpio"),
   _pickrandom: require("./_pickrandom"),
   _pixelize: require("./_pixelize"),
+  _randomnum: require("./_randomnum"),
   _returnerr: require("./_returnerr"),
   _returnplural: require("./_returnplural"),
   _rf: require("./_rf"),

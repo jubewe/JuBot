@@ -39,11 +39,13 @@
 <clear cache(s) command>
 <filemanager: sync files on change>
 <cafk for admins>
+<add whisper commands>
+<prediction command>
+<poll command>
 new splitmsg
+edit default command parameters
 crossban command
 badgestoarr
 command to get channel
-<add whisper commands>
-prediction command
-poll command
 twitch action: announce
+command: add from:<channel>

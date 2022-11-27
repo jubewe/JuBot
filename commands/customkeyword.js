@@ -1,7 +1,10 @@
 const customkeyword = require("../functions/customkeyword");
+const getuser = require("../functions/getuser");
 const _cleantime = require("../functions/_cleantime");
+const _pixelize = require("../functions/_pixelize");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
+const _splitafter = require("../functions/_splitafter");
 let j = require("../variables/j");
 
 module.exports = {
@@ -31,6 +34,8 @@ module.exports = {
                         case "permission": {permissionkeyword(1); break;}
                         case "enable": {togglestate(1, 1); break;}
                         case "disable": {togglestate(1, 0); break;}
+                        case "yoink": 
+                        case "copy": {copykeyword(1); break;}
                         case "list":
                         case "get": {getkeyword(1); break;}
 
@@ -52,6 +57,8 @@ module.exports = {
             case "enablekey": {togglestate(0, 1); break;}
             case "disablekey": {togglestate(0, 0); break;}
             case "getkey": {getkeyword(0); break;}
+            case "copykey":
+            case "yoinkkey": {copykeyword(0); break;}
         };
 
         async function addkeyword(num){
@@ -207,6 +214,45 @@ module.exports = {
                 .catch(e => {
                     j_.send(`Error: Could not get keywords of this channel: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`)
                 })
+            }
+        };
+        async function copykeyword(num){
+            let copychanreg = new RegExp(`(\-chan\:+\\w+|from\:\\w+)`, "i");
+            let copychanreg2 = new RegExp(`(\-chan\:+|from\:)`, "i");
+            let copychan = _splitafter(j_.message._.msg, num+1).match(copychanreg);
+            if(copychan !== null && _splitafter(j_.message._.msg, num+1).replace(copychan, "").length > 0){
+                copychan = copychan[0].split(copychanreg2)[2];
+                let copykey = _splitafter(j_.message._.msg, num+1).replace(copychanreg, "").replace(_regex.spacestartendreg(), "");
+
+                getuser(1, copychan)
+                .then(u => {
+                    if(Object.keys(j.files().channels.channels).includes(u[1])){
+                        let ch = j.files().channels.channels[u[1]];
+                        if(!ch.keywords) return j_.send(`Error: Keyword not found in ${_pixelize(u[0])} (${u[1]})`);
+                        customkeyword(0, j_, false, u[1], null, copykey)
+                        .then(key => {
+                            key.create_time = key.update_time = Date.now();
+                            customkeyword(1, j_, false, j_.message.channel.id, null, key.name, key.response, key.aliases, key.state, key.permission, key.cooldown, key.cooldown_user)
+                            .then(key2 => {
+                                j_.send(`Successfully copied keyword ${copykey} from ${_pixelize(u[0])} (${u[1]})`);
+                            })
+                            .catch(e => {
+                                console.error(e);
+                                j_.send(`Error: Could not re-create copied keyword: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                            })
+                        })
+                        .catch(e => {
+                            j_.send(`Error: Could not get keyword ${copykey} in ${_pixelize(u[0])} (${u[1]}): ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                        })
+                    } else {
+                        j_.send(`Error: Channel ${_pixelize(u[0])} (${u[1]}) not found in channels`);
+                    }
+                })
+                .catch(e => {
+                    j_.send(`Error: Could not recieve channel id`);
+                })
+            } else {
+                j_.send(`Error: No Channel or keyword to copy from given`);
             }
         };
     }

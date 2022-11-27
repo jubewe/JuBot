@@ -1,4 +1,4 @@
-const clip = require("../functions/twitch/clip");
+const createclip = require("../functions/twitch/createclip");
 const messageembed = require("../functions/discord/messageembed");
 const getuser = require("../functions/getuser");
 const _pixelize = require("../functions/_pixelize");
@@ -38,11 +38,11 @@ module.exports = {
             .then(t => {
                 if(!(t ?? false) || t.scopes.includes("clips:edit")){
                     t = t ?? {token: undefined, client_id: undefined};
-                    clip(u[1], t.token, t.client_id)
+                    createclip(u[1], t.token, t.client_id)
                     .then(c => {
                         j_.send(2, `Successfully created clip in ${_pixelize(clipchan)} (${u[1]}): ${c.edit_url.split("/edit")[0]}`);
 
-                        if(j.files().channels.channels[u[1]] && j.files().channels.channels[u[1]].discord_clipchannelid && u[1] == j_.message.channel.id){
+                        if(j.files().channels.channels[u[1]] && j.files().channels.channels[u[1]].send_clips_to_discord && j.files().channels.channels[u[1]].discord_clipchannelid && u[1] == j_.message.channel.id){
                             j.dc.client.channels.fetch(j.files().channels.channels[u[1]].discord_clipchannelid)
                             .then(channel => {
                                 channel.send(`${c.edit_url.split("/edit")[0]}`, {embeds: [messageembed("Clip", `Created by ${j_.message.userstate.username} (${j_.message.userstate.id}) in ${j_.message.channel.name} (${j_.message.channel.id})\n\n${c.edit_url.split("/edit")[0]}`)]})

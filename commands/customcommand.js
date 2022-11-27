@@ -1,7 +1,10 @@
 const customcommand = require("../functions/customcommand");
+const getuser = require("../functions/getuser");
 const _cleantime = require("../functions/_cleantime");
+const _pixelize = require("../functions/_pixelize");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
+const _splitafter = require("../functions/_splitafter");
 let j = require("../variables/j");
 const paths = require("../variables/paths");
 
@@ -32,13 +35,15 @@ module.exports = {
                         case "permission": {permissioncommand(1); break;}
                         case "enable": {togglestate(1, 1); break;}
                         case "disable": {togglestate(1, 0); break;}
+                        case "copy":
+                        case "yoink": {copycommand(1); break;}
                         case "list":
                         case "get": {getcommand(1); break;}
 
-                        default: {j_.send(2, j_, `Error: Option not found`); return;}
+                        default: {j_.send(`Error: Option not found`); return;}
                     };
                 } else {
-                    j_.send(2, j_, `Error: No option given`);
+                    j_.send(`Error: No option given`);
                 }
                 break;
             }
@@ -53,6 +58,8 @@ module.exports = {
             case "enablecmd": {togglestate(0, 1); break;}
             case "disablecmd": {togglestate(0, 0); break;}
             case "getcmd": {getcommand(0); break;}
+            case "copycmd": 
+            case "yoinkcmd": {copycommand(0); break;}
         };
 
         async function addcommand(num){
@@ -228,6 +235,45 @@ module.exports = {
                 .catch(e => {
                     j_.send(`Error: Could not get commands of this channel: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`)
                 })
+            }
+        };
+        async function copycommand(num){
+            let copychanreg = new RegExp(`(\-chan\:+\\w+|from\:\\w+)`, "i");
+            let copychanreg2 = new RegExp(`(\-chan\:+|from\:)`, "i");
+            let copychan = _splitafter(j_.message._.msg, num+1).match(copychanreg);
+            if(copychan !== null && _splitafter(j_.message._.msg, num+1).replace(copychan, "").length > 0){
+                copychan = copychan[0].split(copychanreg2)[2];
+                let copycmd = _splitafter(j_.message._.msg, num+1).replace(copychanreg, "").replace(_regex.spacestartendreg(), "");
+
+                getuser(1, copychan)
+                .then(u => {
+                    if(Object.keys(j.files().channels.channels).includes(u[1])){
+                        let ch = j.files().channels.channels[u[1]];
+                        if(!ch.commands) return j_.send(`Error: Command not found in ${_pixelize(u[0])} (${u[1]})`);
+                        customcommand(0, j_, false, u[1], null, copycmd)
+                        .then(cmd => {
+                            cmd.create_time = cmd.update_time = Date.now();
+                            customcommand(1, j_, false, j_.message.channel.id, null, cmd.name, cmd.response, cmd.aliases, cmd.state, cmd.permission, cmd.cooldown, cmd.cooldown_user)
+                            .then(cmd2 => {
+                                j_.send(`Successfully copied command ${copycmd} from ${_pixelize(u[0])} (${u[1]})`);
+                            })
+                            .catch(e => {
+                                console.error(e);
+                                j_.send(`Error: Could not re-create copied command: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                            })
+                        })
+                        .catch(e => {
+                            j_.send(`Error: Could not get command ${copycmd} in ${_pixelize(u[0])} (${u[1]}): ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                        })
+                    } else {
+                        j_.send(`Error: Channel ${_pixelize(u[0])} (${u[1]}) not found in channels`);
+                    }
+                })
+                .catch(e => {
+                    j_.send(`Error: Could not recieve channel id`);
+                })
+            } else {
+                j_.send(`Error: No Channel or command to copy from given`);
             }
         };
     }

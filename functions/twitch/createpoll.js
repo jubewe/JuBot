@@ -12,7 +12,6 @@
  */
 
 const j = require("../../variables/j");
-const _joinurlquery = require("../_joinurlquery");
 const _regex = require("../_regex");
 const _requestopts = require("../_requestopts");
 
@@ -20,14 +19,23 @@ async function createpoll(broadcaster_id, title, choices, duration, channel_poin
     return new Promise((resolve, reject) => {
         let nonarr = global.variables.varstatic.nonarr
         if(!broadcaster_id || !title || !choices) return reject({path:[0],msg:"required argument not found"});
-        let search_params = `?broadcaster_id=${broadcaster_id}`;
-        search_params += `&title=${(title.length <= 25 ? title : title.substring(0, 25))}`;
-        search_params += `&choices=${(choices)}`;
-        search_params += `&duration=${(duration && _regex.numregex().test(duration) ? (duration < 15 ? 15 : duration > 1800 ? 1800 : duration) : 300)}`;
-        search_params += (channel_points_voting_enabled ? `&channel_points_voting_enabled=${channel_points_voting_enabled}` : "");
-        search_params += (channel_points_per_vote ? `&channel_points_per_vote=${(channel_points_per_vote < 1 ? 1 : channel_points_per_vote > 1000000 ? 1000000 : channel_points_per_vote)}` : "");
+        if(Array.isArray(choices) && typeof choices[0] === "string"){
+            choices = choices.map(a => {a = a.replace(_regex.spacestartendreg(), ""); return {"title":a}});
+        };
 
-        j.modules.request(j.urls().twitch.poll.create.url + search_params, _requestopts(j.urls().twitch.poll.create.method, customtoken, customclientid), (e, r) => {
+        let search_params = {};
+        search_params["broadcaster_id"] = broadcaster_id;
+        search_params["title"] = (title.length <= 25 ? title : title.substring(0, 25));
+        search_params["choices"] = choices;
+        search_params["duration"] = (duration && _regex.numregex().test(duration) ? (duration < 15 ? 15 : duration > 1800 ? 1800 : duration) : 300);
+        if(channel_points_voting_enabled) search_params["channel_points_voting_enabled"] = channel_points_voting_enabled;
+        if(channel_points_per_vote) search_params["channel_points_per_vote"] = `${(channel_points_per_vote < 1 ? 1 : channel_points_per_vote > 1000000 ? 1000000 : channel_points_per_vote)}`;
+
+        let reqoptions = _requestopts(j.urls().twitch.poll.create.method, customtoken, customclientid);
+        reqoptions["body"] = JSON.stringify(search_params);
+        reqoptions.headers["Content-Type"] = "application/json";
+
+        j.modules.request.post(j.urls().twitch.poll.create.url, reqoptions, (e, r) => {
             if(e){
                 return reject(e);
             } else {

@@ -8,7 +8,7 @@ module.exports = {
     timeout: require("./timeout"),
     untimeout: require("./unban"),
 
-    clip: require("./clip"),
+    createclip: require("./createclip"),
     
     getclips: require("./getclips"),
     getvideos: require("./getvideos"),

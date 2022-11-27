@@ -57,7 +57,7 @@
         "active_mods": 30000
     },
     "connect": {
-        "discord": true,
+        "discord": false,
         "twitch": true,
         "twitch_view": false,
         "twitch_notifications": false,
@@ -65,16 +65,16 @@
             "api": false
         },
         "trackers": {
-            "live": true,
-            "activemods": true,
-            "youtube_video": true
+            "live": false,
+            "activemods": false,
+            "youtube_video": false
         },
         "express": {
             "app": false
         }
     },
     "modules": {
-        "notifications": true,
+        "notifications": false,
         "log": {
             "twitch": {
                 "privmsg": 2,

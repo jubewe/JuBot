@@ -98,7 +98,7 @@ async function livechannels(){
     
                             });
 
-                            _log(2, `${_stackname("trackers", "live")[3]} Live Channels: ${Object.keys(dat.data).map(a => {return `${dat.data[a].user_id} ${dat.data[a].user_login}`})}`);
+                            _log(1, `${_stackname("trackers", "live")[3]} Live Channels: ${Object.keys(dat.data).map(a => {return `${dat.data[a].user_id} ${dat.data[a].user_login}`})}`);
 
                             _wf(paths.channels, channels);
                             return resolve(dat);

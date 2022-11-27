@@ -35,11 +35,14 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
         smode = scmd;
       }
     }
+
+
     let sendtrys = 3;
     let sendretrytimeout = j.c().timeouts.sendretrytimeout;
   
-    if(j_ && j_.message._.type === "WHISPER"){smode = 1;schan = j_.message.userstate.username;};
-    if(j_ && j_.message._.modified_channel){smode = 2;schan = j_.message._.modified_channel.name;smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;}
+    if(j_ && j_.message._.modified_send){smode = j_.message._.modified_send;};
+    if(j_ && j_.message._.type === "WHISPER"){smode = 1; schan = j_.message.userstate.username;};
+    if(j_ && j_.message._.modified_channel){smode = 2; schan = j_.message._.modified_channel.name;smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;}
     if([3, "tag"].includes(smode)){smsg = j_.message._.usertag_ + smsg;}
     if(j_ && sreplacer){smsg = await replacevariables(j_, smsg);}
   

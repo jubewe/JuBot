@@ -27,6 +27,7 @@ module.exports = {
     t_url_param_period: () => {return new RegExp(`(all|day|month|week)`, "gi")},
     t_url_param_sort: () => {return new RegExp(`(time|trending|views)`, "gi")},
     t_url_param_type: () => {return new RegExp(`(all|archive|highlight|upload)`, "gi")},
-    t_poll_title: () => {return new RegExp(`(\"+\\w+\")`, "gi")}
+    t_poll_title: () => {return new RegExp(`(\"+\\w+\")`, "gi")},
+    spacestartendreg: () => {return new RegExp(`(^\\s|\\s$)`, "g")}
 
 };

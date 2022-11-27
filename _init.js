@@ -19,6 +19,7 @@ const youtubevideo = require("./functions/trackers/youtubevideo");
 const _wf = require("./functions/_wf");
 let j = require("./variables/j");
 const _mainpath = require("./functions/_mainpath");
+const geterrors = require("./functions/api/geterrors");
 let queuedreconnect = -1;
 
 if(_checkenv(null, "OS", 0, "Windows_NT")){
@@ -26,7 +27,7 @@ if(_checkenv(null, "OS", 0, "Windows_NT")){
     require(_mainpath("./test.js"))();
 }
 
-function _init(){
+async function _init(){
     let j = require("./variables/j");
     // console.clear();
     let channels = j.files().channels;
@@ -121,10 +122,10 @@ function _init(){
         }
         if(queuedreconnect > -1) return;
         queuedreconnect = 0;
-        // attemptreconnect();
-        // let recint = setInterval(() => {
-        //     attemptreconnect();
-        // }, 15000);
+        attemptreconnect();
+        let recint = setInterval(() => {
+            attemptreconnect();
+        }, 15000);
 
         function attemptreconnect(){
             queuedreconnect++;
@@ -156,27 +157,9 @@ function _init(){
     };
 
     if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
-        setTimeout(getapierrors, 3000);
-        setInterval(getapierrors, j.c().intervals.errors);
+        setTimeout(() => {geterrors(1)}, 3000);
+        setInterval(() => {geterrors(1)}, j.c().intervals.errors);
     }
-
-    function getapierrors(){
-        request(`${urls.api.__url("errors", "GET")}`, {method: "GET", headers: api_requestheaders()}, (e, r) => {
-            if(e){
-                console.error(new Error(e));
-            } else {
-                if(j.functions()._regex.jsonreg().test(r.body)){
-                    let dat = JSON.parse(r.body);
-                    _log(1, `${_stackname("api", "get", "errors")[3]} ${dat.data.split("\n").length-1}`);
-                    if(dat.status == 200 && dat.data.length > 0){
-                        j.client.say(j.env().T_USERNAME, `@JUBOT_ADMIN, Cached ${(dat.data.split("\n").length-1).toFixed(0)} Errors ( ${urls.api._base}:${urls.api._port}${urls.api._endpoints.GET.errors} / \\\\JUPI\\pi\\home\\pi\\FTP\\files\\api\\data\\errors.txt )`);
-                    }
-                } else {
-                    _log(2, `${_stackname("api", "get", "errors", "error")[3]} ${r.body}`);
-                }
-            }
-        })
-    };
 
     // Reference: https://github.com/SevenTV/EventAPI/
     
@@ -192,6 +175,7 @@ function _init(){
                 if(j.ws.client.readyState !== 1){
                     j.ws.client.close();
                     j.ws.client = new j.modules.ws.WebSocket(`ws://${j.urls().api._base.replace("http://", "")}:${j.urls().ws._port}`)
+                    j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
                     _log(2, `${_stackname("ws", "api")[3]} Re-Created`);
                 } else {
                     _log(1, `${_stackname("ws", "api")[3]} Reconnected`);

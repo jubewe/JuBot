@@ -229,6 +229,28 @@ module.exports = {
                 break;
             }
 
+            case "send_clips_to_discord":
+            case "sendclipstodiscord": {
+                let send_clips_to_discord;
+
+                if(j_.message._.args()[1]){
+                    if(["true", "enable", "enabled", "1", "on"].includes(j_.message._.args()[1])){
+                        send_clips_to_discord = true;
+                    } else if(["false", "disable", "disabled", "0", "off"].includes(j_.message._.args()[1])){
+                        send_clips_to_discord = false;
+                    }
+                }
+
+                _channel(1, j_.message.channel.id, "send_clips_to_discord", send_clips_to_discord)
+                .then(t => {
+                    j_.send(`Successfully set send_clips_to_discord to ${send_clips_to_discord}`);
+                })
+                .catch(e => {
+                    j_.send(`Error: Could not set send_clips_to_discord: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                })
+                break;
+            }
+
             case "get": {
                 if(!j_.message._.args()[1]) return j_.send(`Error: No setting to get given`);
 

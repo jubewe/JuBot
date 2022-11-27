@@ -47,6 +47,19 @@ module.exports = {
 
                             break;
                         }
+
+                        case "ws": {
+                            if(j.c().connect.ws.api){
+                                j.ws.client.close();
+                                j.ws.client = new j.modules.ws.WebSocket(`ws://${j.urls().api._base.replace("http://", "")}:${j.urls().ws._port}`);
+                                j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":j.c().raspi.led_pin}));
+                                j_.send(`Successfully re-created websocket`);
+                            } else {
+                                j_.send(`Error: Websocket connect is false`);
+                            }
+
+                            break;
+                        }
                         
                         default: {
                             j_.send(`Error: Option not found`);
