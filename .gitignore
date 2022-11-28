@@ -1,6 +1,6 @@
 # Custom
-data
-logs
+/data
+/logs
 .tmp.*
 
 # Logs

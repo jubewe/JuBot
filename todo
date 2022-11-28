@@ -42,10 +42,10 @@
 <add whisper commands>
 <prediction command>
 <poll command>
+<command: add from:<channel>>
 new splitmsg
 edit default command parameters
 crossban command
 badgestoarr
 command to get channel
 twitch action: announce
-command: add from:<channel>
