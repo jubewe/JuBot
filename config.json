@@ -40,6 +40,9 @@
         },
         "handlers": {
             "filechange": 15000
+        },
+        "discord": {
+            "randomactivity": 15000
         }
     },
     "debug": {
@@ -57,12 +60,13 @@
         "active_mods": 30000
     },
     "connect": {
-        "discord": false,
+        "discord": true,
         "twitch": true,
         "twitch_view": false,
         "twitch_notifications": false,
         "ws": {
-            "api": false
+            "api": false,
+            "seventv": false
         },
         "trackers": {
             "live": false,
@@ -70,7 +74,7 @@
             "youtube_video": false
         },
         "express": {
-            "app": false
+            "app": true
         }
     },
     "modules": {
@@ -108,6 +112,6 @@
         "names": ["cooldowns"]
     },
     "handlers": {
-        "filechange": true
+        "filechange": false
     }
 }

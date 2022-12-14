@@ -1,7 +1,6 @@
-const getuser = require("../functions/getuser");
+const getuser = require("../functions/twitch/getuser");
 const _pixelize = require("../functions/_pixelize");
 const _returnerr = require("../functions/_returnerr");
-const _wf = require("../functions/_wf");
 let j = require("../variables/j");
 const paths = require("../variables/paths");
 
@@ -26,7 +25,7 @@ module.exports = {
                             if(!j.files().clientchannels.logchannels.includes(u[1])){
                                 j.files().clientchannels.logchannels.push(u[1]);
 
-                                _wf(paths.clientchannels, j.files().clientchannels);
+                                // _wf(paths.clientchannels, j.files().clientchannels);
 
                                 j_.send(`Successfully added ${_pixelize(u[0])} (${u[1]}) to logchannels`);
                             } else {
@@ -50,7 +49,8 @@ module.exports = {
                         .then(u => {
                             if(j.files().clientchannels.logchannels.includes(u[1])){
                                 j.files().clientchannels.logchannels.splice(j.files().clientchannels.logchannels.indexOf(u[1]), 1);
-                                _wf(paths.clientchannels, j.files().clientchannels.logchannels);
+
+                                // _wf(paths.clientchannels, j.files().clientchannels.logchannels);
 
                                 j_.send(`Successfully removed ${_pixelize(u[1])} (${u[1]}) from logchannels`);
                             } else {

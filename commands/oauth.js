@@ -1,10 +1,10 @@
-const gettoken = require("../functions/gettoken");
-const getuser = require("../functions/getuser");
-const token = require("../functions/token");
+const gettoken = require("../functions/twitch/gettoken");
+const getuser = require("../functions/twitch/getuser");
+const token = require("../functions/twitch/token");
 const _pixelize = require("../functions/_pixelize");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
-const _usertoken = require("../functions/_usertoken");
+const _usertoken = require("../functions/twitch/_usertoken");
 let j = require("../variables/j");
 
 module.exports = {

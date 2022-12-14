@@ -1,5 +1,5 @@
-const getuser = require("../functions/getuser");
-const remind = require("../functions/remind");
+const getuser = require("../functions/twitch/getuser");
+const remind = require("../functions/twitch/remind");
 const _returnerr = require("../functions/_returnerr");
 let j = require("../variables/j");
 

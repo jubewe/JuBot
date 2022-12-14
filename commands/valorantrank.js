@@ -1,5 +1,5 @@
 const api_requestheaders = require("../functions/api/api_requestheaders");
-const _channel = require("../functions/_channel");
+const _channel = require("../functions/twitch/_channel");
 let j = require("../variables/j");
 const urls = require("../variables/urls");
 

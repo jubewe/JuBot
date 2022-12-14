@@ -25,7 +25,7 @@ module.exports = {
                         }, 1000);
                     } else {
                         j.files().startup.reconnect = true;
-                        _wf(j.paths().startup, j.files().startup);
+                        _wf(j.paths().startup, j.files().startup, true);
                         j_.send(`Attempting reconnect`)
                         setTimeout(() => {
                             require("child_process").execSync(`pm2 flush j && pm2 restart j`);                        

@@ -1,22 +1,27 @@
 module.exports = {
-    send: require("./send"),
-    join: require("./join"),
-    part: require("./part"),
+    // send: require("./actions/send"),
+    join: require("./actions/join"),
+    part: require("./actions/part"),
 
-    ban: require("./ban"),
-    unban: require("./unban"),
-    timeout: require("./timeout"),
-    untimeout: require("./unban"),
+    ban: require("./actions/ban"),
+    unban: require("./actions/unban"),
+    timeout: require("./actions/timeout"),
+    untimeout: require("./actions/unban"),
 
-    createclip: require("./createclip"),
+    announce: require("./actions/announce"),
+    updatechatsettings: require("./actions/updatechatsettings"),
+
+    createclip: require("./actions/createclip"),
     
-    getclips: require("./getclips"),
-    getvideos: require("./getvideos"),
-    getstreams: require("./getstreams"),
+    getclips: require("./actions/getclips"),
+    getvideos: require("./actions/getvideos"),
+    getstreams: require("./actions/getstreams"),
 
     _parametercheck: require("./_parametercheck"),
     _badgestoarr: require("./_badgestoarr"),
 
-    createpoll: require("./createpoll"),
+    createpoll: require("./actions/createpoll"),
+
+    deletemessage: require("./actions/deletemessage"),
 
 }

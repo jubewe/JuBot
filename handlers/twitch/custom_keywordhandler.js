@@ -1,6 +1,6 @@
-const customkeyword = require("../../functions/customkeyword");
-const getuserperm = require("../../functions/getuserperm");
-const _cooldown = require("../../functions/_cooldown");
+const customkeyword = require("../../functions/twitch/customkeyword");
+const getuserperm = require("../../functions/twitch/getuserperm");
+const _cooldown = require("../../functions/twitch/_cooldown");
 
 async function custom_keywordhandler(j_, j){
     j = j || require("../../variables/j");

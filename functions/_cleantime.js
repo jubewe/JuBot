@@ -1,4 +1,3 @@
-let nonarr = [null, undefined];
 const _pad2 = require("./_pad2");
 
 /**
@@ -10,7 +9,7 @@ const _pad2 = require("./_pad2");
  */
 
 function _cleantime(time, timeopt, timedigits) {
-  if (nonarr.includes(timeopt) || [0].includes(timeopt)) {
+  if (!(timeopt ?? undefined) || [0].includes(timeopt)) {
     if (time !== undefined) {
       if (time > 1000) {
         time = time / 1000;
@@ -52,8 +51,8 @@ function _cleantime(time, timeopt, timedigits) {
     return time;
   } else if ([1, 2, 3, 4, 5].includes(timeopt)) {
     if (timedigits === "auto") {
-    } else if (nonarr.includes(timedigits) || typeof timedigits !== "number" || timedigits <= 0 ) {
-      timedigits = "auto";
+    } else if (!(timedigits ?? undefined) || typeof timedigits !== "number" || timedigits <= 0 ) {
+      timedigits = 2;
     }
     let dat = { time: [], order: [], tag: "" };
     let t = {
@@ -95,7 +94,7 @@ function _cleantime(time, timeopt, timedigits) {
       let cte = t[Object.keys(t)[i]].time;
       if (
         (["auto"].includes(timedigits) &&
-          (!["milliseconds"].includes(Object.keys(t)[i]) || dat["time"].length === 0)) && dat["time"].length < 2 ||
+          !["milliseconds"].includes(Object.keys(t)[i])) ||
         timedigits > 0
       ) {
         if (cte >= 1 || [0].includes(ctlast) || ![undefined].includes(ctlast)) {

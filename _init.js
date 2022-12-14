@@ -5,18 +5,14 @@ global.variables = {
 };
 global.functions = require("./functions/_");
 
-const request = require("request");
-const api_requestheaders = require("./functions/api/api_requestheaders");
 const _error = require("./functions/_error");
-const _executetimers = require("./functions/executetimers");
+const _executetimers = require("./functions/twitch/executetimers");
 const _log = require("./functions/_log");
 const _stackname = require("./functions/_stackname");
 const c = require("./config.json");
-const urls = require("./variables/urls");
 const _checkenv = require("./functions/_checkenv");
 const livechannels = require("./functions/trackers/livechannels");
 const youtubevideo = require("./functions/trackers/youtubevideo");
-const _wf = require("./functions/_wf");
 let j = require("./variables/j");
 const _mainpath = require("./functions/_mainpath");
 const geterrors = require("./functions/api/geterrors");
@@ -25,17 +21,16 @@ let queuedreconnect = -1;
 if(_checkenv(null, "OS", 0, "Windows_NT")){
     _log(1, `${_stackname("script", "test")[3]} executed`);
     require(_mainpath("./test.js"))();
-}
+};
 
 async function _init(){
     let j = require("./variables/j");
     // console.clear();
-    let channels = j.files().channels;
 
     process.on("unhandledRejection", (rej) => {
         console.error(rej);
         if(!_checkenv(null, "OS", 0, "Windows_NT")){
-            _error(rej)
+            _error(rej);
         }
         // console.error(new Error(rej));
     });
@@ -49,7 +44,6 @@ async function _init(){
             if(j.files().startup.reconnect){
                 j.send(0, j.e().T_USERNAME, `Successfully reconnected`);
                 j.files().startup.reconnect = false;
-                _wf(j.paths().startup, j.files().startup);
             }
             // setTimeout(() => {_pi_blink();setInterval(_pi_blink, 2000)}, ((Date.now().toString().slice(-5, -1))%10000))
         });
@@ -60,9 +54,9 @@ async function _init(){
                 if(error.message.toLowerCase().includes("connection closed due to error")){
                     if(queuedreconnect <= 0){
                         reconnect();
-                    }
-                }
-            }
+                    };
+                };
+            };
         });
 
         j.client.on("close", () => {
@@ -85,7 +79,7 @@ async function _init(){
         if(j.c().connect.trackers.youtube_video){
             youtubevideo();
             setInterval(youtubevideo, j.c().intervals.trackers.youtube_video);
-        }
+        };
     };
 
     if(c.connect.twitch_view){
@@ -104,15 +98,13 @@ async function _init(){
     if(c.connect.discord){
         j.dc.client.login(j.e().DC_TOKEN);
 
-        j.dc.client.on("ready", () => {
-            _log(1, `${_stackname("discord", "connect")[3]} Successful`);
-        });
-
-        // require("./handlers/discord/dc_createMessage")
-        // j.dc.client.on("messageCreate", message => {
-        //     if(message.content)
-        // });
+        j.dc.client.on("ready", require("./handlers/discord/ready"));
+        j.dc.client.on("messageCreate", require("./handlers/discord/messageCreate"));
     };
+
+    if(c.connect.express.app) require("./modules/express/index")();
+    if(c.connect.ws.seventv) require("./modules/seventv/seventv_ws")();
+
 
     function reconnect(){
         _log(1, `${_stackname("client", "reconnect")[3]} Called`);
@@ -159,12 +151,10 @@ async function _init(){
     if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
         setTimeout(() => {geterrors(1)}, 3000);
         setInterval(() => {geterrors(1)}, j.c().intervals.errors);
-    }
-
-    // Reference: https://github.com/SevenTV/EventAPI/
+    };
     
     if(j.c().connect.ws.api){
-        j.ws.client.on("open", e => {
+        j.ws.client.on("open", () => {
             _log(1, `${_stackname("ws", "api")[3]} Connected`);
             j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
         });
@@ -194,6 +184,6 @@ async function _init(){
             j.ws.client.pong(JSON.stringify({"type":"pong","start":p.start,"start_client":Date.now()}));
         });
     };
-}
+};
 
 module.exports = _init;

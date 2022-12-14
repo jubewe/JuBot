@@ -1,16 +1,15 @@
 const request = require("request");
-const paths = require("../../variables/paths");
 const urls = require("../../variables/urls");
-const getuser = require("../getuser");
-const replacevariables = require("../replacevariables");
-const replacevariableslive = require("../replacevariableslive");
+const getuser = require("../twitch/getuser");
+const replacevariables = require("../discord/replacevariables");
+const replacevariableslive = require("../twitch/replacevariableslive");
 const _combineArr = require("../_combineArr");
 const _joinurlquery = require("../_joinurlquery");
 const _log = require("../_log");
 const _regex = require("../_regex");
+const _removeduplicates = require("../_removeduplictes");
 const _requestopts = require("../_requestopts");
 const _stackname = require("../_stackname");
-const _wf = require("../_wf");
 
 async function livechannels(){
     return new Promise((resolve, reject) => {
@@ -23,17 +22,17 @@ async function livechannels(){
         Object.keys(channels.channels).forEach(ch => {
             let ch_ = channels.channels[ch];
             if(ch_.trackers && ch_.trackers.activemods && [1].includes(ch_.trackers.activemods.state)){
-                if(!checknotificationlive.includes(ch)){
-                    checknotificationlive.push(ch);
-                }
+                checktrkactivemods.push(ch);
+                // if(!checknotificationlive.includes(ch)){
+                // };
             } 
             if(ch_.notifications && ch_.notifications.live && [1].includes(ch_.notifications.live.state)){
-                if(!checknotificationlive.includes(ch)){
-                    checknotificationlive.push(ch);
-                }
+                checknotificationlive.push(ch);
+                // if(!checktrkactivemods.includes(ch)){
+                // };
             }
         });
-        let checklivechannels = _combineArr(checknotificationlive, checktrkactivemods);
+        let checklivechannels = _removeduplicates(_combineArr(checknotificationlive, checktrkactivemods));
 
         for(let i = 0; i < Math.ceil(checklivechannels.length / 100); i++){
             request(urls.twitch.streams + _joinurlquery("user_id", checklivechannels.slice((100*i), ((100*i)+100)), true), _requestopts("GET"), (e, r) => {
@@ -86,7 +85,7 @@ async function livechannels(){
                                                     channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].active_time = (channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].active_time || 0) + j.c().intervals.trackers.live;
                                                 }
                                                 channels.channels[ch_.user_id].trackers.data.activemods.users[activemod_[1]].last_active = Date.now();
-                                                _wf(paths.channels, channels);
+                                                // _wf(paths.channels, channels);
                                             }
                                         }
                                     })
@@ -100,7 +99,7 @@ async function livechannels(){
 
                             _log(1, `${_stackname("trackers", "live")[3]} Live Channels: ${Object.keys(dat.data).map(a => {return `${dat.data[a].user_id} ${dat.data[a].user_login}`})}`);
 
-                            _wf(paths.channels, channels);
+                            // _wf(paths.channels, channels);
                             return resolve(dat);
                         })();
                     } else {

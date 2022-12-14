@@ -1,7 +1,5 @@
 const _pixelize = require("../functions/_pixelize");
-const _wf = require("../functions/_wf");
 let j = require("../variables/j");
-const paths = require("../variables/paths");
 
 module.exports = {
     name: "view",
@@ -21,7 +19,9 @@ module.exports = {
                     j.viewclient.join(viewchan);
                 }
                 j.files().clientchannels.viewchannels.push(viewchan);
-                _wf(paths.clientchannels, j.files().clientchannels);
+
+                // _wf(paths.clientchannels, j.files().clientchannels);
+
                 j_.send(`Successfully started viewing ${_pixelize(viewchan)}`);
             } else {
                 j_.send(`Error: Already viewing ${_pixelize(viewchan)}`)

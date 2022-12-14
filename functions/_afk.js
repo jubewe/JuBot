@@ -1,8 +1,5 @@
-const paths = require("../variables/paths");
-const _wf = require("./_wf");
 const c = require("../config.json");
 let j = require("../variables/j");
-// const files = require("../variables/files");
 
 async function _afk(amode, j_, auserid, amsg, aopt, perm, areturn){
     return new Promise((resolve, reject) => {
@@ -37,7 +34,7 @@ async function _afk(amode, j_, auserid, amsg, aopt, perm, areturn){
                     "opt":aopt
                 };
 
-                _wf(paths.afkusers, j.files().afkusers);
+                // _wf(paths.afkusers, j.files().afkusers);
 
                 return resolve(j.files().afkusers.users[auserid]);
     
@@ -51,7 +48,7 @@ async function _afk(amode, j_, auserid, amsg, aopt, perm, areturn){
                     j.files().afkusers.old[auserid].end = Date.now();
                     delete j.files().afkusers.users[auserid];
 
-                    _wf(paths.afkusers, j.files().afkusers);
+                    // _wf(paths.afkusers, j.files().afkusers);
 
                     return resolve(j.files().afkusers.old[auserid]);
                 } else {
@@ -77,7 +74,7 @@ async function _afk(amode, j_, auserid, amsg, aopt, perm, areturn){
                     j.files().afkusers.users[auserid] = j.files().afkusers.old[auserid];
                     delete j.files().afkusers.old[auserid];
 
-                    _wf(paths.afkusers, j.files().afkusers);
+                    // _wf(paths.afkusers, j.files().afkusers);
 
                     return resolve(j.files().afkusers.users[auserid]);
                 } else {

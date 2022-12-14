@@ -1,4 +1,4 @@
-const getuser = require("../../functions/getuser");
+const getuser = require("../../functions/twitch/getuser");
 const _cache = require("../../functions/_cache");
 const _checkmultiplevaliinobj = require("../../functions/_checkmultiplevalinobj");
 const _cleantime = require("../../functions/_cleantime");
@@ -18,8 +18,8 @@ module.exports = {
     cooldown: -1,
     cooldown_user: -1,
     exec: async (j_) => {
-        if(!j.files().channels.channels[j_.message.channel.id]) return j_.send(2, j_, `Error: Channel was not found in the database`);
-        if(!_checkmultiplevaliinobj(j.files().channels.channels[j_.message.channel.id], ["trackers", "data", "activemods", "users"])) return j_.send(2, j_, `Error: No tracker data found`);
+        if(!j.files().channels.channels[j_.message.channel.id]) return j_.send(2, `Error: Channel was not found in the database`);
+        if(!_checkmultiplevaliinobj(j.files().channels.channels[j_.message.channel.id], ["trackers", "data", "activemods", "users"])) return j_.send(2, `Error: No tracker data found`);
 
         if(j_.message._.args()[0]){
             switch (j_.message._.args()[0]){
@@ -94,7 +94,7 @@ module.exports = {
             });
             sortedactivemods_messages.push(` (${sortedactivelast.timeclean.time.join(" and ")})`);
 
-            j_.send(2, j_, `Top ${num} activemods: ${sortedactivemods_messages.join("")}`);
+            j_.send(2, `Top ${num} activemods: ${sortedactivemods_messages.join("")}`);
         };
 
         async function getactivemod(activemoduser){
@@ -129,15 +129,15 @@ module.exports = {
                 sortedactivemods_.users2 = sortedactivemods_.users.map(a => {return a.id});
 
                 if(sortedactivemods_.users2.indexOf(u[1]) == -1){
-                    return j_.send(2, j_, `Error: ${_pixelize(u[0])} was not found in activemods`);
+                    return j_.send(2, `Error: ${_pixelize(u[0])} was not found in activemods`);
                 } else {
-                    j_.send(2, j_, `${_pixelize(u[0])}'s rank: #${sortedactivemods_.users2.indexOf(u[1])} (${sortedactivemods_.users[sortedactivemods_.users2.indexOf(u[1])].timeclean.time.join(" and ")})`);
+                    j_.send(2, `${_pixelize(u[0])}'s rank: #${sortedactivemods_.users2.indexOf(u[1])} (${sortedactivemods_.users[sortedactivemods_.users2.indexOf(u[1])].timeclean.time.join(" and ")})`);
                 }
 
             })
             .catch(e => {
                 console.error(e);
-                j_.send(2, j_, `Error: Could not get userid of ${activemoduser}`);
+                j_.send(2, `Error: Could not get userid of ${activemoduser}`);
             })
         };
     }

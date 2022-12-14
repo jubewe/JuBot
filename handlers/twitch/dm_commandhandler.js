@@ -1,6 +1,6 @@
-const getuserperm = require("../../functions/getuserperm");
+const getuserperm = require("../../functions/twitch/getuserperm");
 const _parametercheck = require("../../functions/twitch/_parametercheck");
-const _cooldown = require("../../functions/_cooldown");
+const _cooldown = require("../../functions/twitch/_cooldown");
 
 async function dm_commandhandler(j_, j) {
   j = j || require("../../variables/j");

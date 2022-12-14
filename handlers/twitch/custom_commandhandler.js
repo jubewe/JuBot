@@ -1,6 +1,6 @@
-const customcommand = require("../../functions/customcommand");
-const getuserperm = require("../../functions/getuserperm");
-const _cooldown = require("../../functions/_cooldown");
+const customcommand = require("../../functions/twitch/customcommand");
+const getuserperm = require("../../functions/twitch/getuserperm");
+const _cooldown = require("../../functions/twitch/_cooldown");
 
 function custom_commandhandler(j_, j){
     j = j || require("../../variables/j");

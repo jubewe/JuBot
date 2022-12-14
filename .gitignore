@@ -1,7 +1,7 @@
 # Custom
-/data
-/logs
-.tmp.*
+data/
+logs/
+.tmp.*/
 
 # Logs
 logs
@@ -134,8 +134,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-#output directory
+# output directory
 dist/
 
-#package files
-package-lock.json
+# package files
+# package-lock.json

@@ -1,6 +1,6 @@
 const { ChatClient } = require("@kararty/dank-twitch-irc");
 const { Client, Intents, MessageAttachment, MessageEmbed } = require("discordjs13.11.0");
-const uptime = require("../functions/uptime");
+const uptime = require("../functions/twitch/uptime");
 const _mainpath = require("../functions/_mainpath");
 const express = require("express");
 const ws = require("ws");
@@ -32,12 +32,13 @@ let j = {
   env: env,
   e: e,
   c: config,
-  send: require("../functions/twitch/send"),
-  join: require("../functions/twitch/join"),
-  part: require("../functions/twitch/part"),
+  send: require("../functions/twitch/actions/send"),
+  join: require("../functions/twitch/actions/join"),
+  part: require("../functions/twitch/actions/part"),
   lasterror: {},
   
   client: undefined,
+  //  >> String
 
   ws: {
     client: undefined
@@ -63,20 +64,17 @@ let j = {
     "ws": require("ws"),
     "discord": { MessageAttachment, MessageEmbed, Client, Intents }
   },
-  // seventv: {
-  //   ws: new ws.WebSocket("wss://events.7tv.io/v3")
-  // }
 };
 
 if(config().connect.discord){
   j.dc.client = new Client({
     intents: new Intents(32767)
   });
-}
+};
 
 if(config().connect.ws.api){
   j.ws.client = new ws.WebSocket(`ws://${urls.api._base.replace("http://", "")}:${urls.ws._port}`);
-}
+};
 
 if(config().connect.twitch){
   j.client = new ChatClient({
@@ -84,7 +82,7 @@ if(config().connect.twitch){
     password: env().T_TOKEN,
     rateLimits: env().T_RATELIMITS,
   });
-}
+};
 
 if(config().connect.twitch_view){
   j.viewclient =  new ChatClient({
@@ -92,11 +90,16 @@ if(config().connect.twitch_view){
     password: env().T_TOKEN_PV,
     rateLimits: env().T_RATELIMITS_PV,
   });
-}
+};
 
 if(config().connect.express.app){
   j.express.app = express();
-}
+};
+
+if(config().connect.ws.seventv){
+  j.seventv = j.seventv ?? {};
+  j.seventv.ws = new ws.WebSocket("wss://events.7tv.io/v3")
+};
 
 global.j = j;
 module.exports = j;

@@ -1,4 +1,4 @@
-const uptime = require("../functions/uptime");
+const uptime = require("../functions/twitch/uptime");
 const _cleantime = require("../functions/_cleantime");
 let j = require("../variables/j");
 module.exports = {

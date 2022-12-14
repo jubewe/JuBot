@@ -9,7 +9,7 @@ const nonarr = [null, undefined];
  */
 
 function _percentage(a, b, c, fixednum){
-    fixednum = (!nonarr.includes(fixednum) ? fixednum : 2);
+    fixednum = (fixednum ?? 2);
     if(nonarr.includes(a) && b && c){
         return ((b/c)*100).toFixed(fixednum);
     } else if(a && nonarr.includes(b) && c){

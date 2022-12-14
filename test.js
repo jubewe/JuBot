@@ -1,8 +1,10 @@
 let j = require("./variables/j");
-const deletemessage = require("./functions/twitch/deletemessage");
-const timeout = require("./functions/twitch/timeout");
+const deletemessage = require("./functions/twitch/actions/deletemessage");
+const timeout = require("./functions/twitch/actions/timeout");
 const _wf = require("./functions/_wf");
 const _sleep = require("./functions/_sleep");
+const _getbyobjectkeyfromtree = require("./functions/_getbyobjectkeyfromtree");
+const paths = require("./variables/paths");
 
 // console.log("1");
 // j.files().test += `\ntest1`;
@@ -13,6 +15,7 @@ const _sleep = require("./functions/_sleep");
 // })
 
 module.exports = async () => {
+    // console.log(_getbyobjectkeyfromtree(paths, "clientchannels"));
     // timeout("263830208", undefined, "438030491", 1, "testing")
     // .then(t => {
     //     console.log(t);

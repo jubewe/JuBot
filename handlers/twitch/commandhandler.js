@@ -1,5 +1,5 @@
-const getuserperm = require("../../functions/getuserperm");
-const _cooldown = require("../../functions/_cooldown");
+const getuserperm = require("../../functions/twitch/getuserperm");
+const _cooldown = require("../../functions/twitch/_cooldown");
 
 function commandhandler(j_, j) {
   let [commands, message] = [j.commands(), j_.message];

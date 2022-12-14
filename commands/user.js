@@ -1,4 +1,4 @@
-const getuser = require("../functions/getuser");
+const getuser = require("../functions/twitch/getuser");
 const _pixelize = require("../functions/_pixelize");
 let j = require("../variables/j");
 

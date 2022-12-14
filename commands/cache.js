@@ -17,7 +17,7 @@ module.exports = {
                 case "clear": {
                     if(j_.message._.args()[1]){
                         let cachename = j_.message._.args()[1];
-                        if(!cachename in j.c().cache.names) return j_.send(2, j_, `Error: Invalid cache name`);
+                        if(!cachename in j.c().cache.names) return j_.send(2, `Error: Invalid cache name`);
                         
                         if(j.paths()[cachename]){
                             _wf(j.paths()[cachename], {}, true)

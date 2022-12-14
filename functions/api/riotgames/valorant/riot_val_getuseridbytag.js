@@ -1,4 +1,3 @@
-const { e } = require("../../../../variables/j");
 const j = require("../../../../variables/j");
 const _wf = require("../../../_wf");
 const riot_api_requestheaders = require("../riot_api_requestheaders");
@@ -23,7 +22,8 @@ async function riot_val_getuserbyidtag(gameName, tagLine){
                 if(dat.puuid){
                     j.files().riotgames_userids.names[encodeURI(`${dat.gameName}#${dat.tagLine}`.toLowerCase())] = dat.puuid;
                     j.files().riotgames_userids.ids[dat.puuid] = encodeURI(`${dat.gameName}#${dat.tagLine}`.toLowerCase());
-                    _wf(j.paths().riotgames_userids, j.files().riotgames_userids);
+                    
+                    // _wf(j.paths().riotgames_userids, j.files().riotgames_userids);
                     
                     return resolve([name, dat.puuid]);
                 }

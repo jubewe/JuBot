@@ -2,18 +2,18 @@ const _mainpath = require("../functions/_mainpath");
 
 module.exports = {
   config: _mainpath("./config.json"),
-  clientchannels: _mainpath("./data/clientchannels.json"),
-  channels: _mainpath("./data/channels.json"),
-  userids: _mainpath("./data/userids.json"),
+  clientchannels: _mainpath("./data/twitch/clientchannels.json"),
+  channels: _mainpath("./data/twitch/channels.json"),
+  userids: _mainpath("./data/twitch/userids.json"),
   // logcode: _mainpath("./data/log.txt"),
-  permissions: _mainpath("./data/permissions.json"),
-  cooldowns: _mainpath("./data/cooldowns.json"),
-  ids: _mainpath("./data/ids.json"),
-  timers: _mainpath("./data/timers.json"),
-  usertokens: _mainpath("./data/usertokens.json"),
-  afkusers: _mainpath("./data/afkusers.json"),
+  permissions: _mainpath("./data/twitch/permissions.json"),
+  cooldowns: _mainpath("./data/twitch/cooldowns.json"),
+  ids: _mainpath("./data/twitch/ids.json"),
+  timers: _mainpath("./data/twitch/timers.json"),
+  usertokens: _mainpath("./data/twitch/usertokens.json"),
+  afkusers: _mainpath("./data/twitch/afkusers.json"),
   cache: _mainpath("./data/cache.json"),
-  reminders: _mainpath("./data/reminders.json"),
+  reminders: _mainpath("./data/twitch/reminders.json"),
   phrases: _mainpath("./data/phrases.json"),
 
   log: _mainpath("./data/logs/log.txt"),
@@ -33,6 +33,17 @@ module.exports = {
   // riotgames_userids: _mainpath("./data/riotgames/userids.json"),
 
   twitch_knownbots: _mainpath("./data/twitch/knownbots.json"),
-  defaults: _mainpath("./data/defaults.json")
+  defaults: _mainpath("./data/defaults.json"),
+  logcode: _mainpath("./data/logs/logcode.txt"),
+
+  twitch: {
+    clientchannels: _mainpath("./data/twitch/clientchannels.json"),
+    
+  },
+
+  discord: {
+    clientguilds: _mainpath("./data/discord/clientguilds.json"),
+    
+  }
   
 };

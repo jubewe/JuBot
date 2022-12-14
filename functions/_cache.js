@@ -1,6 +1,4 @@
 const files = require("../variables/files");
-const paths = require("../variables/paths");
-const _wf = require("./_wf");
 
 async function _cache(cacheopt, cachekey, cachevalue){
     return new Promise((resolve, reject) => {
@@ -29,7 +27,7 @@ async function _cache(cacheopt, cachekey, cachevalue){
                             "add_time": Date.now()
                         }
                     };
-                    _wf(paths.cache, files.cache);
+                    // _wf(paths.cache, files.cache);
 
                     return resolve(files.cache[cachekey]);
 
@@ -40,7 +38,7 @@ async function _cache(cacheopt, cachekey, cachevalue){
                     if(!cachekey) return reject({"path":[cacheopt,0],"msg":"cachekey is undefined"});
                     if(Object.keys(files.cache).includes(cachekey)){
                         delete files.cache[cachekey];
-                        _wf(paths.cache, files.cache);
+                        // _wf(paths.cache, files.cache);
 
                         return resolve(files.cache[cachekey]);
                     } else {

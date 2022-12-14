@@ -1,10 +1,10 @@
-const createclip = require("../functions/twitch/createclip");
+const createclip = require("../functions/twitch/actions/createclip");
 const messageembed = require("../functions/discord/messageembed");
-const getuser = require("../functions/getuser");
+const getuser = require("../functions/twitch/getuser");
 const _pixelize = require("../functions/_pixelize");
 const _regex = require("../functions/_regex");
 const _returnerr = require("../functions/_returnerr");
-const _usertoken = require("../functions/_usertoken");
+const _usertoken = require("../functions/twitch/_usertoken");
 let j = require("../variables/j");
 
 module.exports = {

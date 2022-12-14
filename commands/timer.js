@@ -1,7 +1,7 @@
 const _cleantime = require("../functions/_cleantime");
 const _converttime = require("../functions/_converttime");
 const _splitafter = require("../functions/_splitafter");
-const _timer = require("../functions/_timer");
+const _timer = require("../functions/twitch/_timer");
 let j = require("../variables/j");
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
             let tmsg = "";
 
             if(j_.message._.args()[1]){
-                tmsg = _splitafter(j_.message._.msg, 1)
+                tmsg = _splitafter(j_.message._.msg, 2)
             } else {
                 tmsg = "No message";
             }

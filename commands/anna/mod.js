@@ -1,4 +1,4 @@
-const getuser = require("../../functions/getuser");
+const getuser = require("../../functions/twitch/getuser");
 const _requestopts = require("../../functions/_requestopts");
 const _returnerr = require("../../functions/_returnerr");
 let j = require("../../variables/j");
@@ -22,17 +22,17 @@ module.exports = {
                 j.modules.request(modurl.url.replace(":broadcaster_id", j.env().T_USERID_ANNA).replace(":user_id", u[1]), _requestopts(modurl.method, j.env().T_TOKEN_ANNA), (e, r) => {
                     if(e){
                         console.error(new Error(e));
-                        j_.send(2, j_, `Error: ${e}`);
+                        j_.send(2, `Error: ${e}`);
                     } else {
-                        j_.send(2, j_, `Successfully executed request: ${r.body}`)
+                        j_.send(2, `Successfully executed request: ${r.body}`)
                     }
                 })
             })
             .catch(e => {
-                j_.send(2, j_, `Error: Could not get userid ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                j_.send(2, `Error: Could not get userid ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
             })
         } else {
-            j_.send(2, j_, `Error: No user to ${j_.message._.command} given`)
+            j_.send(2, `Error: No user to ${j_.message._.command} given`)
         }
     }
 }

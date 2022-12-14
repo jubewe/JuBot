@@ -1,6 +1,5 @@
 const _pickrandom = require("../functions/_pickrandom");
 const _regex = require("../functions/_regex");
-const _wf = require("../functions/_wf");
 let j = require("../variables/j");
 const paths = require("../variables/paths");
 
@@ -36,7 +35,8 @@ module.exports = {
 
                             let phrase = j_.message._.msg.substring(j_.message._.prefix.length + j_.message._.command.length+1+j_.message._.args()[0].length+1);
                             j.files().phrases.phrases.push(phrase);
-                            _wf(paths.phrases, j.files().phrases);
+
+                            // _wf(paths.phrases, j.files().phrases);
 
                             j_.send(`Successfully added phrase ${phrase}`);
                             break;
@@ -55,7 +55,8 @@ module.exports = {
                                 if(j.files().phrases.phrases[parseInt(phrase)]){
                                     let phrase_ = j.files().phrases.phrases[parseInt(phrase)];
                                     j.files().phrases.phrases.splice(parseInt(phrase), 1);
-                                    _wf(paths.phrases, j.files().phrases);
+
+                                    // _wf(paths.phrases, j.files().phrases);
 
                                     j_.send(`Successfully deleted phrase [${phrase}]: ${phrase_}`)
                                 } else {
@@ -65,7 +66,8 @@ module.exports = {
                                 if(j.files().phrases.phrases.includes(phrase)){
                                     let phrase_ = j.files().phrases.phrases.indexOf(phrase);
                                     j.files().phrases.phrases.splice(phrase_, 1);
-                                    _wf(paths.phrases, j.files().phrases);
+
+                                    // _wf(paths.phrases, j.files().phrases);
 
                                     j_.send(`Successfully deleted phrase [${phrase_}]: ${phrase}`);
                                 } else {

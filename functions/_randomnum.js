@@ -13,6 +13,6 @@ function _randomnum(min, max, add) {
     return (a - b);
   });
   return add + s[0] + Math.floor(Math.random() * (this.s[1] - this.s[0]));
-}
+};
 
 module.exports = _randomnum;

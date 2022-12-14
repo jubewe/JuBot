@@ -1,4 +1,4 @@
-const _channel = require("../functions/_channel");
+const _channel = require("../functions/twitch/_channel");
 const _returnerr = require("../functions/_returnerr");
 const _splitafter = require("../functions/_splitafter");
 let j = require("../variables/j");

@@ -43,9 +43,10 @@
 <prediction command>
 <poll command>
 <command: add from:<channel>>
-new splitmsg
+<(new splitmsg)>
 edit default command parameters
 crossban command
 badgestoarr
 command to get channel
 twitch action: announce
+fix notifications

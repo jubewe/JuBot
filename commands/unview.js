@@ -14,16 +14,16 @@ module.exports = {
     cooldown: -1,
     cooldown_user: -1,
     exec: async (j_) => {
-        let channels = j.files().clientchannels;
-
         if(j_.message._.args()[0]){
             let unviewchan = j_.message._.args()[0].toLowerCase();
-            if(channels.viewchannels.includes(unviewchan)){
+            if(j.files().clientchannels.viewchannels.includes(unviewchan)){
                 if(j.viewclient){
                     j.viewclient.part(unviewchan);
                 }
-                channels.viewchannels.splice(channels.viewchannels.indexOf(unviewchan, 1));
-                _wf(paths.clientchannels, channels);
+                j.files().clientchannels.viewchannels.splice(j.files().clientchannels.viewchannels.indexOf(unviewchan, 1));
+
+                // _wf(paths.clientchannels, channels);
+
                 j_.send(`Successfully stopped viewing ${_pixelize(unviewchan)}`);
             } else {
                 j_.send(`Error: Not viewing ${_pixelize(unviewchan)}`);

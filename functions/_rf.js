@@ -27,7 +27,7 @@ function _rf(rfpath, parse_json){
                     return JSON.parse(file);
                 } else {
                     if(file.length === 0){
-                        _wf(rfpath, {});
+                        _wf(rfpath, {}, true);
                     } 
                     return {};
                 }

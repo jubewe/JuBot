@@ -131,6 +131,20 @@ let urls = {
                 "url": "https://api.twitch.tv/helix/polls",
                 "method": "POST"
             }
+        },
+        "announcement": {
+            "url": "https://api.twitch.tv/helix/chat/announcements",
+            "method": "POST"
+        },
+        "chat_settings": {
+            "update": {
+                "url": "https://api.twitch.tv/helix/chat/settings",
+                "method": "PATCH"
+            },
+            "get": {
+                "url": "https://api.twitch.tv/helix/chat/settings",
+                "method": "GET"
+            }
         }
     },
     "youtube": {
@@ -162,7 +176,6 @@ let urls = {
         "_base": "https://api.twitchbots.info/v2",
         "bot": "/bot"
     }
-    
 };
 
 module.exports = urls;
