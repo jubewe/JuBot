@@ -1,5 +1,9 @@
 module.exports = {
-    "test": require("../test"),
+    test: require("../test"),
     "7tv": require("../seventv"),
+    logguild: require("./logguild"),
+    user: require("./user"),
+    bulkdelete: require("./bulkdelete"),
+    eval: require("./eval"),
     
 };

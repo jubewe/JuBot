@@ -17,6 +17,9 @@ let urls = {
             },
             "ALL": {
                 "_main": "/"
+            },
+            "PATCH": {
+                "errors": "/errors"
             }
         },
         __url: (endpoint, method) => {

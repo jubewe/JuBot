@@ -17,26 +17,32 @@
 
 function messageembed(title, description, url, timestamp, color, fields, author, thumbnail, image, video, footer) {
   let j = require("../../variables/j");
+  let files = require("../../variables/files");
   let args = {
-    title: "",
-    description: "",
-    url: "",
-    timestamp: new Date(),
-    color: require("../../config.json").defaulthex,
-    fields: [],
-    author: {},
-    thumbnail: {},
-    image: {},
-    video: {},
-    footer: {},
+    title: (title ?? ""),
+    description: (description ?? "<Empty>"),
+    url: (url ?? ""),
+    timestamp: (timestamp ?? new Date()),
+    color: (color ?? require("../../config.json").defaulthex),
+    fields: (fields ?? []),
+    author: (author ?? {}),
+    thumbnail: (thumbnail ?? {}),
+    image: (image ?? {}),
+    video: (video ?? {}),
+    footer: (footer ?? {}),
   };
-  for(i = 0; i < arguments.length; i++){
-    if(![undefined, null, 0].includes([...arguments][i])){
-      args[Object.keys(args)[i]] = [...arguments][i];
-    } 
+
+  if(!(title ?? undefined) && description.toLowerCase().startsWith("error")) {
+    args.image = (image ?? {url:files.defaults.discord.images.error + "?size=300"}); 
+    args.color = "#FF0000"; title = args.title = description.split("\n")[0]; 
+    args.description = description.substring(description.split("\n")[0].length+1);
   }
+  // for(i = 0; i < arguments.length; i++){
+  //   if(![undefined, null, 0].includes([...arguments][i])){
+  //     args[Object.keys(args)[i]] = [...arguments][i];
+  //   } 
+  // }
   return new j.modules.discord.MessageEmbed(args);
-  // return args;
 }
 
 module.exports = messageembed;

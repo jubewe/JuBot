@@ -1,4 +1,3 @@
-let j = require("../../variables/j");
 
 /**
  * @param {object} userperm 
@@ -6,6 +5,7 @@ let j = require("../../variables/j");
  */
 
 async function userperms(j_){
+  let j = require("../../variables/j");
   return {
     "_bot":(j_.message._.userperm.num == j.c().perm.bot),
     "moderator":(j_.message._.userperm.num == j.c().perm.moderator),

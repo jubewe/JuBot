@@ -43,6 +43,8 @@ module.exports = {
 
   discord: {
     clientguilds: _mainpath("./data/discord/clientguilds.json"),
+    userids: _mainpath("./data/discord/userids.json"),
+    permissions: _mainpath("./data/discord/permissions.json"),
     
   }
   

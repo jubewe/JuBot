@@ -6,6 +6,7 @@ function commandhandler(j_){
 
     if(true === true){
         (async () => {
+            j_.message.response.react(j.c().discord.emojis.load);
             commands[j_.message._.command].exec(j_);
         })();
     }

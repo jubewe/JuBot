@@ -7,14 +7,14 @@ const request = require("request");
 const _regex = require("../_regex");
 const _pickrandom = require("../_pickrandom");
 const _randomnum = require("../_randomnum");
-const files = require("../../variables/files");
 
 async function replacevariables(){
+    let files = require("../../variables/files");
     
     let j_ = [...arguments][0];
     let msg = [...arguments][1] || j_.message.content;
 
-    if([null, undefined].includes(j_.message.message.messageText)) return msg;
+    if([null, undefined].includes(j_.message._.msg)) return msg;
 
     let msgcommandreg = new RegExp(`\\$\\(commands+\\s+[^\\)]+\\)`, "gi");
     let msgkeywordreg = new RegExp(`\\$\\(keywords+\\s+[^\\)]+\\)`, "gi");

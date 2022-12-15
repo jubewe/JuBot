@@ -4,8 +4,8 @@ async function getuserperm(guuser){
     let files = require("../../variables/files");
     guuser = guuser.toString();
 
-    if(Object.keys(files.permissions.users).includes(guuser)){
-        return permission(0, files.permissions.users[guuser]);
+    if(Object.keys(files.discord.permissions.users).includes(guuser)){
+        return permission(0, files.discord.permissions.users[guuser]);
     } else {
         return permission(0, c.perm.default);
     }

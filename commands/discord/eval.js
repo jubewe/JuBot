@@ -1,8 +1,8 @@
-let j = require("../variables/j");
+let j = require("../../variables/j");
 
 module.exports = {
     name: "eval",
-    id: "global_commands_eval",
+    id: "discord_global_commands_eval",
     aliases: [],
     state: 1,
     add_version: "0.0.2",
@@ -18,7 +18,7 @@ module.exports = {
             evalmsg = evalmsg.join(" ");
             try {
                 let eval_ = await eval(`(async () => {${evalmsg}})()`);
-                j_.send(`Successfully executed code [${typeof eval_}]> ${eval_}`);
+                j_.send(`Successfully executed code [${typeof eval_}]>\n${eval_}`);
             } catch(e){
                 console.error(e);
                 j_.send(`Error: Could not execute code: ${e.message}`);

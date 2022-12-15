@@ -46,11 +46,12 @@ const env = require("dotenv").config().parsed;
 //     console.log(e || r.body)
 // })
 
-// const fs = require("fs");
+const fs = require("fs");
+const { j_api_headeradmin } = require("./variables/vars");
 
-// let maindir = "./";
-// let dirmsg = "";
-// let dir = [];
+let maindir = "./";
+let dirmsg = "";
+let dir = [];
 
 // readdir();
 
@@ -63,29 +64,39 @@ const env = require("dotenv").config().parsed;
 //         } catch(e){}
 //     }
 // });
-function readdir(dir2){
-    let tabnum = (dir2 ? dir2.length : 0);
-    console.log(dir2);
-    dir2 = dir2 ?? [];
-    let dir_ = fs.readdirSync(maindir + dir2.join("") ?? "");
-    if(dir2){
-        [...dir2].forEach(a => {tabnum++;})
-    };
+// function readdir(dir2){
+//     let tabnum = (dir2 ? dir2.length : 0);
+//     // console.log(dir2);
+//     dir2 = dir2 ?? [];
+//     let dir_ = fs.readdirSync(maindir + dir2.join("") ?? "");
+//     if(dir2){
+//         [...dir2].forEach(a => {tabnum++;})
+//     };
 
-    dir_.forEach(a => {
-        dirmsg += `\n${"\t".repeat(tabnum)} | ${a}`;
+//     dir_.forEach(a => {
+//         dirmsg += `\n${" ".repeat(4).repeat(tabnum)} | ${a}`;
         
-        if(![".tmp.driveupload", ".tmp.drivedownload", "node_modules"].includes(a) && !/\.\w+$/g.test(a)){
-            try {
-                fs.readdirSync(dir2.join("") + a);
-
-                dir.push(a);
-                readdir([...dir2,a]);
-            } catch(e){
-                // console.error(e);
-            }
-        }
-    });
-};
+//         if(![".tmp.driveupload", ".tmp.drivedownload", "node_modules"].includes(a) && !/\.\w+$/gi.test(a)){
+//             try {
+//                 fs.readdirSync(dir2.join("") + a)
+//                 .forEach(b => {
+//                     // dir.push(a);
+//                     // dir.push(b);
+//                     readdir([...dir2,a,b]);
+//                 })
+                
+//                 dir.push(a);
+//                 // console.log(dir, dir2, a)
+//                 readdir([...dir2,a]);
+//             } catch(e){
+//                 // console.error(e);
+//             }
+//         }
+//     });
+// };
 
 // console.log(dirmsg);
+
+request("http://192.168.2.170:6969/errors", {headers:j_api_headeradmin(), method: "PATCH", data: "<>"}, (e, r) => {
+    console.log(e || r.body);
+});

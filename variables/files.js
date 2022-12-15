@@ -33,6 +33,8 @@ module.exports = {
 
     discord: {
         clientguilds: _rf(paths.discord.clientguilds, true),
+        userids: _rf(paths.discord.userids, true),
+        permissions: _rf(paths.discord.permissions, true),
         
     }
 

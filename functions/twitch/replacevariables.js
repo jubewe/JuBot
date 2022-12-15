@@ -7,10 +7,10 @@ const request = require("request");
 const _regex = require("./_regex");
 const _pickrandom = require("./_pickrandom");
 const _randomnum = require("./_randomnum");
-const files = require("../../variables/files");
 
 async function replacevariables(){
     let j_ = [...arguments][0];
+    let files = require("../../variables/files");
     let msg = [...arguments][1] || j_.message.content;
 
     if([null, undefined].includes(j_.message.message.messageText)) return msg;

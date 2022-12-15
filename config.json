@@ -13,7 +13,10 @@
         "broadcaster": 30,
         "botdefault": 60,
         "bothigh": 62,
-        "botowner": 69
+        "botowner": 69,
+        "discord": {
+            "admin": 30
+        }
     },
     "timeouts": {
         "cache": 300000,
@@ -113,5 +116,14 @@
     },
     "handlers": {
         "filechange": false
+    },
+    "discord": {
+        "channelids": {
+            "errors": "1052711308971212871",
+            "logs": "909073142113271808"
+        },
+        "emojis": {
+            "load": "<a:load:909354138851221545>"
+        }
     }
 }

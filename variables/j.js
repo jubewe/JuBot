@@ -25,13 +25,13 @@ let j = {
   files: () => {return require("./files");},
   functions: () => {return require("../functions/_");},
   functions_: require("../functions/__"),
-  commands: () => {return require("../commands/_");},
+  commands: () => {return require("../commands/twitch/_");},
   dm_commands: () => {return require("../commands/dm/_");},
   anna_dm_commands: () => {return require("../commands/anna/_");},
   paths: () => {return require("./paths");},
   env: env,
   e: e,
-  c: config,
+  c: () => {return require("../config.json")},
   send: require("../functions/twitch/actions/send"),
   join: require("../functions/twitch/actions/join"),
   part: require("../functions/twitch/actions/part"),
@@ -58,13 +58,15 @@ let j = {
   express: {
     app: undefined,
   },
-  _error: require("../functions/_error"),
+  _error: () => {},
   modules: {
     "request": require("request"),
     "ws": require("ws"),
     "discord": { MessageAttachment, MessageEmbed, Client, Intents }
   },
 };
+
+j._error = require("../functions/_error")
 
 if(config().connect.discord){
   j.dc.client = new Client({

@@ -1,7 +1,6 @@
-const files = require("../variables/files");
-
 async function _cache(cacheopt, cachekey, cachevalue){
     return new Promise((resolve, reject) => {
+        let files = require("../variables/files");
         (async() => {
             switch (cacheopt) {
                 case 0: {

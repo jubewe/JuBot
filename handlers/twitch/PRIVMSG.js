@@ -115,7 +115,7 @@ module.exports = async (response) => {
     let usertag = j_.message._.usertag = `${user} > `;
     let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && j.functions()._regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
     let userperm = j_.message._.userperm = await getuserperm(j_.message.userstate.id);
-    let userperms = j_.message._.userperms = await userperms_(j_);
+    let userperms = j_.message._.userperms = await userperms_(j_, j);
     let args = j_.message._.args = () => {return messageargs(j_, j)};
   
     if([1].includes(j.c().modules.log.twitch.privmsg) || [2].includes(j.c().modules.log.twitch.privmsg) && j.files().clientchannels.logchannels.includes(channel.id)){

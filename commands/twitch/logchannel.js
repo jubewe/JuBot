@@ -1,8 +1,7 @@
-const getuser = require("../functions/twitch/getuser");
-const _pixelize = require("../functions/_pixelize");
-const _returnerr = require("../functions/_returnerr");
-let j = require("../variables/j");
-const paths = require("../variables/paths");
+const getuser = require("../../functions/twitch/getuser");
+const _pixelize = require("../../functions/_pixelize");
+const _returnerr = require("../../functions/_returnerr");
+let j = require("../../variables/j");
 
 module.exports = {
     name: "logchannel",

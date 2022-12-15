@@ -1,6 +1,6 @@
-const pixelize = require("../functions/_pixelize");
-const _returnerr = require("../functions/_returnerr");
-let j = require("../variables/j");
+const pixelize = require("../../functions/_pixelize");
+const _returnerr = require("../../functions/_returnerr");
+let j = require("../../variables/j");
 
 module.exports = {
     name: "join",

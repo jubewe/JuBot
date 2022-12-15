@@ -100,11 +100,12 @@ async function _init(){
 
         j.dc.client.on("ready", require("./handlers/discord/ready"));
         j.dc.client.on("messageCreate", require("./handlers/discord/messageCreate"));
+        j.dc.client.on("interactionCreate", require("./handlers/discord/interactionCreate"));
+        j.dc.client.on("error", require("./handlers/discord/error"));
     };
 
     if(c.connect.express.app) require("./modules/express/index")();
     if(c.connect.ws.seventv) require("./modules/seventv/seventv_ws")();
-
 
     function reconnect(){
         _log(1, `${_stackname("client", "reconnect")[3]} Called`);

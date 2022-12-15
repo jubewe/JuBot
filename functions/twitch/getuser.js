@@ -37,7 +37,6 @@ async function getuser(gumode, guinput){
                     .catch(e => {
                         if(!files.userids.errors.includes(guinput)){
                             files.userids.errors.push(guinput);
-                            // _wf(paths.userids, files.userids);
                         }
                         return reject([gumode,1,0]);
                     })
@@ -60,7 +59,6 @@ async function getuser(gumode, guinput){
                     .then(name => {
                         if(files.userids.errors.includes(name)){
                             files.userids.errors.splice(files.userids.errors.indexOf(name), 1);
-                            // _wf(paths.userids, files.userids);
                         }
                         files.userids.names[name] = guinput;
                         files.userids.ids[guinput] = name;
@@ -69,7 +67,6 @@ async function getuser(gumode, guinput){
                     .catch(err => {
                         if(!files.userids.errors.includes(guinput)){
                             files.userids.errors.push(guinput);
-                            // _wf(paths.userids, files.userids);
                         }
                         return reject([gumode,1,0]);
                     })
@@ -78,7 +75,7 @@ async function getuser(gumode, guinput){
         } else {
             return reject([gumode,1,0])
         }
-    })
+    });
 };
 
 module.exports = getuser;
