@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "git add -A && git rm --cache .env && git commit && git push --force"
+    "publish": "git add -A && git rm --cache ./node_modules ./.tmp.driveupload ./.tmp.drivedownload -r --dry-run --ignore-unmatch && git commit && git push --force"
   },
   "author": "jubewe",
   "license": "MPL-2.0",
