@@ -1,6 +1,6 @@
 const _regex = require("../../functions/_regex");
 const _splitafter = require("../../functions/_splitafter");
-const _usertoken = require("../functions/twitch/_usertoken");
+const _usertoken = require("../../functions/twitch/_usertoken");
 let j = require("../../variables/j");
 
 module.exports = {

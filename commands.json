@@ -1,0 +1,478 @@
+{
+    "commands": [
+        {
+            "name": "mod",
+            "name2": "anna_mod",
+            "internal_name": "anna_mod",
+            "arguments": [],
+            "permission": 62,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "test",
+            "name2": "anna_test",
+            "internal_name": "anna_test",
+            "arguments": [],
+            "permission": 62,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "vip",
+            "name2": "anna_vip",
+            "internal_name": "anna_vip",
+            "arguments": [],
+            "permission": 62,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "geterrors",
+            "name2": "api_geterrors",
+            "internal_name": "api_geterrors",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "botinfo",
+            "name2": "botinfo",
+            "internal_name": "botinfo",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 30000,
+            "cooldown_user": 15000,
+            "description": ""
+        },
+        {
+            "name": "cache",
+            "name2": "cache",
+            "internal_name": "cache",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "createclip",
+            "name2": "createclip",
+            "internal_name": "clip",
+            "arguments": [],
+            "permission": 25,
+            "cooldown": 10000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "createpoll",
+            "name2": "createpoll",
+            "internal_name": "createpoll",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "bulkdelete",
+            "name2": "discord_bulkdelete",
+            "internal_name": "bulkdelete",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": "Bulk deletes messages in channel"
+        },
+        {
+            "name": "eval",
+            "name2": "discord_eval",
+            "internal_name": "eval",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": "Executes the inputted code"
+        },
+        {
+            "name": "logguild",
+            "name2": "discord_logguild",
+            "internal_name": "logchannel",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": "Adds or removes a guild from the guilds which messages are shown in the console"
+        },
+        {
+            "name": "user",
+            "name2": "discord_user",
+            "internal_name": "user",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": "Gives userinfo about a spcified user"
+        },
+        {
+            "name": "download",
+            "name2": "download",
+            "internal_name": "download",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "getclip",
+            "name2": "getclip",
+            "internal_name": "getclip",
+            "arguments": [],
+            "permission": 25,
+            "cooldown": 1000,
+            "cooldown_user": 2000,
+            "description": ""
+        },
+        {
+            "name": "getstream",
+            "name2": "getstream",
+            "internal_name": "getstream",
+            "arguments": [],
+            "permission": 25,
+            "cooldown": 1000,
+            "cooldown_user": 2000,
+            "description": ""
+        },
+        {
+            "name": "getvideo",
+            "name2": "getvideo",
+            "internal_name": "getvideo",
+            "arguments": [],
+            "permission": 25,
+            "cooldown": 1000,
+            "cooldown_user": 2000,
+            "description": ""
+        },
+        {
+            "name": "knownbots",
+            "name2": "knownbots",
+            "internal_name": "knownbots",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "oauth",
+            "name2": "oauth",
+            "internal_name": "oauth",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 5000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "permission",
+            "name2": "permission",
+            "internal_name": "permission",
+            "arguments": [],
+            "permission": 69,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "phrase",
+            "name2": "phrase",
+            "internal_name": "phrase",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "poweroptions",
+            "name2": "poweroptions",
+            "internal_name": "poweroptions",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "reminder",
+            "name2": "reminder",
+            "internal_name": "reminder",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": 10000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "say",
+            "name2": "say",
+            "internal_name": "say",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "server",
+            "name2": "server",
+            "internal_name": "server",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "settings",
+            "name2": "settings",
+            "internal_name": "settings",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 30,
+            "cooldown": 1000,
+            "cooldown_user": 1000,
+            "description": ""
+        },
+        {
+            "name": "seventv",
+            "name2": "seventv",
+            "internal_name": "seventv",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 25,
+            "cooldown": 15000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "test",
+            "name2": "test",
+            "internal_name": "test",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 30000,
+            "cooldown_user": 45000,
+            "description": "Test command"
+        },
+        {
+            "name": "timer",
+            "name2": "timer",
+            "internal_name": "timer",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 10000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "todo",
+            "name2": "todo",
+            "internal_name": "todo",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "activemods",
+            "name2": "trackers_activemods",
+            "internal_name": "trackers_activemods",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "tuck",
+            "name2": "tuck",
+            "internal_name": "tuck",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 5000,
+            "cooldown_user": 10000,
+            "description": ""
+        },
+        {
+            "name": "afk",
+            "name2": "twitch_afk",
+            "internal_name": "afk",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 5000,
+            "cooldown_user": 15000,
+            "description": ""
+        },
+        {
+            "name": "crossban",
+            "name2": "twitch_crossban",
+            "internal_name": "crossban",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "customcommand",
+            "name2": "twitch_customcommand",
+            "internal_name": "customcommand",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 25,
+            "cooldown": 1000,
+            "cooldown_user": 2000,
+            "description": ""
+        },
+        {
+            "name": "customkeyword",
+            "name2": "twitch_customkeyword",
+            "internal_name": "customkeyword",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 25,
+            "cooldown": 1000,
+            "cooldown_user": 2000,
+            "description": ""
+        },
+        {
+            "name": "customnotification",
+            "name2": "twitch_customnotification",
+            "internal_name": "customnotification",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 25,
+            "cooldown": 3000,
+            "cooldown_user": 1000,
+            "description": ""
+        },
+        {
+            "name": "customtracker",
+            "name2": "twitch_customtracker",
+            "internal_name": "customtracker",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "eval",
+            "name2": "twitch_eval",
+            "internal_name": "eval",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "join",
+            "name2": "twitch_join",
+            "internal_name": "join",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "logchannel",
+            "name2": "twitch_logchannel",
+            "internal_name": "logchannel",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "part",
+            "name2": "twitch_part",
+            "internal_name": "part",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "unview",
+            "name2": "unview",
+            "internal_name": "unview",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "user",
+            "name2": "user",
+            "internal_name": "user",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        },
+        {
+            "name": "valorantrank",
+            "name2": "valorantrank",
+            "internal_name": "valorantrank",
+            "arguments": [
+                "channel"
+            ],
+            "permission": 10,
+            "cooldown": 3000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "valorantrank2",
+            "name2": "valorantrank2",
+            "internal_name": "valorantrank2",
+            "arguments": [],
+            "permission": 10,
+            "cooldown": 3000,
+            "cooldown_user": 5000,
+            "description": ""
+        },
+        {
+            "name": "view",
+            "name2": "view",
+            "internal_name": "view",
+            "arguments": [],
+            "permission": 60,
+            "cooldown": -1,
+            "cooldown_user": -1,
+            "description": ""
+        }
+    ]
+}

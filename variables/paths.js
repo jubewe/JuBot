@@ -45,7 +45,16 @@ module.exports = {
     clientguilds: _mainpath("./data/discord/clientguilds.json"),
     userids: _mainpath("./data/discord/userids.json"),
     permissions: _mainpath("./data/discord/permissions.json"),
+    commands: _mainpath("./commands/discord/_.js"),
     
+  },
+
+  express: {
+    auth: {
+      admin_logins: _mainpath("./modules/express/auth/admin_logins.json"),
+      admin_tokens: _mainpath("./modules/express/auth/admin_tokens.json"),
+      
+    }
   }
   
 };

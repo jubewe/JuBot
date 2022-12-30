@@ -7,7 +7,7 @@ async function userperms(j_){
     let files = require("../../variables/files");
     let c = require("../../config.json");
     let perms = files.discord.permissions;
-    let p = j_.message.response.member.permissions;
+    let p = j_.message.response.memberPermissions;
     return {
         "_bot":(j_.message._.userperm.num == c.perm.bot),
         "moderator":(j_.message._.userperm.num == c.perm.moderator || haspermission(c.perm.moderator)),
@@ -22,7 +22,7 @@ async function userperms(j_){
     };
 
     function haspermission(permnum){
-        return p.any(getpermission(permnum));
+        return (p ? p.has(getpermission(permnum)) : false);
     };
 };
 

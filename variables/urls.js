@@ -178,6 +178,15 @@ let urls = {
     "twitchbots_info": {
         "_base": "https://api.twitchbots.info/v2",
         "bot": "/bot"
+    },
+    "3v": {
+        "modlookup": {
+            "_base": "https://modlookup.3v.fi/api",
+            "user-v3": "/user-v3/:user",
+            "user-totals": "/user-totals/:user",
+            "top": "/top",
+            "stats": "/stats"
+        }
     }
 };
 

@@ -1,4 +1,4 @@
-const j = require("../../variables/j");
+let j = require("../../variables/j");
 
 function commandhandler(j_){
     let commands = require("../../commands/discord/_");
@@ -6,7 +6,9 @@ function commandhandler(j_){
 
     if(true === true){
         (async () => {
-            j_.message.response.react(j.c().discord.emojis.load);
+            if(["DEFAULT", "REPLY"].includes(j_.message.type)) {
+                j_.message.response.react(j.c().discord.emojis.load);
+            };
             commands[j_.message._.command].exec(j_);
         })();
     }

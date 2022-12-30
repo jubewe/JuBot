@@ -47,13 +47,12 @@ const env = require("dotenv").config().parsed;
 // })
 
 const fs = require("fs");
-const { j_api_headeradmin } = require("./variables/vars");
+const path = require("path");
+// const { j_api_headeradmin } = require("./variables/vars");
 
 let maindir = "./";
 let dirmsg = "";
 let dir = [];
-
-// readdir();
 
 // maindir.forEach(a => {
 //     console.log(`| ${a}`);
@@ -64,39 +63,31 @@ let dir = [];
 //         } catch(e){}
 //     }
 // });
-// function readdir(dir2){
-//     let tabnum = (dir2 ? dir2.length : 0);
-//     // console.log(dir2);
-//     dir2 = dir2 ?? [];
-//     let dir_ = fs.readdirSync(maindir + dir2.join("") ?? "");
-//     if(dir2){
-//         [...dir2].forEach(a => {tabnum++;})
-//     };
+let dirreg = () => {return new RegExp("\\.+.+$", "gi")};
+/**
+ * @param {array} dir2 
+ */
+function readdir(dir2){
+    let tabnum = (dir2 ? dir2.length : 0);
+    dir2 = dir2 ?? [];
+    try {
+        let dir_ = fs.readdirSync(path.resolve(maindir, dir2.join("/")) ?? "");
+        [...dir2].forEach(a => {tabnum++;})
 
-//     dir_.forEach(a => {
-//         dirmsg += `\n${" ".repeat(4).repeat(tabnum)} | ${a}`;
-        
-//         if(![".tmp.driveupload", ".tmp.drivedownload", "node_modules"].includes(a) && !/\.\w+$/gi.test(a)){
-//             try {
-//                 fs.readdirSync(dir2.join("") + a)
-//                 .forEach(b => {
-//                     // dir.push(a);
-//                     // dir.push(b);
-//                     readdir([...dir2,a,b]);
-//                 })
-                
-//                 dir.push(a);
-//                 // console.log(dir, dir2, a)
-//                 readdir([...dir2,a]);
-//             } catch(e){
-//                 // console.error(e);
-//             }
-//         }
-//     });
-// };
+        dir_.forEach(a => {
+            dirmsg += `\n${" ".repeat(2).repeat(tabnum)} | ${a}`;
+            if(![".tmp.driveupload", ".tmp.drivedownload", "node_modules", "todo", "changes",].includes(a) && !dirreg().test(a)){
+                try {
+                    let dir2_ = fs.readdirSync(path.resolve(maindir, ...dir2, a));
+                    if((dir2_ ?? undefined) && !dirreg().test(a)) readdir([...dir2,a]);
+                } catch(e){
+                    console.error(e);
+                }
+            }
+        });
+    } catch(e){}
+};
 
-// console.log(dirmsg);
+readdir();
 
-request("http://192.168.2.170:6969/errors", {headers:j_api_headeradmin(), method: "PATCH", data: "<>"}, (e, r) => {
-    console.log(e || r.body);
-});
+console.log(dirmsg);

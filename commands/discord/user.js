@@ -13,6 +13,15 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    description: "Gives userinfo about a spcified user",
+    arguments: [
+        {
+            type: 1,
+            name: "User",
+            description: "User to get info about",
+            required: true
+        }
+    ],
     exec: async (j_) => {
         let user = j_.message.userstate.id;
         if(j_.message._.args()[0] && _regex.numregex().test(j_.message._.args()[0])) user = j_.message._.args()[0];

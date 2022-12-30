@@ -2,6 +2,9 @@ const c = require("./config.json");
 const sendres = require("./functions/sendres");
 const _log = require("../../functions/_log");
 const path = require("path");
+const _wf = require("../../functions/_wf");
+const _rf = require("../../functions/_rf");
+const paths = require("../../variables/paths");
 
 async function _initexpress(){
     let j = require("../../variables/j");
@@ -20,8 +23,15 @@ async function _initexpress(){
             sendres(res, 200, {data: `Successful`}, true);
             _log(2, `${j.functions()._stackname("express")[3]} Restart Called`);
             j.express.app.removeAllListeners();
+            if(j.dc.client) try {j.dc.client.destroy()} catch(e){};
+            if(j.client) try {j.client.destroy()} catch(e){};
+            if(j.viewclient) try {j.viewclient.destroy()} catch(e){};
+            if(j.ws.client) try {j.ws.client.close()} catch(e){};
+            j.files().startup.reconnect = true;
+            _wf(j.paths().startup, j.files().startup, true);
             process.exit();
         } else {
+            // if(req._sendhtml) return res.send(_rf(paths))
             sendres(res, 499, {data: `Error: Invalid login`});
         }
     });

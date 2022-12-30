@@ -27,7 +27,14 @@
             "live_check": 3600000,
             "activemods_check": 900000
         },
-        "sendretrytimeout": 500
+        "sendretrytimeout": 500,
+        "ws": {
+            "server": {
+                "ws": {
+                    "login": 30000
+                }
+            }
+        }
     },
     "intervals": {
         "reconnect": {
@@ -46,6 +53,13 @@
         },
         "discord": {
             "randomactivity": 15000
+        },
+        "ws": {
+            "server": {
+                "ws": {
+                    "heartbeat": 300000
+                }
+            }
         }
     },
     "debug": {
@@ -63,11 +77,12 @@
         "active_mods": 30000
     },
     "connect": {
-        "discord": true,
+        "discord": false,
         "twitch": true,
         "twitch_view": false,
         "twitch_notifications": false,
         "ws": {
+            "server": true,
             "api": false,
             "seventv": false
         },
@@ -81,13 +96,22 @@
         }
     },
     "modules": {
+        "_": true,
         "notifications": false,
         "log": {
             "twitch": {
                 "privmsg": 2,
                 "whisper": 1
             }
-        }
+        },
+        "message": {
+            "_": true,
+            "modified_channel": true,
+            "noafk": true,
+            "noreminder": true
+        },
+        "afk": true,
+        "reminder": true
     }, 
     "commands": {
         "custom": {
@@ -115,7 +139,7 @@
         "names": ["cooldowns"]
     },
     "handlers": {
-        "filechange": false
+        "filechange": true
     },
     "discord": {
         "channelids": {
@@ -124,6 +148,8 @@
         },
         "emojis": {
             "load": "<a:load:909354138851221545>"
-        }
+        },
+        "clientid": "852531603182714890",
+        "guilds": ["806475120100507649"]
     }
 }

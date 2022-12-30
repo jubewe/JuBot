@@ -68,5 +68,10 @@ module.exports = {
   discord: {
     messageembed: require("./discord/messageembed"),
 
+  },
+
+  other: {
+    getmodlookupuser: require("./other/getmodlookupuser"),
+    
   }
 };

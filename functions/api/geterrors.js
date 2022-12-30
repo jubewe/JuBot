@@ -17,7 +17,7 @@ async function geterrors(opt){
                     _log(1, `${_stackname("api", "get", "errors")[3]} ${dat.data.split("\n").length-1}`);
                     if(opt && [1].includes(opt)){
                         if(dat.status == 200 && dat.data.length > 0){
-                            j.client.say(j.env().T_USERNAME, `@JUBOT_ADMIN, Cached ${(dat.data.split("\n").length-1).toFixed(0)} Errors ( ${urls.api._base}:${urls.api._port}${urls.api._endpoints.GET.errors} / \\\\JUPI\\pi\\home\\pi\\FTP\\files\\api\\data\\errors.txt )`);
+                            j.client.say(j.env().T_USERNAME, `@JUBOT_ADMIN, Cached ${(dat.data.split("\n").length-1).toFixed(0)} Errors ( ${urls.api._base}:${urls.api._port}${urls.api._endpoints.GET.errors} / \\\\${urls.api._base}\\pi\\home\\pi\\FTP\\files\\api\\data\\errors.txt )`);
                         }
                     }
                     return resolve(dat);

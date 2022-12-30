@@ -14,6 +14,25 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    description: "Adds or removes a guild from the guilds which messages are shown in the console",
+    arguments: [
+        {
+            type: 3,
+            name: "Option",
+            description: "Option of command",
+            required: true,
+            choices: [
+                {
+                    name: "Add",
+                    value: "Option to add a guild to the guilds which messages are being logged in the console"
+                },
+                {
+                    name: "Remove",
+                    value: "Option to remove a guild from the guilds which messages are being logged in the console"
+                }
+            ]
+        }
+    ],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             switch (j_.message._.args()[0]){

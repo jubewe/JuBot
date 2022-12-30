@@ -1,0 +1,56 @@
+Format: **commandname** (**required permission**, **cooldown**, **user cooldown**) **description**
+
+># [ALL PLATFORMS]
+>
+>+ **test** (Regular, 30 secs 45 secs) Test command
+>+ **timer** (Regular, 10 secs 5 secs) None
+>+ **tuck** (Regular, 5 secs 10 secs) None
+>+ **afk** (Regular, 5 secs 15 secs) None
+>+ **valorantrank** (Regular, 3 secs 5 secs) None
+>+ **valorantrank2** (Regular, 3 secs 5 secs) None
+>+ **getclip** (Twitch-Channel-Moderator, 1 sec 2 secs) None
+>+ **getstream** (Twitch-Channel-Moderator, 1 sec 2 secs) None
+>+ **getvideo** (Twitch-Channel-Moderator, 1 sec 2 secs) None
+>+ **seventv** (Twitch-Channel-Moderator, 15 secs 5 secs) None
+>+ **customcommand** (Twitch-Channel-Moderator, 1 sec 2 secs) None
+>+ **customkeyword** (Twitch-Channel-Moderator, 1 sec 2 secs) None
+>+ **customnotification** (Twitch-Channel-Moderator, 3 secs 1 sec) None
+>+ **download** (Bot-Supervisor, None None) None
+>+ **knownbots** (Bot-Supervisor, None None) None
+>+ **phrase** (Bot-Supervisor, None None) None
+>+ **poweroptions** (Bot-Supervisor, None None) None
+>+ **reminder** (Bot-Supervisor, 10 secs 5 secs) None
+>+ **say** (Bot-Supervisor, None None) None
+>+ **server** (Bot-Supervisor, None None) None
+>+ **settings** (Twitch-Channel-Broadcaster, 1 sec 1 sec) None
+>+ **todo** (Bot-Supervisor, None None) None
+>+ **activemods** (Bot-Supervisor, None None) None
+>+ **crossban** (Bot-Supervisor, None None) None
+>+ **customtracker** (Bot-Supervisor, None None) None
+>+ **eval** (Bot-Supervisor, None None) None
+>+ **join** (Bot-Supervisor, None None) None
+>+ **logchannel** (Bot-Supervisor, None None) None
+>+ **part** (Bot-Supervisor, None None) None
+>+ **unview** (Bot-Supervisor, None None) None
+>+ **user** (Bot-Supervisor, None None) None
+>+ **view** (Bot-Supervisor, None None) None
+>+ **permission** (Owner, None None) None
+
+># [TWITCH]
+>
+>+ **botinfo** (Regular, 30 secs 15 secs) None
+>+ **createclip** (Twitch-Channel-Moderator, 10 secs 5 secs) None
+>+ **geterrors** (Bot-Supervisor, None None) None
+>+ **cache** (Bot-Supervisor, None None) None
+>+ **createpoll** (Bot-Supervisor, None None) None
+
+># [TWITCH-DM]
+>
+>+ **oauth** (Regular, 5 secs 5 secs) None
+
+># [DISCORD]
+>
+>+ **bulkdelete** (Bot-Supervisor, None None) Bulk deletes messages in channel
+>+ **eval** (Bot-Supervisor, None None) Executes the inputted code
+>+ **logguild** (Bot-Supervisor, None None) Adds or removes a guild from the guilds which messages are shown in the console
+>+ **user** (Bot-Supervisor, None None) Gives userinfo about a spcified user

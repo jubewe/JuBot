@@ -29,10 +29,7 @@ async function _init(){
 
     process.on("unhandledRejection", (rej) => {
         console.error(rej);
-        if(!_checkenv(null, "OS", 0, "Windows_NT")){
-            _error(rej);
-        }
-        // console.error(new Error(rej));
+        if(!_checkenv(null, "OS", 0, "Windows_NT")) _error(rej);
     });
 
     if(c.connect.twitch){
@@ -44,7 +41,7 @@ async function _init(){
             if(j.files().startup.reconnect){
                 j.send(0, j.e().T_USERNAME, `Successfully reconnected`);
                 j.files().startup.reconnect = false;
-            }
+            };
             // setTimeout(() => {_pi_blink();setInterval(_pi_blink, 2000)}, ((Date.now().toString().slice(-5, -1))%10000))
         });
 
@@ -104,11 +101,13 @@ async function _init(){
         j.dc.client.on("error", require("./handlers/discord/error"));
     };
 
+    if(c.connect.ws.server) require("./modules/ws/server/index")();
     if(c.connect.express.app) require("./modules/express/index")();
     if(c.connect.ws.seventv) require("./modules/seventv/seventv_ws")();
 
     function reconnect(){
         _log(1, `${_stackname("client", "reconnect")[3]} Called`);
+        if(!j.c().connect.twitch) {queuedreconnect = -1; return;};
         if(j.client.connected){
             _log(1, `${_stackname("client", "reconnect")[3]} Already connected`);
             return;
@@ -127,7 +126,7 @@ async function _init(){
                 j.client.connect()
                 .then(() => {
                     _log(1, `${_stackname("client", "reconnect")[3]} Successfully Reconnected after ${queuedreconnect} attempts`);
-                    j.viewclient.connect();
+                    if(j.c().connect.twitch_view) j.viewclient.connect();
                     queuedreconnect = -1;
                     clearInterval(recint);
                     return;

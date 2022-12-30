@@ -12,6 +12,15 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    description: "Bulk deletes messages in channel",
+    arguments: [
+        {
+            type: 1,
+            name: "Number",
+            description: "Number of Messages to delete",
+            required: false
+        }
+    ],
     exec: async (j_) => {
         if(j_.message._.userperms._high){
             let bulknumber = 10;

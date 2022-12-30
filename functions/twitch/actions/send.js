@@ -41,7 +41,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
   
     if(j_ && j_.message._.modified_send){smode = j_.message._.modified_send;};
     if(j_ && j_.message._.type === "WHISPER"){smode = 1; schan = j_.message.userstate.username;};
-    if(j_ && j_.message._.modified_channel){smode = 2; schan = j_.message._.modified_channel.name;smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;}
+    if(j_ && j_.message._.modified_channel){smode = 2; schan = j_.message._.modified_channel.name; smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;}
     if([3, "tag"].includes(smode)){smsg = j_.message._.usertag_ + smsg;}
     if(j_ && sreplacer){smsg = await replacevariables(j_, smsg);}
   
@@ -124,13 +124,14 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
           return;
         }
       };
-      
+
       if ([null, undefined, 0, "channel", 3, "user"].includes(_smode)) {
         _send();
       } else if ([1, "whisper", "dm"].includes(_smode)) {
         _whisper();
       } else if ([2, "reply"].includes(_smode)) {
-        _sparentid = (global.variables.varstatic.nonarr.includes(_sparentid) ? j_.message.message.id : _sparentid);
+        _sparentid = (!(_sparentid ?? undefined) ? j_.message.message.id : _sparentid);
+        console.log(`${_schan} ${_sparentid}`);
         _reply();
       } else if([10, "ban"].includes(_smode)) {
         if(!_smsg.split(" ")[1]) return reject({path:[0],msg:`username is undefined`});

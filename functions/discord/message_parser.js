@@ -9,8 +9,8 @@ function message_parser(response) {
   class userstate {
     static username = response.author.tag;
     static displayname = response.author.username;
-    static color = response.member.displayHexColor;
-    static color2 = response.member.displayHexColor;
+    static color = (response.member.displayHexColor ?? null);
+    static color2 = (response.member.displayHexColor ?? null);
     static ismod = response.member.permissions.has("MODERATE_MEMBERS", true);
     static firstmsg = false;
     static subscriber = false;

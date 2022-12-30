@@ -128,10 +128,9 @@ module.exports = {
                 if(!j_.message._.args()[1]){
                     j_.send(`Error: No tag given`);
                     return;
-                }
+                };
 
                 let tag = _splitafter(j_.message._.msg, 2).toLowerCase();
-                console.log(tag)
 
                 if(!tag.includes("#")){
                     j_.send(`Error: Invalid format - expected: <riotid>#<tagline>`);

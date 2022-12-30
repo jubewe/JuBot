@@ -1,8 +1,8 @@
 module.exports = {
     oauth: require("../oauth"),
-    eval: require("../eval"),
-    join: require("../join"),
-    part: require("../part"),
+    eval: require("../twitch/eval"),
+    join: require("../twitch/join"),
+    part: require("../twitch/part"),
     say: require("../say"),
     test: require("../test"),
     // test2: require("../test2"),
@@ -68,13 +68,13 @@ module.exports = {
     phrase: require("../phrase"),
     randomphrase: require("../phrase"),
 
-    logchannel: require("../logchannel"),
-    logchannels: require("../logchannel"),
+    logchannel: require("../twitch/logchannel"),
+    logchannels: require("../twitch/logchannel"),
     todo: require("../todo"),
     
     restart: require("../poweroptions"),
 
-    tracker: require("../customtracker"),
+    tracker: require("../twitch/customtracker"),
     activemods: require("../trackers/activemods"),
 
     cache: require("../cache"),

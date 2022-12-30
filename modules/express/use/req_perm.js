@@ -8,5 +8,7 @@ module.exports = (req, res, next) => {
         "_owner": false,
         "_admin": _isadmin
     };
+    req._isbrowser = (req.headers["user-agent"] ? true : false);
+    req._sendhtml = (req._isbrowser && req.headers["response-type"] && req.headers["response-type"].toLowerCase() !== "json");
     next();
 };

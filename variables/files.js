@@ -36,6 +36,14 @@ module.exports = {
         userids: _rf(paths.discord.userids, true),
         permissions: _rf(paths.discord.permissions, true),
         
+    },
+
+    express: {
+        auth: {
+            admin_logins: _rf(paths.express.auth.admin_logins, true),
+            admin_tokens: _rf(paths.express.auth.admin_tokens, true),
+            
+        }
     }
 
 }
