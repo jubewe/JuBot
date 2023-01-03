@@ -4,7 +4,7 @@ function _stackname(){
     let stacknames = require("../variables/stacknames");
     let opt = [...arguments][0];
     let args = [...arguments];
-    if(!global.variables.varstatic.nonarr.includes(opt) && !isNaN(opt)){
+    if(!(opt ?? undefined) && !isNaN(opt)){
         args.shift();
     }
 

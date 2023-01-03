@@ -16,7 +16,10 @@ const youtubevideo = require("./functions/trackers/youtubevideo");
 let j = require("./variables/j");
 const _mainpath = require("./functions/_mainpath");
 const geterrors = require("./functions/api/geterrors");
-let queuedreconnect = -1;
+const reconnect = () => {
+    require("./functions/twitch/actions/_reconnect")(j);
+};
+j.variables().queuedreconnect = -1;
 
 if(_checkenv(null, "OS", 0, "Windows_NT")){
     _log(1, `${_stackname("script", "test")[3]} executed`);
@@ -36,20 +39,13 @@ async function _init(){
         j.client.connect(); 
         j.join(j.files().clientchannels.channels, j.client, "channels");
 
-        j.client.on("ready", () => {
-            _log(1, `${_stackname("client", "connect")[3]} Successful`);
-            if(j.files().startup.reconnect){
-                j.send(0, j.e().T_USERNAME, `Successfully reconnected`);
-                j.files().startup.reconnect = false;
-            };
-            // setTimeout(() => {_pi_blink();setInterval(_pi_blink, 2000)}, ((Date.now().toString().slice(-5, -1))%10000))
-        });
+        j.client.on("ready", () => require("./handlers/twitch/ready"));
 
         j.client.on("error", error => {
             if(error){
                 _log(2, `${_stackname("client", "error")[3]} ${error.message}`);
                 if(error.message.toLowerCase().includes("connection closed due to error")){
-                    if(queuedreconnect <= 0){
+                    if(j.variables().queuedreconnect <= 0){
                         reconnect();
                     };
                 };
@@ -68,13 +64,13 @@ async function _init(){
         _executetimers();
         _log(1, `${_stackname("timers")[3]} Executed`);
 
-        if(j.c().connect.trackers.activemods){
-            livechannels();
+        if(j.c().connect.trackers.activemods || j.c().connect.trackers.live){
+            setTimeout(livechannels, 3000);
             setInterval(livechannels, j.c().intervals.trackers.activemods);
         };
 
         if(j.c().connect.trackers.youtube_video){
-            youtubevideo();
+            setTimeout(youtubevideo, 3000);
             setInterval(youtubevideo, j.c().intervals.trackers.youtube_video);
         };
     };
@@ -104,49 +100,6 @@ async function _init(){
     if(c.connect.ws.server) require("./modules/ws/server/index")();
     if(c.connect.express.app) require("./modules/express/index")();
     if(c.connect.ws.seventv) require("./modules/seventv/seventv_ws")();
-
-    function reconnect(){
-        _log(1, `${_stackname("client", "reconnect")[3]} Called`);
-        if(!j.c().connect.twitch) {queuedreconnect = -1; return;};
-        if(j.client.connected){
-            _log(1, `${_stackname("client", "reconnect")[3]} Already connected`);
-            return;
-        }
-        if(queuedreconnect > -1) return;
-        queuedreconnect = 0;
-        attemptreconnect();
-        let recint = setInterval(() => {
-            attemptreconnect();
-        }, 15000);
-
-        function attemptreconnect(){
-            queuedreconnect++;
-            try {
-                _log(1, `${_stackname("client", "reconnect")[3]} Triggered`);
-                j.client.connect()
-                .then(() => {
-                    _log(1, `${_stackname("client", "reconnect")[3]} Successfully Reconnected after ${queuedreconnect} attempts`);
-                    if(j.c().connect.twitch_view) j.viewclient.connect();
-                    queuedreconnect = -1;
-                    clearInterval(recint);
-                    return;
-                })
-                .catch(e => {
-                    console.error(new Error(e));
-                })
-            } catch(e) {
-                console.error(new Error(e));
-                _log(2, `${_stackname("client", "reconnect")[3]} Reconnecting failed (${queuedreconnect}. attempt)`);
-            }
-
-            if(queuedreconnect >= 3){
-                _log(2, `${_stackname("client", "reconnect")[3]} Restarting process after ${queuedreconnect} failed reconnection attempts`);
-                setTimeout(() => {
-                    process.exit();
-                }, 1000);
-            }
-        };
-    };
 
     if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
         setTimeout(() => {geterrors(1)}, 3000);

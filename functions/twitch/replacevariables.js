@@ -4,9 +4,9 @@ const customcounter = require("./customcounter");
 const customkeyword = require("./customkeyword");
 const request = require("request");
 
-const _regex = require("./_regex");
-const _pickrandom = require("./_pickrandom");
-const _randomnum = require("./_randomnum");
+const _regex = require("../_regex");
+const _pickrandom = require("../_pickrandom");
+const _randomnum = require("../_randomnum");
 
 async function replacevariables(){
     let j_ = [...arguments][0];

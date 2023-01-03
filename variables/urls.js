@@ -49,13 +49,13 @@ let urls = {
     "seventv": {
         "v2": {
             "channel": {
-                "emotes": "https://api.7tv.app/v2/users/${channel}/emotes"
+                "emotes": "https://api.7tv.app/v2/users/:channel/emotes"
             },
-            "emote": "https://api.7tv.app/v2/emotes/${id}"
+            "emote": "https://api.7tv.app/v2/emotes/:id"
         },
         "v3": {
             "channel": {
-                "emotes": "https://7tv.io/v3/users/twitch/${channel}"
+                "emotes": "https://7tv.io/v3/users/twitch/:channel"
             }
         },
         "events": {

@@ -1,4 +1,4 @@
-let replacevariables = require("../../discord/replacevariables");
+let replacevariables = require("../replacevariables");
 const _log = require("../../_log");
 const _staticspacer = require("../../_staticspacer");
 const _splitmsg = require("../../_splitmsg");
@@ -24,10 +24,10 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
     if(typeof schan === "object"){
       j_ = schan;
       schan = null;
-    } 
-    // console.log(j_.message.channel);
-    schan = global.variables.varstatic.nonarr.includes(schan) ? j_.message._.chan : schan;
-    smulti = global.variables.varstatic.nonarr.includes(smulti) ? undefined : smulti;
+    };
+
+    schan = !(schan ?? undefined) ? j_.message._.chan : schan;
+    smulti = !(smulti ?? undefined) ? undefined : smulti;
   
     if(smsg.startsWith("/")){
       let scmd = smsg.split(" ")[0].split("/")[1];
@@ -131,7 +131,6 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
         _whisper();
       } else if ([2, "reply"].includes(_smode)) {
         _sparentid = (!(_sparentid ?? undefined) ? j_.message.message.id : _sparentid);
-        console.log(`${_schan} ${_sparentid}`);
         _reply();
       } else if([10, "ban"].includes(_smode)) {
         if(!_smsg.split(" ")[1]) return reject({path:[0],msg:`username is undefined`});

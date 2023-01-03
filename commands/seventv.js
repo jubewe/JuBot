@@ -31,7 +31,7 @@ module.exports = {
                 case "add": {
                     if(j_.message._.args()[1]){
                         let emotes = j_.message._.msg.substring(j_.message._.msg.split(" ")[0].length+1+j_.message._.args()[0].length+1).split(" ");
-                        seventv(1, j_, false, j_.message.channel.id, discord_serverid, emotes)
+                        seventv.addemotediscord(j_, j_.message.channel.id, emotes, discord_serverid)
                         .then(e => {
                             // console.log(e)
                             if(Object.keys(e.resolve).length === 0){

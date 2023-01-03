@@ -23,9 +23,9 @@ module.exports = () => {
         j.dc.client.user.setActivity(..._pickrandom(activities, 1));
     };
 
-    j.dc.client.channels.fetch(j.c().discord.channelids.errors).then(ch => {
-        ch.sendTyping();
-    });
+    // j.dc.client.channels.fetch(j.c().discord.channelids.errors).then(ch => {
+    //     ch.sendTyping();
+    // });
 
     let discord_commands = require(paths.discord.commands);
     let application_commands = Object.keys(discord_commands).map(a => {
@@ -44,17 +44,17 @@ module.exports = () => {
             a.options = options2;
         }
     });
-    console.log(application_commands[2].options);
-    (async () => {
-        try {
-            // await j.dc.rest.put(Routes.applicationCommands(j.env().DC_APPLICATIONID), {body: application_commands})
-            j.c().discord.guilds.forEach(async guild => {
-                await j.dc.rest.put(Routes.applicationGuildCommands(j.env().DC_APPLICATIONID, guild), {body: application_commands})
-            });
-        } catch(e){
-            console.error(e);
-        }
-    })();
+    // console.log(application_commands[2].options);
+    // (async () => {
+    //     try {
+    //         // await j.dc.rest.put(Routes.applicationCommands(j.env().DC_APPLICATIONID), {body: application_commands})
+    //         j.c().discord.guilds.forEach(async guild => {
+    //             await j.dc.rest.put(Routes.applicationGuildCommands(j.env().DC_APPLICATIONID, guild), {body: application_commands})
+    //         });
+    //     } catch(e){
+    //         console.error(e);
+    //     }
+    // })();
 
     setInterval(setRandomActivity, j.c().intervals.discord.randomactivity);
 };

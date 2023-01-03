@@ -10,6 +10,7 @@ const _regex = require("../_regex");
 const _removeduplicates = require("../_removeduplictes");
 const _requestopts = require("../_requestopts");
 const _stackname = require("../_stackname");
+const _checkmultiplevaliinobj = require("../_checkmultiplevalinobj");
 
 async function livechannels(){
     return new Promise((resolve, reject) => {
@@ -42,28 +43,33 @@ async function livechannels(){
                     _log(1, `${_stackname("trackers", "live")[3]} Executed`);
                     // channels = j.files().channels;
                     if(_regex.jsonreg().test(r.body)){
+
                         let dat = JSON.parse(r.body);
                         (async() => {
                             Object.keys(dat.data).forEach(async (ch) => {
                                 let ch_ = dat.data[ch];
+                                if(!channels.channels[ch_.user_id].trackers) channels.channels[ch_.user_id].trackers = {};
                                 if(!channels.channels[ch_.user_id].trackers.data) channels.channels[ch_.user_id].trackers.data = {};
                                 if(!channels.channels[ch_.user_id].trackers.data.live) channels.channels[ch_.user_id].trackers.data.live = {};
-                                if(!channels.channels[ch_.user_id].trackers.data.live.last_live) channels.channels[ch_.user_id].trackers.data.live.last_live = -1;
+                                if(!(channels.channels[ch_.user_id].trackers.data.live.last_live ?? undefined)) channels.channels[ch_.user_id].trackers.data.live.last_live = -1;
                                 
                                 if(checknotificationlive.includes(ch_.user_id)){
-                                    if(Date.now() - (channels.channels[ch_.user_id].trackers.data.live.last_live) > j.c().intervals.trackers.live - j.c().buffers.live_check && Date.now() - (channels.channels[ch_.user_id].trackers.data.live.last_live) > j.c().timeouts.trackers.live_check){
-                                        if(!channels.channels[ch_.user_id].notifications.live.last_execution || Date.now()-channels.channels[ch_.user_id].notifications.live.last_execution > j.c().timeouts.trackers.live_check){
+                                    if((channels.channels[ch_.user_id].trackers.data.live.last_live < 0) || ((Date.now() - (channels.channels[ch_.user_id].trackers.data.live.last_live)) > (j.c().intervals.trackers.live - j.c().buffers.live_check) && (Date.now() - (channels.channels[ch_.user_id].trackers.data.live.last_live)) > j.c().timeouts.trackers.live_check)){
+                                        if((channels.channels[ch_.user_id].trackers.data.live.last_live < 0) || !channels.channels[ch_.user_id].notifications.live.last_execution || Date.now()-channels.channels[ch_.user_id].notifications.live.last_execution > j.c().timeouts.trackers.live_check){
                                             channels.channels[ch_.user_id].notifications.live.last_execution = Date.now();
-                                            // console.log(ch_);
-                                            replacevariableslive(channels.channels[ch_.user_id].notifications.live.message || j.c().notifications.defaultmessages.live, ch_)
+                                            replacevariableslive(((!_checkmultiplevaliinobj(channels.channels[ch_.user_id], ["notifications", "live", "message"]) || !(channels.channels[ch_.user_id].notifications.live.message ?? undefined)) ? j.c().notifications.defaultmessages.live : channels.channels[ch_.user_id].notifications.live.message), ch_)
                                             .then(msg => {
+                                                // j.send(0, ch_.user_login, msg);
                                                 replacevariables(undefined, msg)
                                                 .then(msg2 => {
-                                                    j.send(0, ch_.broadcaster_login, msg2);
+                                                    j.send(0, ch_.user_login, msg2);
                                                 })
                                                 .catch(e => {
-                                                    j.send(0, ch_.broadcaster_login, msg);
+                                                    j.send(0, ch_.user_login, msg);
                                                 })
+                                            })
+                                            .catch(e => {
+                                                console.error(e);
                                             })
                                         }
                                     }

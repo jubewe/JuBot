@@ -24,4 +24,6 @@ module.exports = {
 
     deletemessage: require("./actions/deletemessage"),
 
+    _reconnect: require("./actions/_reconnect"),
+
 }

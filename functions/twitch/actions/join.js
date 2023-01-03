@@ -1,4 +1,3 @@
-const paths = require("../../../variables/paths");
 const _wf = require("../../_wf");
 
 async function join(jchan, jclient, channelkey) {
@@ -19,7 +18,7 @@ async function join(jchan, jclient, channelkey) {
         }
         jchan = [jchan];
       }
-      // _wf(paths.clientchannels, j.files().clientchannels);
+      _wf(j.paths().clientchannels, j.files().clientchannels, true);
       jclient.joinAll(jchan);
       return resolve({path:[1], msg:"Successfully joined channel(s)"});
     } catch(e){

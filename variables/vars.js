@@ -9,6 +9,6 @@ module.exports = {
     botversion: () => {return require("../package.json").version},
     botgitcommitid: () => {return _rf("./.git/FETCH_HEAD").split("\t")[0]},
     botgitrepository: () => {return require("../package.json").homepage.split("#")[0]},
-    j_api_headeradmin: () => {return {"username": e().J_API_USERNAME, "password": e().J_API_PASSWORD}}
-
+    j_api_headeradmin: () => {return {"username": e().J_API_USERNAME, "password": e().J_API_PASSWORD}},
+    queuedreconnect: -1
 };
