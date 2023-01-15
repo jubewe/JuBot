@@ -48,6 +48,7 @@ let urls = {
     },
     "seventv": {
         "v2": {
+            "user": "https://api.7tv.app/v2/users/:user",
             "channel": {
                 "emotes": "https://api.7tv.app/v2/users/:channel/emotes"
             },
@@ -186,6 +187,11 @@ let urls = {
             "user-totals": "/user-totals/:user",
             "top": "/top",
             "stats": "/stats"
+        }
+    },
+    "openai": {
+        "completions": {
+            "completions": "https://api.openai.com/v1/completions"
         }
     }
 };

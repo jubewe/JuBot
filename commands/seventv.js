@@ -2,6 +2,9 @@ const _channel = require("../functions/twitch/_channel");
 const seventv = require("../functions/seventv");
 let j = require("../variables/j");
 const _returnplural = require("../functions/_returnplural");
+const _regex = require("../functions/_regex");
+const _pixelize = require("../functions/_pixelize");
+const _returnerr = require("../functions/_returnerr");
 
 module.exports = {
     name: "seventv",
@@ -49,6 +52,22 @@ module.exports = {
                         j_.send(2, `Error: No emotes to add given`);
                     }
                     
+                    break;
+                }
+
+                case "getuser": {
+                    let getuser = j_.message.userstate.username;
+                    if(j_.message._.args()[1] && _regex.usernamereg().test(j_.message._.args()[1])) getuser = j_.message._.args()[1];
+
+                    seventv.getuserid(getuser)
+                    .then(u => {
+                        j_.send(`7TV-ID of ${(getuser == j_.message.userstate.username ? "yourself" : _pixelize(getuser))} (${u[1]}): ${u[2]}`);
+                    })
+                    .catch(e => {
+                        console.error(e);
+                        j_.send(`Error: Could not get userid: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                    })
+
                     break;
                 }
 

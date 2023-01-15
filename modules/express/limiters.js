@@ -1,6 +1,7 @@
 const rateLimit = require("express-rate-limit");
 const _rf = require("../../functions/_rf");
-let admin_logins = _rf("./modules/express/auth/admin_logins.json", true);
+const files = require("../../variables/files");
+let admin_logins = files.express.auth.admin_logins;
 
 const _default = _rateLimit(1000*60*10, 100, true, false);
 

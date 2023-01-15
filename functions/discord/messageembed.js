@@ -21,7 +21,6 @@ function messageembed(title, description, url, timestamp, color, fields, author,
   let args = {
     title: (title ?? ""),
     description: (description ?? "<Empty>"),
-    url: (url ?? ""),
     timestamp: (timestamp ?? new Date()),
     color: (color ?? require("../../config.json").defaulthex),
     fields: (fields ?? []),
@@ -32,7 +31,9 @@ function messageembed(title, description, url, timestamp, color, fields, author,
     footer: (footer ?? {}),
   };
 
-  if(!(title ?? undefined) && description.toLowerCase().startsWith("error")) {
+  if((url ?? undefined)) args.url = url;
+
+  if(!(title ?? undefined) && description && description.toLowerCase().startsWith("error")) {
     args.image = (image ?? {url:files.defaults.discord.images.error + "?size=300"}); 
     args.color = "#FF0000"; title = args.title = description.split("\n")[0]; 
     args.description = description.substring(description.split("\n")[0].length+1);

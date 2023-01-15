@@ -99,4 +99,6 @@ module.exports = {
 
     errors: require("../api/geterrors"),
 
+    question: require("../openai_question"),
+
 }

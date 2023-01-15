@@ -83,7 +83,7 @@
         "twitch_notifications": true,
         "ws": {
             "server": true,
-            "api": false,
+            "api": true,
             "seventv": false
         },
         "trackers": {

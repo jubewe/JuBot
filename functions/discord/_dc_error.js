@@ -9,7 +9,7 @@ async function _dc_error(channelid, error, response){
     .then(ch => {
         let messageopts = {};
         // ${String(error.message || error).split("\n").map(a => {return encodeURI(a)}).join("\n")}
-        messageopts.embeds = [discord.messageembed(undefined, `Error:\n\`\`\` ${error.message + "\n" + error.stack || error}\`\`\``, null, null, null, null, null, null, {})];
+        messageopts.embeds = [discord.messageembed(undefined, `Error:\n\`\`\` ${error.message + "\n" + error.stack || error}\`\`\``)];
         messageopts.components = [new MessageActionRow({
             components: [
                 new MessageButton({

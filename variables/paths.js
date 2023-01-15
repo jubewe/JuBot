@@ -1,4 +1,5 @@
 const _mainpath = require("../functions/_mainpath");
+const _main = require("../modules/seventv/seventv_ws");
 
 module.exports = {
   config: _mainpath("./config.json"),
@@ -51,10 +52,15 @@ module.exports = {
 
   express: {
     auth: {
-      admin_logins: _mainpath("./modules/express/auth/admin_logins.json"),
-      admin_tokens: _mainpath("./modules/express/auth/admin_tokens.json"),
+      admin_logins: _mainpath("../_data/auth/admin_logins.json"),
+      admin_tokens: _mainpath("../_data/auth/admin_tokens.json"),
       
     }
+  },
+
+  seventv: {
+    userids: _mainpath("./data/seventv/userids.json"),
+    
   }
   
 };

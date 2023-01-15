@@ -41,6 +41,8 @@ async function livechannels(){
                     throw e;
                 } else {
                     _log(1, `${_stackname("trackers", "live")[3]} Executed`);
+
+                    if(r.statusCode !== 200) return new Error(r.body);
                     // channels = j.files().channels;
                     if(_regex.jsonreg().test(r.body)){
 

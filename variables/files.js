@@ -44,6 +44,11 @@ module.exports = {
             admin_tokens: _rf(paths.express.auth.admin_tokens, true),
             
         }
+    },
+
+    seventv: {
+        userids: _rf(paths.seventv.userids, true),
+        
     }
 
 }

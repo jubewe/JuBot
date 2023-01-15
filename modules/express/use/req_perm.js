@@ -1,9 +1,12 @@
-const _rf = require("../../../functions/_rf");
+const decode = require("../../../functions/decode");
+const files = require("../../../variables/files");
 
 module.exports = (req, res, next) => {
-    let admin_logins = _rf("./modules/express/auth/admin_logins.json", true);
-    let _existsreq = (req.headers.username && req.headers.password) || false;
-    let _isadmin = (_existsreq && (Object.keys(admin_logins).includes(req.headers.username) && admin_logins[req.headers.username] === req.headers.password))  || false;
+    let admin_logins = files.express.auth.admin_logins();
+    let username = (req.headers.username ?? req.query.username ?? undefined);
+    let password = (req.headers.password ?? req.query.password ?? undefined);
+    let _existsreq = (username && password) || false;
+    let _isadmin = (_existsreq && ((admin_logins[username] && admin_logins[username] === password) || (!isNaN(username) && !isNaN(password) && (admin_logins[decode(username)] === decode(password))))) || false;
     req._permissions = {
         "_owner": false,
         "_admin": _isadmin

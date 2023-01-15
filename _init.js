@@ -109,15 +109,17 @@ async function _init(){
     if(j.c().connect.ws.api){
         j.ws.client.on("open", () => {
             _log(1, `${_stackname("ws", "api")[3]} Connected`);
+            // j.ws.client.send(JSON.stringify({"type":"login", "data": {"oauth_token": j.e().T_TOKEN_2}}));
             j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
         });
-        
+
         j.ws.client.on("close", e => {
             _log(2, `${_stackname("ws", "api")[3]} Closed`);
             let wsreconnectint = setInterval(() => {
                 if(j.ws.client.readyState !== 1){
                     j.ws.client.close();
                     j.ws.client = new j.modules.ws.WebSocket(`ws://${j.urls().api._base.replace("http://", "")}:${j.urls().ws._port}`)
+                    j.ws.client.send(JSON.stringify({"type":"login", "data": {"oauth_token": j.e().T_TOKEN_2}}));
                     j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
                     _log(2, `${_stackname("ws", "api")[3]} Re-Created`);
                 } else {
@@ -133,7 +135,7 @@ async function _init(){
             _log(2, `${_stackname("ws", "api")[3]} Error`);
         });
     
-        j.ws.client.on("pong", p => {
+        j.ws.client.on("ping", p => {
             j.ws.client.pong(JSON.stringify({"type":"pong","start":p.start,"start_client":Date.now()}));
         });
     };

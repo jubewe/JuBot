@@ -1,12 +1,13 @@
 {
   "name": "jubot",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "JuBot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "git add -A && git rm -r --cached . && git commit && git push --force",
-    "start": "node index.js"
+    "publish": "git add . --force && git commit && git push --force-with-lease",
+    "start": "node index.js",
+    "undo": "git reset HEAD~ && echo Make your changes, then press Enter to continue overriding the latest commit with the made changes or press Ctrl+C to continue yourself (cmd: publish) && pause && npm run publish"
   },
   "author": "jubewe",
   "license": "MPL-2.0",
@@ -16,12 +17,14 @@
     "@discordjs/rest": "^1.5.0",
     "@kararty/dank-twitch-irc": "^5.0.0",
     "dependencies": "^0.0.1",
+    "discord-api-types": "^0.37.25",
     "discordjs13.11.0": "npm:discord.js@^13.11.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
     "fs": "^0.0.1-security",
     "http-signature": "^1.3.6",
+    "re2": "^1.18.0",
     "request": "^2.88.2",
     "tmi.js": "^1.8.5",
     "ws": "^8.11.0"

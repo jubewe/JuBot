@@ -32,7 +32,9 @@ class seventv {
                 }
             });
         });
-    }
+    };
+
+    static getuserid = require("./seventv/getuser");
 
     static addemotediscord = async (j_, channelid, emoteids, discord_serverid) => {
         return new Promise((resolve, reject) => {
