@@ -33,11 +33,13 @@ module.exports = {
                         case "edit": {editcommand(1); break;}
                         case "rename": {renamecommand(1); break;}
                         case "permission": {permissioncommand(1); break;}
+                        case "cooldown": {cooldowncommand(1); break;}
                         case "enable": {togglestate(1, 1); break;}
                         case "disable": {togglestate(1, 0); break;}
                         case "copy":
                         case "yoink": {copycommand(1); break;}
                         case "list":
+                        case "info":
                         case "get": {getcommand(1); break;}
 
                         default: {j_.send(`Error: Option not found`); return;}
@@ -55,9 +57,12 @@ module.exports = {
             case "editcmd": {editcommand(0); break;}
             case "renamecmd": {renamecommand(0); break;}
             case "permcmd": {permissioncommand(0); break;}
+            case "cooldowncmd": {cooldowncommand(0); break;}
             case "enablecmd": {togglestate(0, 1); break;}
             case "disablecmd": {togglestate(0, 0); break;}
-            case "getcmd": {getcommand(0); break;}
+            case "getcmd":
+            case "infocmd":
+            case "listcmd": {getcommand(0); break;}
             case "copycmd": 
             case "yoinkcmd": {copycommand(0); break;}
         };
@@ -197,6 +202,45 @@ module.exports = {
                 }
             } else {
                 j_.send(`Error: No commandname given`);
+            }
+        };
+        async function cooldowncommand(num){
+            if(!j_.message._.args()[num]) return j_.send(`Error: No commandname given`);
+            if(!j_.message._.args()[num+1]) return j_.send(`Error: No cooldownopt given`);
+            if(!j_.message._.args()[num+2] && isNaN(j_.message._.args()[num+1])) return j_.send(`Error: No cooldowntime given`);
+            
+            let cmdname = j_.message._.args()[num].toLowerCase();
+            let cmdcooldownopt = j_.message._.args()[num+1].toLowerCase();
+            if(isNaN(cmdcooldownopt) && !["channel", "user"].includes(cmdcooldownopt)) return j_.send(`Error: Cooldown option not found (expected user|channel)`);
+            if(!isNaN(cmdcooldownopt) || j_.message._.args()[num+2]){
+                let cmdcooldowntime;
+                if(!isNaN(cmdcooldownopt)){
+                    cmdcooldownopt = "channel";
+                    cmdcooldowntime = j_.message._.args()[num+1];
+                } else {
+                    cmdcooldowntime = j_.message._.args()[num+2];
+                }
+                if(isNaN(cmdcooldowntime)){
+                    if(cmdcooldowntime === _cleantime(cmdcooldowntime, 0)){
+                        return j_.send(`Error: Invalid time inputted, please use x<s|m|h> or just x in ms`);
+                    } else {
+                        cmdcooldowntime = _cleantime(cmdcooldowntime, 0)
+                    }
+                }
+                if(j.c().commands.custom.restricted.includes(cmdname)) {
+                    j_.send(`Error: Restricted bot-command, you cannot edit this`); 
+                    return;
+                }
+                customcommand(3, j_, false, j_.message.channel.id, null, cmdname, null, null, null, null, (["channel"].includes(cmdcooldownopt) ? cmdcooldowntime : null), (["user"].includes(cmdcooldownopt) ? cmdcooldowntime : null))
+                .then(cmd => {
+                    j_.send(`Successfully set ${cmdcooldownopt} cooldown of command ${cmdname} (${cmd.id}) to ${cmdcooldowntime} (${_cleantime(cmdcooldowntime, 4).time.join(" and ")})`);
+                })
+                .catch(e => {
+                    console.error(e);
+                    j_.send(`Error: Could not set ${cmdcooldownopt} cooldown of command ${cmdname} to ${cmdcooldowntime}: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                })
+            } else {
+                j_.send(`Error: No cooldowntime given`);
             }
         };
         async function togglestate(num, state){

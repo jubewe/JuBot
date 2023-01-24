@@ -1,4 +1,6 @@
-let j = require("../../../variables/j");
+const request = require("request");
+const urls = require("../../../variables/urls");
+const { e } = require("../../../variables/varstatic");
 const _regex = require("../../_regex");
 const _requestopts = require("../../_requestopts");
 
@@ -23,18 +25,18 @@ async function updatechatsettings(broadcaster_id, moderator_id, emote_mode, foll
     return new Promise(async (resolve, reject) => {
         if(!broadcaster_id ?? undefined) return reject({path:[0],msg:"broadcaster_id is undefined"});
         if(!(moderator_id ?? undefined) || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
-        if(!customtoken || !customclientid) customtoken = undefined; customclientid = undefined; moderator_id = j.e().T_USERID;
+        if(!customtoken || !customclientid) customtoken = undefined; customclientid = undefined; moderator_id = e().T_USERID;
 
         let args = {};
-        if(undefined !== (emote_mode ?? undefined)) args["emote_mode"] = emote_mode;
-        if(undefined !== (follower_mode ?? undefined)) args["follower_mode"] = follower_mode;
-        if(undefined !== (follower_mode_duration ?? undefined)) args["follower_mode_duration"] = follower_mode_duration;
-        if(undefined !== (non_moderator_chat_delay ?? undefined)) args["non_moderator_chat_delay"] = non_moderator_chat_delay;
-        if(undefined !== (non_moderator_chat_delay_duration ?? undefined)) args["non_moderator_chat_delay_duration"] = non_moderator_chat_delay_duration;
-        if(undefined !== (slow_mode ?? undefined)) args["slow_mode"] = slow_mode;
-        if(undefined !== (slow_mode_wait_time ?? undefined)) args["slow_mode_wait_time"] = slow_mode_wait_time;
-        if(undefined !== (subscriber_mode ?? undefined)) args["subscriber_mode"] = subscriber_mode;
-        if(undefined !== (unique_chat_mode ?? undefined)) args["unique_chat_mode"] = unique_chat_mode;
+        if((emote_mode ?? undefined)) args["emote_mode"] = emote_mode;
+        if((follower_mode ?? undefined)) args["follower_mode"] = follower_mode;
+        if((follower_mode_duration ?? undefined)) args["follower_mode_duration"] = follower_mode_duration;
+        if((non_moderator_chat_delay ?? undefined)) args["non_moderator_chat_delay"] = non_moderator_chat_delay;
+        if((non_moderator_chat_delay_duration ?? undefined)) args["non_moderator_chat_delay_duration"] = non_moderator_chat_delay_duration;
+        if((slow_mode ?? undefined)) args["slow_mode"] = slow_mode;
+        if((slow_mode_wait_time ?? undefined)) args["slow_mode_wait_time"] = slow_mode_wait_time;
+        if((subscriber_mode ?? undefined)) args["subscriber_mode"] = subscriber_mode;
+        if((unique_chat_mode ?? undefined)) args["unique_chat_mode"] = unique_chat_mode;
 
         let reqopts = {
             ..._requestopts(j.urls().twitch.chat_settings.update.method, customtoken, customclientid),
@@ -42,7 +44,7 @@ async function updatechatsettings(broadcaster_id, moderator_id, emote_mode, foll
         };
         reqopts.headers["Content-Type"] = "application/json";
 
-        j.modules.request(`${j.urls().twitch.chat_settings.update.url}?broadcaster_id=${broadcaster_id}&moderator_id=${moderator_id}`, reqopts, (e, r) => {
+        request(`${urls.twitch.chat_settings.update.url}?broadcaster_id=${broadcaster_id}&moderator_id=${moderator_id}`, reqopts, (e, r) => {
             if(e){
                 return reject();
             } else {

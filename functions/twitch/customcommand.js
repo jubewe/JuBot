@@ -196,6 +196,41 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                 }
                 break;
             }
+
+            case 5: {
+                if(!commandid && !getcommandidbyname()){
+                    return reject({path:[opt,0],msg:"could not find command"});
+                } else {
+                    if(!Object.keys(files.channels.channels).includes(channelid)) files.channels.channels[channelid] = {};
+                    if(!Object.keys(files.channels.channels[channelid]).includes("commands")) files.channels.channels[channelid]["commands"] = {};
+                    commandid = commandid || getcommandidbyname();
+                    if(Object.keys(files.channels.channels[channelid]["commands"]).includes(commandid)){
+                        let command_ = files.channels.channels[channelid]["commands"][commandid];
+                        let command = {
+                            name: command_.name,
+                            id: command_.id,
+                            aliases: command_.aliases,
+                            state: command_.state,
+                            add_user: command_.add_user,
+                            permission: command_.permission,
+                            create_time: command_.create_time,
+                            update_time: Date.now(),
+                            cooldown: _nonarr(commandcooldown, command_.cooldown),
+                            cooldown_user: _nonarr(commandcooldownuser, command_.cooldown_user),
+                            response: command_.response
+                        };  
+                        files.channels.channels[channelid]["commands"][commandid] = command;
+                        _appf(paths.commandlog, `\n${Date.now()} ${_stackname(0, "commands", "edit", "cooldown")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
+                        _appf(paths.log, `\n${Date.now()} ${_stackname(0, "commands", "edit", "cooldown")[0]} ${channelid} ${command.id} ${command.name} ${JSON.stringify(command)} ${JSON.stringify(command_)}`);
+
+                        // _wf(paths.channels, files.channels); 
+                        return resolve(command);
+                    } else {
+                        return reject({path:[opt,0],msg:"commands of channel do not include command"});
+                    }
+                }
+                break;
+            }
         };
 
         function getcommandidbyname(name){

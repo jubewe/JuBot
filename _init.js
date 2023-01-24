@@ -16,6 +16,8 @@ const youtubevideo = require("./functions/trackers/youtubevideo");
 let j = require("./variables/j");
 const _mainpath = require("./functions/_mainpath");
 const geterrors = require("./functions/api/geterrors");
+const school_days_left = require("./functions/twitch/school_days_left");
+const _cleantime = require("./functions/_cleantime");
 const reconnect = () => {
     require("./functions/twitch/actions/_reconnect")(j);
 };
@@ -39,7 +41,10 @@ async function _init(){
         j.client.connect(); 
         j.join(j.files().clientchannels.channels, j.client, "channels");
 
-        j.client.on("ready", () => require("./handlers/twitch/ready"));
+        j.client.on("PRIVMSG", require("./handlers/twitch/PRIVMSG"));
+        j.client.on("WHISPER", require("./handlers/twitch/WHISPER"));
+        j.client.on("USERNOTICE", require("./handlers/twitch/USERNOTICE"));
+        j.client.on("ready", require("./handlers/twitch/ready"));
 
         j.client.on("error", error => {
             if(error){
@@ -73,6 +78,20 @@ async function _init(){
             setTimeout(youtubevideo, 3000);
             setInterval(youtubevideo, j.c().intervals.trackers.youtube_video);
         };
+
+        setTimeout(() => {
+            send_school_days_left();
+            setInterval(school_days_left, (24*60*60*60*1000));
+        }, (Date.now()-new Date(new Date().setHours(12, 0, 0, 0)).getTime()));
+
+        console.log("set " + (Date.now()-new Date(new Date().setHours(12, 0, 0, 0)).getTime()))
+        function send_school_days_left(){
+            if(school_days_left() > 0){
+                j.client.say("jubewe", `Just ${_cleantime(school_days_left(), 4).time.join(" and ")} left`);
+            } else {
+                j.client.say("jubewe", `You got released from prison! Now remove that function to check for the left school days Waiting`);
+            }
+        }
     };
 
     if(c.connect.twitch_view){

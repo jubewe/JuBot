@@ -37,8 +37,11 @@ module.exports = {
     enablecmd: require("./customcommand"),
     disablecmd: require("./customcommand"),
     getcmd: require("./customcommand"),
+    infocmd: require("./customcommand"),
+    listcmd: require("./customcommand"),
     copycmd: require("./customcommand"),
     yoinkcmd: require("./customcommand"),
+    cooldowncmd: require("./customcommand"),
 
     keyword: require("./customkeyword"),
     keywords: require("./customkeyword"),
@@ -50,8 +53,11 @@ module.exports = {
     enablekey: require("./customkeyword"),
     disablekey: require("./customkeyword"),
     getkey: require("./customkeyword"),
+    infokey: require("./customkeyword"),
+    listkey: require("./customkeyword"),
     copykey: require("./customkeyword"),
     yoinkkey: require("./customkeyword"),
+    cooldownkey: require("./customkeyword"),
 
     notification: require("./customnotification"),
     notifications: require("./customnotification"),
@@ -63,6 +69,7 @@ module.exports = {
     disablenotification: require("./customnotification"),
     
     permission: require("../permission"),
+    getperm: require("../permission"),
 
     remind: require("../reminder"),
     reminder: require("../reminder"),
@@ -100,5 +107,11 @@ module.exports = {
     errors: require("../api/geterrors"),
 
     question: require("../openai_question"),
+    flush: require("../flush"),
+
+    school: require("./school_days_left"),
+
+    pcon: require("../pcpower"),
+    pcoff: require("../pcpower"),
 
 }

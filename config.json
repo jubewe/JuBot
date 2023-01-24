@@ -13,6 +13,7 @@
         "broadcaster": 30,
         "botdefault": 60,
         "bothigh": 62,
+        "botcoowner": 68,
         "botowner": 69,
         "discord": {
             "admin": 30

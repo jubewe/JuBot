@@ -22,6 +22,7 @@ module.exports = {
         .then((answer) => {
             console.log(answer.choices[0].text.split("\n").slice(2).join("; "));
             j_.send(answer.choices[0].text.split("\n").slice(2).join("; "));
+            // j_.send("Oida");
         })
         .catch(e => {
             console.error(e);

@@ -32,12 +32,14 @@ module.exports = {
                         case "edit": {editkeyword(1); break;}
                         case "rename": {renamekeyword(1); break;}
                         case "permission": {permissionkeyword(1); break;}
+                        case "cooldown": {cooldownkeyword(1); break;}
                         case "enable": {togglestate(1, 1); break;}
                         case "disable": {togglestate(1, 0); break;}
                         case "yoink": 
                         case "copy": {copykeyword(1); break;}
                         case "list":
-                        case "get": {getkeyword(1); break;}
+                        case "get":
+                        case "info": {getkeyword(1); break;}
 
                         default: {j_.send(`Error: Option not found`); return;}
                     };
@@ -54,9 +56,12 @@ module.exports = {
             case "editkey": {editkeyword(0); break;}
             case "renamekey": {renamekeyword(0); break;}
             case "permkey": {permissionkeyword(0); break;}
+            case "permkey": {cooldownkeyword(0); break;}
             case "enablekey": {togglestate(0, 1); break;}
             case "disablekey": {togglestate(0, 0); break;}
-            case "getkey": {getkeyword(0); break;}
+            case "getkey":
+            case "infokey":
+            case "listkey": {getkeyword(0); break;}
             case "copykey":
             case "yoinkkey": {copykeyword(0); break;}
         };
@@ -176,6 +181,41 @@ module.exports = {
                 }
             } else {
                 j_.send(`Error: No keywordname given`);
+            }
+        };
+        async function cooldownkeyword(num){
+            if(!j_.message._.args()[num]) return j_.send(`Error: No keywordname given`);
+            if(!j_.message._.args()[num+1]) return j_.send(`Error: No cooldownopt given`);
+            if(!j_.message._.args()[num+2] && isNaN(j_.message._.args()[num+1])) return j_.send(`Error: No keywordtime given`);
+            
+            let keyname = j_.message._.args()[num].toLowerCase();
+            let keycooldownopt = j_.message._.args()[num+1].toLowerCase();
+            if(isNaN(keycooldownopt) && !["channel", "user"].includes(keycooldownopt)) return j_.send(`Error: Cooldown option not found (expected user|channel)`);
+            if(!isNaN(keycooldownopt) || j_.message._.args()[num+2]){
+                let keycooldowntime;
+                if(!isNaN(keycooldownopt)){
+                    keycooldownopt = "channel";
+                    keycooldowntime = j_.message._.args()[num+1];
+                } else {
+                    keycooldowntime = j_.message._.args()[num+2];
+                }
+                if(isNaN(keycooldowntime)){
+                    if(keycooldowntime === _cleantime(keycooldowntime, 0)){
+                        return j_.send(`Error: Invalid time inputted, please use x<s|m|h> or just x in ms`);
+                    } else {
+                        keycooldowntime = _cleantime(keycooldowntime, 0)
+                    }
+                }
+                customkeyword(3, j_, false, j_.message.channel.id, null, keyname, null, null, null, null, (["channel"].includes(keycooldownopt) ? keycooldowntime : null), (["user"].includes(keycooldownopt) ? keycooldowntime : null))
+                .then(cmd => {
+                    j_.send(`Successfully set ${keycooldownopt} cooldown of keyword ${keyname} (${cmd.id}) to ${keycooldowntime} (${_cleantime(keycooldowntime, 4).time.join(" and ")})`);
+                })
+                .catch(e => {
+                    console.error(e);
+                    j_.send(`Error: Could not set ${keycooldownopt} cooldown of keyword ${keyname} to ${keycooldowntime}: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                })
+            } else {
+                j_.send(`Error: No cooldowntime given`);
             }
         };
         async function togglestate(num, state){

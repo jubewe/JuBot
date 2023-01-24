@@ -62,6 +62,7 @@ function _cleantime(time, timeopt, timedigits) {
         conversion: 365 * 24 * 60 * 60 * 1000,
         time: 0,
       },
+      weeks: { tag_: "wk", tag: "week", conversion: 7 * 24 * 60 * 60 * 1000, time: 0 },
       days: {
         tag_: "day",
         tag: "day",

@@ -2,7 +2,7 @@ const decode = require("../../../functions/decode");
 const files = require("../../../variables/files");
 
 module.exports = (req, res, next) => {
-    let admin_logins = files.express.auth.admin_logins();
+    let admin_logins = files.express.auth.admin_logins;
     let username = (req.headers.username ?? req.query.username ?? undefined);
     let password = (req.headers.password ?? req.query.password ?? undefined);
     let _existsreq = (username && password) || false;

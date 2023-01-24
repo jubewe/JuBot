@@ -2,6 +2,7 @@ let urls = {
     "_files": "/mnt/MSD128_NAS/files/upload",
     "api": {
         "_base": "http://192.168.2.170",
+        "_basepc": "http://192.168.2.103",
         // "_base": "http://127.0.0.0",
         // "_base": "http://127.0.0.1",
         "_port": 6969,
@@ -14,6 +15,7 @@ let urls = {
             "POST": {
                 "upload": "/upload",
                 "error": "/error",
+                "pcpower": "/pcpower"
             },
             "ALL": {
                 "_main": "/"

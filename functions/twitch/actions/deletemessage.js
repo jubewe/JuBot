@@ -1,5 +1,6 @@
-let j = require("../../../variables/j");
+const request = require("request");
 const urls = require("../../../variables/urls");
+const { e } = require("../../../variables/varstatic");
 const _regex = require("../../_regex");
 const _requestopts = require("../../_requestopts");
 
@@ -15,16 +16,16 @@ const _requestopts = require("../../_requestopts");
 
 async function deletemessage(broadcaster_id, moderator_id, message_id, customtoken, customclientid){
     return new Promise((resolve, reject) => {
-        if(global.variables.varstatic.nonarr.includes(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is undefined"});
+        if(!(broadcaster_id ?? undefined)) return reject({path:[0],msg:"broadcaster_id is undefined"});
         if(!_regex.numregex().test(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is does not match number regex"});
-        if(global.variables.varstatic.nonarr.includes(moderator_id) || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
-        if(global.variables.varstatic.nonarr.includes(message_id)) return reject({path:[1,1,0],msg:"message_id is undefined"});
+        if(!(moderator_id ?? undefined) || !_regex.numregex().test(moderator_id)) moderator_id = e().T_USERID;
+        if(!(message_id ?? undefined)) return reject({path:[1,1,0],msg:"message_id is undefined"});
 
         let reqheaders = {
             ..._requestopts(urls.twitch.moderation.delete.method, customtoken || undefined, customclientid || undefined), 
         };
 
-        j.modules.request.delete(`${urls.twitch.moderation.delete.url}?broadcaster_id=${broadcaster_id}&moderator_id=${moderator_id}&message_id=${message_id}`, reqheaders, (e, r) => {
+        request.delete(`${urls.twitch.moderation.delete.url}?broadcaster_id=${broadcaster_id}&moderator_id=${moderator_id}&message_id=${message_id}`, reqheaders, (e, r) => {
             if(e){
                 return reject(e);
             } else {

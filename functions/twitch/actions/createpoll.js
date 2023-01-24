@@ -1,4 +1,5 @@
-let j = require("../../../variables/j");
+const request = require("request");
+const urls = require("../../../variables/urls");
 const _regex = require("../../_regex");
 const _requestopts = require("../../_requestopts");
 
@@ -30,11 +31,11 @@ async function createpoll(broadcaster_id, title, choices, duration, channel_poin
         if(channel_points_voting_enabled) search_params["channel_points_voting_enabled"] = channel_points_voting_enabled;
         if(channel_points_per_vote) search_params["channel_points_per_vote"] = `${(channel_points_per_vote < 1 ? 1 : channel_points_per_vote > 1000000 ? 1000000 : channel_points_per_vote)}`;
 
-        let reqoptions = _requestopts(j.urls().twitch.poll.create.method, customtoken, customclientid);
+        let reqoptions = _requestopts(urls.twitch.poll.create.method, customtoken, customclientid);
         reqoptions["body"] = JSON.stringify(search_params);
         reqoptions.headers["Content-Type"] = "application/json";
 
-        j.modules.request.post(j.urls().twitch.poll.create.url, reqoptions, (e, r) => {
+        request.post(urls.twitch.poll.create.url, reqoptions, (e, r) => {
             if(e){
                 return reject(e);
             } else {

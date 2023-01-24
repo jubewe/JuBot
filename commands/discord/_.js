@@ -5,5 +5,7 @@ module.exports = {
     user: require("./user"),
     bulkdelete: require("./bulkdelete"),
     eval: require("./eval"),
+    pcon: require("../pcpower"),
+    pcoff: require("../pcpower"),
     
 };

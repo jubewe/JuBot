@@ -1,5 +1,6 @@
-let j = require("../../../variables/j");
+const request = require("request");
 const urls = require("../../../variables/urls");
+const { e } = require("../../../variables/varstatic");
 const _regex = require("../../_regex");
 const _requestopts = require("../../_requestopts");
 
@@ -17,18 +18,18 @@ const _requestopts = require("../../_requestopts");
 
 async function timeout(broadcaster_id, moderator_id, user_id, duration, reason, customtoken, customclientid){
     return new Promise((resolve, reject) => {
-        if(global.variables.varstatic.nonarr.includes(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is undefined"});
+        if(!(broadcaster_id ?? undefined)) return reject({path:[0],msg:"broadcaster_id is undefined"});
         if(!_regex.numregex().test(broadcaster_id)) return reject({path:[0],msg:"broadcaster_id is does not match number regex"});
-        if(global.variables.varstatic.nonarr.includes(user_id)) return reject({path:[1,0],msg:"user_id is undefined"});
+        if(!(user_id ?? undefined)) return reject({path:[1,0],msg:"user_id is undefined"});
         if(!_regex.numregex().test(user_id)) return reject({path:[0],msg:"user_id is does not match number regex"});
-        if(global.variables.varstatic.nonarr.includes(moderator_id) || !_regex.numregex().test(moderator_id)) moderator_id = j.e().T_USERID;
+        if(!(moderator_id ?? undefined) || !_regex.numregex().test(moderator_id)) moderator_id = e().T_USERID;
 
         if(!duration) duration = 600;
         if(duration < 1) duration = 1;
         if(duration > 1209600) duration = 1209600;
-        if(global.variables.varstatic.nonarr.includes(reason)) reason = "[Automated by JuBot]";
-        if(global.variables.varstatic.nonarr.includes(moderator_id) && global.variables.varstatic.nonarr.includes(customtoken) && global.variables.varstatic.nonarr.includes(customclientid)) moderator_id = j.e().T_USERID;
-        if(global.variables.varstatic.nonarr.includes(customtoken) || global.variables.varstatic.nonarr.includes(customclientid)) customtoken = undefined; customclientid = undefined;
+        if(!(reason ?? undefined)) reason = "[Automated by JuBot]";
+        if(!(moderator_id ?? undefined) && !(customtoken ?? undefined) && !(customclientid ?? undefined)) moderator_id = e().T_USERID;
+        if(!(customtoken ?? undefined) || !(customclientid ?? undefined)) customtoken = undefined; customclientid = undefined;
 
         let reqheaders = {
             ..._requestopts(urls.twitch.moderation.timeout.method, customtoken || undefined, customclientid || undefined), 
@@ -36,7 +37,7 @@ async function timeout(broadcaster_id, moderator_id, user_id, duration, reason, 
         };
         reqheaders.headers["content-type"] = "application/json";
 
-        j.modules.request.post(`${urls.twitch.moderation.timeout.url}?broadcaster_id=${broadcaster_id}&moderator_id=${moderator_id}`, reqheaders, (e, r) => {
+        request.post(`${urls.twitch.moderation.timeout.url}?broadcaster_id=${broadcaster_id}&moderator_id=${moderator_id}`, reqheaders, (e, r) => {
             if(e){
                 return reject(e);
             } else {
