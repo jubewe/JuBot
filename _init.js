@@ -81,10 +81,9 @@ async function _init(){
 
         setTimeout(() => {
             send_school_days_left();
-            setInterval(school_days_left, (24*60*60*60*1000));
-        }, (Date.now()-new Date(new Date().setHours(12, 0, 0, 0)).getTime()));
+            setInterval(school_days_left, (24*60*60*1000));
+        }, (new Date(new Date().setHours(14, 0, 0, 0)).getTime()-Date.now()));
 
-        console.log("set " + (Date.now()-new Date(new Date().setHours(12, 0, 0, 0)).getTime()))
         function send_school_days_left(){
             if(school_days_left() > 0){
                 j.client.say("jubewe", `Just ${_cleantime(school_days_left(), 4).time.join(" and ")} left`);
