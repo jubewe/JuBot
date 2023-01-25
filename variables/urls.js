@@ -1,3 +1,5 @@
+const getip = require("../functions/api/getip");
+
 let urls = {
     "_files": "/mnt/MSD128_NAS/files/upload",
     "api": {
@@ -26,7 +28,7 @@ let urls = {
         },
         __url: (endpoint, method) => {
             if(method){
-                return `${urls.api._base}:${urls.api._port}${urls.api._endpoints[method][endpoint]}`;
+                return `http://${getip("pi")}:${urls.api._port}${urls.api._endpoints[method][endpoint]}`;
             } 
             Object.keys(urls.api._endpoints).forEach(epm => {
                 Object.keys(urls.api._endpoints[epm]).forEach(ep => {
@@ -151,7 +153,8 @@ let urls = {
                 "url": "https://api.twitch.tv/helix/chat/settings",
                 "method": "GET"
             }
-        }
+        },
+        "whisper": "https://api.twitch.tv/helix/whispers"
     },
     "youtube": {
         "search": {

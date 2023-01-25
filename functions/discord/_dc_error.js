@@ -5,6 +5,7 @@ async function _dc_error(channelid, error, response){
     try {
         let c = require("../../config.json");
         let j = require("../../variables/j");
+        if(!c.connect.discord) return;
         response = (response ?? {});
         j.dc.client.channels.fetch((channelid ?? c.discord.channelids.errors))
         .then(ch => {
@@ -23,6 +24,7 @@ async function _dc_error(channelid, error, response){
             })];
             ch.send(messageopts);
         })
+        .catch(e => {})
     } catch(e){
         console.error(e);
     }

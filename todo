@@ -48,3 +48,6 @@ edit default command parameters
 command to get channel
 <twitch action: announce>
 fix notifications
+
+
+ping command

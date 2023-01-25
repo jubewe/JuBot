@@ -1,11 +1,13 @@
-function getpcip(){
+function getip(device, opt){
     function _getips(){
         let ips = {
             "ipv4": [],
-            "ipv6": []
+            "ipv6": [],
+            "_raw": undefined
         };
     
         let networkinterfaces = require("os").networkInterfaces();
+        ips._raw = networkinterfaces;
         for(let networkinterface in networkinterfaces){
             let nif = networkinterfaces[networkinterface];
             if(Array.isArray(nif)){
@@ -18,14 +20,19 @@ function getpcip(){
         return ips;
     };
 
+    let deviceips = {
+        "_base": ["192.168.2", "192.168.178"],
+        "pi": ["170", "198"],
+        "pc": ["103", "44"]
+    };
+
+    let piraw = _getips()._raw;
     let piip = _getips().ipv4[1].address;
     if(piip.match(/192\.168\.2\./g)){
-        return "192.168.2.103";
+        return (!(opt ?? undefined) || opt === 0 ? `${deviceips._base[0]}.${deviceips[device ?? "pc"][0]}` : piraw)
     } else {
-        return "192.168.178.44";
+        return (!(opt ?? undefined) || opt === 0 ? `${deviceips._base[1]}.${deviceips[device ?? "pc"][1]}` : piraw)
     }
 };
 
-getpcip();
-
-module.exports = getpcip;
+module.exports = getip;

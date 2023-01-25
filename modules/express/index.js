@@ -37,7 +37,7 @@ async function _initexpress(){
     });
 
     j.express.app.use("/", (req, res) => {
-        sendres(res, 200, {data: {path: path.dirname(__dirname), connections: j.client.connections.length, uptime: (Date.now()-j.variables().starttime)}});
+        sendres(res, 200, {data: {path: path.dirname(__dirname), uptime: (Date.now()-j.variables().starttime)}});
     });
 
 };

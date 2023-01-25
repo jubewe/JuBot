@@ -1,10 +1,11 @@
 const _log = require("../../_log");
 const _stackname = require("../../_stackname");
 
-async function _reconnect(j){
+async function _reconnect(){
+    let j = require("../../../variables/j");
     _log(1, `${_stackname("client", "reconnect")[3]} Called`);
     if(!j.c().connect.twitch) {j.variables().queuedreconnect = -1; return;};
-    if(j.client.connected){
+    if(j.client.isConnected){
         _log(1, `${_stackname("client", "reconnect")[3]} Already connected`);
         return;
     }
@@ -19,10 +20,10 @@ async function _reconnect(j){
         j.variables().queuedreconnect++;
         try {
             _log(1, `${_stackname("client", "reconnect")[3]} Triggered`);
-            j.client.connect()
+            j.client.reconnect()
             .then(() => {
                 _log(1, `${_stackname("client", "reconnect")[3]} Successfully Reconnected after ${j.variables().queuedreconnect} attempts`);
-                if(j.c().connect.twitch_view) j.viewclient.connect();
+                if(j.c().connect.twitch_view) j.viewclient.reconnect();
                 j.variables().queuedreconnect = -1;
                 clearInterval(recint);
                 return;

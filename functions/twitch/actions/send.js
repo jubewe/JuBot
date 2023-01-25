@@ -5,6 +5,7 @@ const _splitmsg = require("../../_splitmsg");
 const _pixelize = require("../../_pixelize");
 const _regex = require("../../_regex");
 const _splitafter = require("../../_splitafter");
+const whisper = require("./whisper");
 let c = require("../../../config.json");
 
 /**
@@ -53,7 +54,6 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
       }
     } else if(smsg.length > 500){
       let smsges = _splitmsg(smsg, ",", 500, 1, 1);
-      // console.log(smsges)
       if(smsges.length > 3 && !smulti){
         _send(smode, schan, `<Error: Too long message>`, sparentid, true); 
         return;
@@ -62,10 +62,9 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
         let smsg_ = smsges[i];
         _send(smode, schan, smsg_, sparentid, (i === 0 ? true : false));
       }
-      
     } else {
       _send(smode, schan, smsg, sparentid, sfirst)
-    }
+    };
     
     async function _send(_smode, _schan, _smsg, _sparentid, _sfirst){
       smsg = smsg.replace(new RegExp("\n", "g"), "\\n");
@@ -74,7 +73,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
       function _send(){
         if(sendtrys > 0){
           sendtrys--;
-          j.client.privmsg(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
+          j.client.say(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
           .then(() => {return resolve(this)})
           .catch(e => {
             console.error(new Error(e));
@@ -92,7 +91,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
       function _whisper(){
         if(sendtrys > 0){
           sendtrys--;
-          j.client.whisper(_schan,j.vars().botnamebeta() + _smsg)
+          whisper(null, _schan, j.vars().botnamebeta() + _smsg)
           .then(w => {_log(0, `${_staticspacer(1, "[W] ->")} ${_staticspacer(2, _schan)} ${_smsg}`);return resolve(w)})
           .catch((e) => {
             console.error(new Error(e));
@@ -110,7 +109,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
       function _reply(){
         if(sendtrys > 0){
           sendtrys--;
-          j.client.reply(_schan, _sparentid, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
+          j.client.say(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg, {replyTo: _sparentid})
           .then(() => {return resolve(this)})
           .catch((e) => {
             console.error(new Error(e));

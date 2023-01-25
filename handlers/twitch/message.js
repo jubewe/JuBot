@@ -2,22 +2,45 @@ let j = require("../../variables/j");
 
 const getuserperm = require("../../functions/twitch/getuserperm");
 const userperms_ = require("../../functions/twitch/userperms");
-const privmsg_parser = require("../../functions/twitch/privmsg_parser");
+const privmsg_parser = require("../../functions/twitch/message_parser");
 const _channel = require("../../functions/twitch/_channel");
 const _cleantime = require("../../functions/_cleantime");
 const _staticspacer = require("../../functions/_staticspacer");
 const _log = require("../../functions/_log");
-const commandhandler = require("../../handlers/twitch/commandhandler");
-const custom_commandhandler = require("../../handlers/twitch/custom_commandhandler");
-const custom_keywordhandler = require("../../handlers/twitch/custom_keywordhandler");
+const commandhandler = require("./commandhandler");
+const custom_commandhandler = require("./custom_commandhandler");
+const custom_keywordhandler = require("./custom_keywordhandler");
 const _combineArr = require("../../functions/_combineArr");
 const remind = require("../../functions/twitch/remind");
 const getuser = require("../../functions/twitch/getuser");
 const messageargs = require("../../functions/twitch/messageargs");
 const _afk = require("../../functions/_afk");
 const _regex = require("../../functions/_regex");
+const { PrivmsgMessage, parseTwitchMessage } = require("@kararty/dank-twitch-irc");
 
+/**
+ * @param {PrivmsgMessage} response 
+ */
 module.exports = async (response) => {
+  let response_ = {...response};
+  // console.log(response_);
+  // if(response._command && ["PING", "PONG"].includes(response._command)){
+  //   switch (response._command){
+  //     case "PONG": {
+  //       console.log("pong");
+  //       j.variables().ping.pingend = Date.now();
+  //       break;
+  //     }
+      
+  //     case "PING": {
+  //       console.log("ping");
+  //       j.variables().ping.pingstart = Date.now();
+  //       break;
+  //     }
+  //   }
+  // }
+  if(!response_._command || !["PRIVMSG"].includes(response_._command)) return;
+  response = new parseTwitchMessage({...response}["_raw"]);
   let j_ = {"message":{"_":{}}};
   let privmsg = privmsg_parser(response);
   privmsg.message.messageText = privmsg.message.messageText.replace(/(^\s|\s$)/g, "").replace(/[\s]{2,}/g, " ");

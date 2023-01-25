@@ -45,7 +45,7 @@ module.exports = {
 
   badgestoarr: require("./twitch/_badgestoarr"),
   checktoken: require("./twitch/gettoken"),
-  privmsg_parser: require("./twitch/privmsg_parser"),
+  privmsg_parser: require("./twitch/message_parser"),
   remind: require("./twitch/remind"),
   replacevariables: require("./discord/replacevariables"),
   whisper_parser: require("./twitch/whisper_parser"),

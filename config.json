@@ -78,17 +78,17 @@
         "active_mods": 30000
     },
     "connect": {
-        "discord": true,
+        "discord": false,
         "twitch": true,
         "twitch_view": false,
         "twitch_notifications": true,
         "ws": {
-            "server": true,
-            "api": true,
+            "server": false,
+            "api": false,
             "seventv": false
         },
         "trackers": {
-            "live": true,
+            "live": false,
             "activemods": false,
             "youtube_video": false
         },

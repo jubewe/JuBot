@@ -1,6 +1,7 @@
 const request = require("request");
 const _cleantime = require("../functions/_cleantime");
 const _percentage = require("../functions/_percentage");
+const _pixelize = require("../functions/_pixelize");
 let j = require("../variables/j");
 const urls = require("../variables/urls");
 
@@ -22,10 +23,10 @@ module.exports = {
             } else {
                 let dat = JSON.parse(r.body).data;
                 function botinfoparser(botname){
-                    return `${dat.bots[botname] && dat.bots[botname].data.connections > 0 ? "connected" : "disconnected"} ${dat.bots[botname] && dat.bots[botname].data.uptime ? `(${_cleantime(dat.bots[botname].data.uptime, 4, 2).time.join(" and ")})` : ""})`
+                    return `Connected ${dat.bots[botname] && dat.bots[botname].data.uptime ? `(${_cleantime(dat.bots[botname].data.uptime, 4, 2).time.join(" and ")})` : ""}`
                 };
-                j_.send(`Serverinfo: Uptime: ${_cleantime(dat.pi.uptime, 4, 2).time.join(" and ")}; Memory Usage: ${(_percentage(dat.pi.memory.total, dat.pi.memory.free, null, 0))}% (${Math.round(dat.pi.memory.used/1048576)} / ${Math.round(dat.pi.memory.total/1048576)} mb); \n` +
-                `Bots: JuBot [TWITCH]: ${botinfoparser("jubot")} <|> Patrick [TWITCH]: ${botinfoparser("patrick")} <|> Phil [TWITCH, DISCORD]: ${botinfoparser("phil")}`);
+                j_.send(`Serverinfo: Raspi-Uptime: ${_cleantime(((require("os").uptime()*1000)), 4, 2).time.join(" and ")}; API-Uptime: ${_cleantime(dat.pi.uptime, 4, 2).time.join(" and ")}; Memory Usage: ${(_percentage(dat.pi.memory.total, dat.pi.memory.free, null, 0))}% (${Math.round(dat.pi.memory.used/1048576)} / ${Math.round(dat.pi.memory.total/1048576)} mb); \n` +
+                `Bots: JuBot [TWITCH]: ${botinfoparser("jubot")} <|> Patrick [TWITCH]: ${botinfoparser("patrick")} <|> ${_pixelize("Phil")} [TWITCH, DISCORD]: ${botinfoparser("phil")}`);
             }
         })
     }

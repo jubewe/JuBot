@@ -1,8 +1,9 @@
-const { ChatClient } = require("@kararty/dank-twitch-irc");
+const { ChatClient } = require("@twurple/chat");
+const { StaticAuthProvider } = require("@twurple/auth");
 const { Client, Intents, MessageAttachment, MessageEmbed } = require("discordjs13.11.0");
 const { REST } = require("@discordjs/rest");
 // import { Routes } from "discordjs13.11.0/node_modules/discord-api-types/v9";
-const { Routes } = require("discordjs13.11.0/node_modules/discord-api-types/v9");
+const { Routes } = require("../node_modules/discord-api-types/v9");
 const uptime = require("../functions/twitch/uptime");
 const _mainpath = require("../functions/_mainpath");
 const express = require("express");
@@ -22,6 +23,9 @@ let config = () => {
 let ws_server_config = () => {
   return require("../modules/ws/server/config.json");
 };
+
+let authprovider = new StaticAuthProvider(env().T_CLIENTID, env().T_TOKEN);
+let authprovider_pv = new StaticAuthProvider(env().T_CLIENTID, env().T_TOKEN_PV);
 
 // let seventv_ws = new ws.WebSocket("")
 
@@ -47,8 +51,12 @@ class j {
   static _error = require("../functions/_error");
   static lasterror = {};
   
-  static client = ChatClient;
-  static viewclient = ChatClient;
+  static auth = class {
+    static authprovider = authprovider;
+    static authprovider_pv = authprovider_pv;
+  }
+  static client = ChatClient.prototype;
+  static viewclient = ChatClient.prototype;
 
   static ws = {
     client: j_WebSocket,
@@ -72,7 +80,7 @@ class j {
     "request": require("request"),
     "ws": require("ws"),
     "discord": { MessageAttachment, MessageEmbed, Client, Intents },
-    "discord-api-types": { Routes },
+    // "discord-api-types": { Routes },
     "WebSocket": j_WebSocket,
     "j_WebSocket": j_WebSocket
   };
@@ -95,17 +103,18 @@ if(config().connect.ws.server){
 
 if(config().connect.twitch){
   j.client = new ChatClient({
-    username: env().T_USERNAME,
-    password: env().T_TOKEN,
-    rateLimits: env().T_RATELIMITS,
+    isAlwaysMod: true,
+    channels: j.files().clientchannels.channels,
+    authProvider: authprovider,
+    botLevel: e().T_RATELIMITS
   });
 };
 
 if(config().connect.twitch_view){
   j.viewclient =  new ChatClient({
-    username: env().T_USERNAME_PV,
-    password: env().T_TOKEN_PV,
-    rateLimits: env().T_RATELIMITS_PV,
+    channels: j.files().clientchannels.viewchannels,
+    authProvider: authprovider_pv,
+    botLevel: e().T_RATELIMITS_PV
   });
 };
 
