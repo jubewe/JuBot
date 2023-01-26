@@ -18,6 +18,7 @@ module.exports = {
     parameters: [],
     cooldown: 10000,
     cooldown_user: 5000,
+    arguments: [{name:"clipchan",required:false,options:["clipchannel"]}],
     exec: async (j_) => {
         let clipchan = j_.message._.chan;
         let j = require("../variables/j")

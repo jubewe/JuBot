@@ -11,8 +11,7 @@ module.exports = {
     add_version: "0.1.5",
     add_user: "jubewe",
     permission: j.c().perm.botdefault,
-    cooldown: -1,
-    cooldown_user: -1,
+    arguments: [{name:"option",required:true,options:["add", "remove", "delete"]},{name:"logchannel",required:true,options:["channel"]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             if(!j.files().clientchannels.logchannels) j.files().clientchannels.logchannels = [];

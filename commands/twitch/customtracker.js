@@ -11,8 +11,7 @@ module.exports = {
     add_user: "jubewe",
     permission: j.c().perm.botdefault,
     parameters: ["channel"],
-    cooldown: -1,
-    cooldown_user: -1,
+    arguments: [{name:"option",required:true,options:["add","remove","delete","enable","disable"]},{name:"trackerchannel",required:true,options:["channel"]}],
     exec: async (j_) => {
         switch (j_.message._.command){
             case "tracker": {

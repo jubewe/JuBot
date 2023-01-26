@@ -14,6 +14,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 10000,
     cooldown_user: 5000,
+    arguments:[{name:"time",required:true,options:[]},{name:"message",required:false,options:[]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             let ttime = _converttime(j_.message._.args()[0], false);

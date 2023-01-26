@@ -14,6 +14,7 @@ module.exports = {
     permission: j.c().perm.botowner,
     cooldown: -1,
     cooldown_user: -1,
+    arguments:[ {name:"option",required:true,options:["add","get"]}],
     exec: async (j_) => {
         let permissions = j.files().permissions;
 
@@ -81,6 +82,6 @@ module.exports = {
             } else {
                 j_.send(`Error: Invalid perm-number`);
             } 
-        }
+        };
     }
 }

@@ -19,6 +19,10 @@
             "admin": 30
         }
     },
+    "cooldowns": {
+        "cooldown": 15000,
+        "user_cooldown": 30000
+    },
     "timeouts": {
         "cache": 300000,
         "afk": {
@@ -109,7 +113,8 @@
             "_": true,
             "modified_channel": true,
             "noafk": true,
-            "noreminder": true
+            "noreminder": true,
+            "help": true
         },
         "afk": true,
         "reminder": true

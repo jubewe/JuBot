@@ -17,6 +17,8 @@ const messageargs = require("../../functions/twitch/messageargs");
 const _afk = require("../../functions/_afk");
 const _regex = require("../../functions/_regex");
 const { PrivmsgMessage, parseTwitchMessage } = require("@kararty/dank-twitch-irc");
+const commands = require("../../commands/twitch/_");
+const _permission = require("../../functions/twitch/_permission");
 
 /**
  * @param {PrivmsgMessage} response 
@@ -47,7 +49,8 @@ module.exports = async (response) => {
   let msgopts = j_.message._.opts = {
     modified_channel: undefined,
     noafk: false,
-    noreminder: false
+    noreminder: false,
+    help: false
   };
   let modified_channel = j_.message._.modified_channel = undefined;
 
@@ -57,6 +60,7 @@ module.exports = async (response) => {
     sendopt: privmsg.message.messageText.match(new RegExp(`\-send\:[^\\s]+`, "i")),
     noafk: privmsg.message.messageText.match(new RegExp(`\-(no)*afk`, "i")),
     noreminder: privmsg.message.messageText.match(new RegExp(`\-(no)*reminder`, "i")),
+    help: privmsg.message.messageText.match(new RegExp(`\-(h|help)`)),
 
   };
 
@@ -141,6 +145,8 @@ module.exports = async (response) => {
     if(j.c().modules.message.noafk && msgmatches.noafk) msgopts.noafk = true;;
     if(j.c().modules.message.noreminder && msgmatches.noreminder) msgopts.noreminder = true;
 
+    if(j.c().modules.message.help && msgmatches.help) msgopts.help = true;
+
     privmsg.message.messageText = privmsg.message.messageText.replace(msgmatches.noafk, "").replace(msgmatches.noreminder, "").replace(msgmatches.sendopt, "");
   };
 
@@ -158,6 +164,8 @@ module.exports = async (response) => {
   let userperm = j_.message._.userperm = await getuserperm(j_.message.userstate.id);
   let userperms = j_.message._.userperms = await userperms_(j_, j);
   let args = j_.message._.args = () => {return messageargs(j_, j)};
+  let prefix = j_.message._.prefix = j.c().prefix;
+  let command = j_.message._.command = (msg.split(" ")[0].split(prefix)[1] ? msg.split(" ")[0].split(prefix)[1].toLowerCase() : undefined);
 
   if([1, 2].includes(j.c().modules.log.twitch.privmsg) && j.files().clientchannels.logchannels.includes(channel.id)) _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
 
@@ -173,6 +181,28 @@ module.exports = async (response) => {
   if(j_.message.userstate.id == j.env().T_USERID) return;
 
   if(j.c().modules._){
+    if(msgopts.help){
+      if(!command) return j_.send(`Error: Please specify a command to get help for`);
+
+      if(!commands[command]) return j_.send(`Error: Command not found`);
+
+      let command_ = commands[command];
+
+      let cmdpermission = await _permission(0, command_.permission);
+      let cmdcooldowns = [
+        `${((!(command_.cooldown ?? undefined) || command_.cooldown <= 0) ? "none" : (j.c().cooldowns.cooldown == command_.cooldown ? "Default" : _cleantime(command_.cooldown, 4).time.join(" and ")))}`,
+        `${((!(command_.cooldown_user ?? undefined) || command_.cooldown_user <= 0) ? "none" : (j.c().cooldowns.cooldown_user == command_.cooldown_user ? "Default" : _cleantime(command_.cooldown_user, 4).time.join(" and ")))}`
+      ];
+
+      let cmdcooldownmessage = (cmdcooldowns[0] === cmdcooldowns[1] ? `Cooldowns: ${cmdcooldowns[0]}` : `Cooldown: ${cmdcooldowns[0]}, User Cooldown: ${cmdcooldowns[1]}`)
+
+      if(command_.arguments && command_.arguments.length > 0){
+        return j_.send(`Info about command ${command}${(command_.aliases && command_.aliases.length > 0 ? ` [${command_.aliases.join(", ")}]` : "")}: Required permission: ${(cmdpermission.name ?? cmdpermission.desc)}; ${cmdcooldownmessage}; Usage (<> = required; () = optional): ${j.c().prefix}${command} ${command_.arguments.map(a => {return `${a.required ? "<" : "("}${a.name}${(a.options && a.options.length > 0 ? `:${a.options.join("|")}` : "")}${a.required ? ">" : ")"}`}).join(" ")}`);
+      } else {
+        return j_.send(`Info about command ${command}${(command_.aliases && command_.aliases.length > 0 ? ` [${command_.aliases.join(", ")}]` : "")}: Required permission: ${(cmdpermission.name ?? cmdpermission.desc)}; ${cmdcooldownmessage}; Usage: ${j.c().prefix}${command}`);
+      }
+    };
+
     if(j.c().modules.afk && !msgopts.noafk){
       _afk(2, j_, j_.message.userstate.id, null, null, true)
       .then(a => {
@@ -210,13 +240,11 @@ module.exports = async (response) => {
     };
   };
   
-  let prefix = j_.message._.prefix = j.c().prefix;
   _channel(0, channel.id, undefined, undefined, true)
   .then(ch => {
     prefix = j_.message._.prefix = (ch.prefix ? (new RegExp(`^${j.c().prefix}`).test(msg) ? j.c().prefix : ch.prefix) : j.c().prefix);
     if(new RegExp(`^${prefix}+[\\w]+`).test(msg) || new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
       let always_allowed = j.c().commands.always_allowed;
-      let command = j_.message._.command = msg.split(" ")[0].split(prefix)[1].toLowerCase();
       if(new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)) command = j_.message._.command = msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase();
       if(!ch.allowed_commands || always_allowed.includes(command) || ch.allowed_commands.includes(command) || userperms._default){
         let command_ = [];

@@ -16,6 +16,7 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 1000,
     cooldown_user: 2000,
+    arguments: [{name:"videoid/url",required:true,options:[]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             let videos = _splitafter(j_.message._.msg, 1).replace(_regex.t_video_urlreg(), "").split(" ");

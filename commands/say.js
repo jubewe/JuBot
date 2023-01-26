@@ -10,6 +10,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    arguments:[ {name:"message",required:true,options:[]}],
     exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1] !== undefined){
             let saymsg = j_.message._.msg.substring(j_.message._.msg.split(" ")[0].length, j_.message._.msg.length);

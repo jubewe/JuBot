@@ -1,7 +1,8 @@
 const getuserperm = require("../../functions/twitch/getuserperm");
 const _cooldown = require("../../functions/twitch/_cooldown");
+const _permission = require("../../functions/twitch/_permission");
 
-function commandhandler(j_, j) {
+async function commandhandler(j_, j) {
   let [commands, message] = [j.commands(), j_.message];
   if(!Object.keys(commands).includes(message._.command)) return;
   let [command, commandid] = [commands[message._.command], (Object.keys(commands).includes(message._.command) ? `${message.channel.id}_${message._.command.id}` : message._.command.id)];
@@ -27,7 +28,8 @@ function commandhandler(j_, j) {
       })
     } else {
       if (message._.userperm.num > j.c().perm.bot && command.send_msg_noperm) {
-        j_.send(`Error: You don't have permission to perform that action (required: ${getuserperm(message.userstate.id).num})`);
+        let required_perm = await _permission(0, command.permission);
+        j_.send(`Error: You don't have permission to perform that action (required: ${((required_perm.name ?? undefined) ? required_perm.name : required_perm.desc)})`);
       }
     }
   }

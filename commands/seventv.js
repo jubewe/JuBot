@@ -18,6 +18,7 @@ module.exports = {
     send_msg_nochan: true,
     cooldown: 15000,
     cooldown_user: 5000,
+    arguments:[{name:"option",required:true,options:["add","getuser"]}],
     exec: async (j_) => {
         let discord_serverid;
         await _channel(0, j_.message.channel.id, "discord_serverid")

@@ -14,6 +14,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    arguments:[ {name:"option",required:true,options:["restart"]}],
     exec: async (j_) => {
         switch (j_.message._.command){
             case "restart": {

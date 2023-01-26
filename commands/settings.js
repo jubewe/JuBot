@@ -14,6 +14,7 @@ module.exports = {
     parameters: ["channel"],
     cooldown: 1000,
     cooldown_user: 1000,
+    arguments:[{name:"setting",required:true,options:["prefix","allowed_commands","valoranttag","discord","clipchannel","youtubechannel","sendclipstodiscord"]}],
     exec: async (j_) => {
         if(!j_.message._.args()[0]){
             j_.send(`Error: No option given`);

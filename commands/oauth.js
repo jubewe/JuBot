@@ -17,6 +17,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 5000,
     cooldown_user: 5000,
+    arguments: [{name:"option",required:true,options:["get","set","revoke","info"]},{name:"token",required:false,options:[]}],
     exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1]){
             switch (j_.message._.msg.split(" ")[1]) {

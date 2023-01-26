@@ -1,12 +1,13 @@
 const customkeyword = require("../../functions/twitch/customkeyword");
 const getuserperm = require("../../functions/twitch/getuserperm");
 const _cooldown = require("../../functions/twitch/_cooldown");
+const _permission = require("../../functions/twitch/_permission");
 
 async function custom_keywordhandler(j_, j){
     j = j || require("../../variables/j");
 
     customkeyword(0, j_, false, null, null, j_.message._.keyword)
-    .then(keyword => {
+    .then(async (keyword) => {
         if(keyword.path) return;
         if ([1].includes(keyword.state)) {
             if (parseInt(j_.message._.userperm.num) >= keyword.permission) {
@@ -29,8 +30,9 @@ async function custom_keywordhandler(j_, j){
                     console.error(new Error(e))
                 })
             } else {
-                if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-                    j_.send(`Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+                if(j_.message._.userperm.num > j.c().perm.bot && keyword.send_msg_noperm){
+                    let required_perm = await _permission(0, keyword.permission);
+                    j_.send(`Error: You don't have permission to perform that action (required: ${((required_perm.name ?? undefined) ? required_perm.name : required_perm.desc)})`);
                 }
             }
         }

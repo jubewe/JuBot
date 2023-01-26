@@ -11,6 +11,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    arguments:[{name:"viewchannel",required:true,options:[]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             let viewchan = j_.message._.args()[0].toLowerCase();

@@ -10,6 +10,7 @@ module.exports = {
     permission: j.c().perm.default,
     cooldown: 5000,
     cooldown_user: 10000,
+    arguments:[{name:"tuckuser",required:false,options:[]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             j_.send(0, `${j_.message._.usertag} You tuck ${j_.message._.args()[0]} to Bed ${j_.message._.args()[1] || "OkayChamp"} 👉 🛌 Bedge`);

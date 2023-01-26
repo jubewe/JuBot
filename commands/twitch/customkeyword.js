@@ -18,6 +18,7 @@ module.exports = {
     parameters: ["channel"],
     cooldown: 1000,
     cooldown_user: 2000,
+    arguments: [{name:"keywordoption",required:true,options:["add","delete","edit","rename","permission","cooldown","enable","disable","yoink","copy","list","get","info"]},{name:"keywordname",required:true,options:["name"]},{name:"keywordoptions",required:false,options:["options"]}],
     exec: async (j_) => {
         let permissions = j.files().permissions;
         let keystates = ["disabled", "enabled"];

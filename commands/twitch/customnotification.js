@@ -13,6 +13,7 @@ module.exports = {
     parameters: ["channel"],
     cooldown: 3000,
     cooldown_user: 1000,
+    arguments: [{name:"notificationoption",required:true,options:["option"]},{name:"notificationtype",required:true,options:["type"]},{name:"notificationname",required:true,options:["name"]},{name:"notificationmessage",required:false,options:["message"]}],
     exec: async (j_) => {
         let states = ["disabled", "enabled"];
 

@@ -16,6 +16,7 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 1000,
     cooldown_user: 2000,
+    arguments: [{name:"clip",required:true,options:["clipurl"]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             let clips = _splitafter(j_.message._.msg, 1).replace(_regex.t_clip_urlreg(), "").split(" ");

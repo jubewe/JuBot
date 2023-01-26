@@ -12,6 +12,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    arguments: [{name:"url",options:["url"],required:true}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             j_.send(`Started downloading, this might take some time Waiting`);

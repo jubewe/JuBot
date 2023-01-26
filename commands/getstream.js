@@ -16,6 +16,7 @@ module.exports = {
     permission: j.c().perm.moderator,
     cooldown: 1000,
     cooldown_user: 2000,
+    arguments: [{name:"streamchannel",required:true,options:[]}],
     exec: async (j_) => {
         if(j_.message._.args()[0]){
             let streams = _splitafter(j_.message._.msg, 1).replace(_regex.replacer(), "").split(" ");

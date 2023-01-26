@@ -1,12 +1,13 @@
 const customcommand = require("../../functions/twitch/customcommand");
 const getuserperm = require("../../functions/twitch/getuserperm");
 const _cooldown = require("../../functions/twitch/_cooldown");
+const _permission = require("../../functions/twitch/_permission");
 
-function custom_commandhandler(j_, j){
+async function custom_commandhandler(j_, j){
     j = j || require("../../variables/j");
 
     customcommand(0, j_, false, null, null, j_.message._.command)
-    .then(command => {
+    .then(async (command) => {
         if(command.path) return;
         if ([1].includes(command.state)) {
             if (parseInt(j_.message._.userperm.num) >= command.permission) {
@@ -20,8 +21,6 @@ function custom_commandhandler(j_, j){
                                 .then(c2 => {})
                                 .catch(e => {throw e});
                             }
-                            // (async () => {
-                            // })();
                         }
                     }
                 })
@@ -30,7 +29,8 @@ function custom_commandhandler(j_, j){
                 })
             } else {
                 if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-                    j_.send(`Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+                    let required_perm = await _permission(0, command.permission);
+                    j_.send(`Error: You don't have permission to perform that action (required: ${((required_perm.name ?? undefined) ? required_perm.name : required_perm.desc)})`);
                 }
             }
         }

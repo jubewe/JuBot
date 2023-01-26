@@ -1,5 +1,5 @@
 module.exports = {
-    eval: require("./eval"),
+    eval: require("../eval"),
     join: require("./join"),
     part: require("./part"),
     say: require("../say"),
@@ -95,8 +95,6 @@ module.exports = {
     deleteknownbot: require("../knownbots"),
     getknownbot: require("../knownbots"),
     getknownbots: require("../knownbots"),
-
-    // crossban: require("./crossban"),
 
     clipinfo: require("../getclip"),
     videoinfo: require("../getvideo"),

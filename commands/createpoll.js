@@ -12,6 +12,7 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: -1,
     cooldown_user: -1,
+    arguments: [{name:"polloptions",required:true,options:["title and choices seperated by ;"]}],
     exec: async (j_) => {
         let title = (j_.message._.msg.split(";")[0].split(j_.message._.prefix + j_.message._.command)[1]);
         let choices = (j_.message._.msg.split(";"));

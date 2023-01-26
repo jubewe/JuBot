@@ -11,6 +11,7 @@ module.exports = {
     send_msg_noperm: true,
     cooldown: -1,
     cooldown_user: -1,
+    arguments: [{name:"code",required:true,options:["evalmessage"]}],
     exec: async (j_) => {
         if(j_.message._.msg.split(" ")[1] !== undefined){
             let evalmsg = j_.message._.msg.split(" ");

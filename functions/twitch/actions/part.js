@@ -6,11 +6,10 @@ async function part(partchan) {
 
     if (j.files().clientchannels.channels.includes(partchan)) {
       j.files().clientchannels.channels.splice(j.files().clientchannels.channels.indexOf(partchan), 1);
-      // _wf(paths.clientchannels, j.files().channels);
 
       j.client.part(partchan);
       _wf(j.paths().clientchannels, j.files().clientchannels, true);
-      return resolve({"path":[1,1],"msg":"Successfully parted channel"});
+      return resolve({"path":[1,1],"msg":"Successfully left channel"});
     } else {
       return reject({"path":[0],"msg":"Not in channel"});
     }

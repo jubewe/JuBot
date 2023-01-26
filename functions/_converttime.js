@@ -36,16 +36,6 @@ function _converttime(time, treturn){
     if(!isNaN(new Date(time))){
         return new Date(time).getTime()-Date.now();
     }
-
-    // if(_regex.timereg2().test(time)){
-    //     let time_ = 0;
-    //     for(i = 0; i < time.split(":").length; i++){
-    //         time_ += time.split(":")[i]*1000*60^time.split(":").length-i;
-    //     }
-    //     return time_;
-    // }
 };
-
-// console.log(_converttime("2022-10-04T17:00:00.000Z"));
 
 module.exports = _converttime;

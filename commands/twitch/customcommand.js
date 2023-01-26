@@ -6,7 +6,6 @@ const _regex = require("../../functions/_regex");
 const _returnerr = require("../../functions/_returnerr");
 const _splitafter = require("../../functions/_splitafter");
 let j = require("../../variables/j");
-const paths = require("../../variables/paths");
 
 module.exports = {
     name: "customcommand",
@@ -16,9 +15,10 @@ module.exports = {
     add_version: "0.1.0",
     add_user: "jubewe",
     permission: j.c().perm.moderator,
-    parameters: ["channel"],
     cooldown: 1000,
     cooldown_user: 2000,
+    parameters: ["channel"],
+    arguments: [{name:"commandoption",required:true,options:["add","delete","edit","rename","permission","cooldown","enable","disable","yoink","copy","list","get","info"]},{name:"commandname",required:true,options:["name"]},{name:"commandoptions",required:false,options:["options"]}],
     exec: async (j_) => {
         let permissions = j.files().permissions;
         let cmdstates = ["disabled", "enabled"];

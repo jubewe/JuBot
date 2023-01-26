@@ -1,3 +1,5 @@
+const _permission = require("../../../functions/twitch/_permission");
+
 async function dm_commandhandler(j_, j){
     j = j || require("../../../variables/j");
     let commands = j.anna_dm_commands();
@@ -25,7 +27,8 @@ async function dm_commandhandler(j_, j){
             
             } else {
                 if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
-                    j_.send(2, `Error: You don't have permission to perform that action (required: ${getuserperm(j_.message.userstate.id).num})`);
+                    let required_perm = await _permission(0, command.permission);
+                    j_.send(`Error: You don't have permission to perform that action (required: ${((required_perm.name ?? undefined) ? required_perm.name : required_perm.desc)})`);
                 }
             }
         }
