@@ -25,6 +25,7 @@ module.exports = {
                 }
             })
             .catch(e => {
+                console.error(e);
                 j_.send(`Error: Could not join ${pixelize(joinchan)} ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
             })
         } else {

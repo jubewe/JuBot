@@ -1,5 +1,7 @@
-const { ChatClient } = require("@twurple/chat");
+const oberknechtClient = require("oberknecht-client/lib/client/oberknecht.client")
 
-module.exports = class j_ChatClient extends ChatClient {
+// const { ChatClient } = require("@twurple/chat");
+
+module.exports = class j_ChatClient extends oberknechtClient {
     
 }

@@ -76,7 +76,7 @@ async function completion(model, prompt, suffix, max_tokens, temperature, top_p,
         }
 
 
-        if(!(reqparameters.prompt ?? undefined)) return reject({peth:[0],msg:"prompt is undefined"});
+        if(!(reqparameters.prompt ?? undefined)) return reject({path:[0],msg:"prompt is undefined"});
 
         reqopts.body = JSON.stringify(reqparameters);
 

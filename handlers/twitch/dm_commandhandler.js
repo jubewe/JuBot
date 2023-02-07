@@ -32,12 +32,12 @@ async function dm_commandhandler(j_, j) {
         } else {
           if(j_.message._.userperm.num > j.c().perm.bot && command.send_msg_noperm){
             let required_perm = await _permission(0, command.permission);
-            j_.send(`Error: You don't have permission to perform that action (required: ${((required_perm.name ?? undefined) ? required_perm.name : required_perm.desc)})`);
+            j_.send(1, `Error: You don't have permission to perform that action (required: ${((required_perm.name ?? undefined) ? required_perm.name : required_perm.desc)})`);
           }
         }
       } else {
         if(command.send_msg_nochan){
-          j_.send(2, `Error: No channel specified`);
+          j_.send(1, `Error: No channel specified`);
         }
       }
     }

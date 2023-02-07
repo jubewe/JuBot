@@ -5,7 +5,6 @@ const _appf = require("../_appf");
 const _id = require("./_id");
 const _nonarr = require("../_nonarr");
 const _stackname = require("../_stackname");
-let j = require("../../variables/j");
 
 /**
  * @param {number} opt 
@@ -31,8 +30,8 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
         // commandstate = _nonarr(commandstate, 0);
         commandstate = (global.variables.varstatic.nonarr.includes(commandstate) ? 1 : commandstate);
         commandpermission = _nonarr(commandpermission, "10");
-        commandcooldown = _nonarr(commandcooldown, 10000);
-        commandcooldownuser = _nonarr(commandcooldownuser, 30000);
+        commandid = commandid?.toLowerCase();
+        commandname = commandname?.toLowerCase();
         if(isNaN(commandpermission)){
             let commandpermission_ = Object.keys(files.permissions.permissions).map(k => {if(files.permissions.permissions[k].tag) return [k, files.permissions.permissions[k].tag]}).filter(k => {return k !== undefined && (k[0] === commandpermission || k[1].includes(commandpermission))});
             if(!commandpermission_){
@@ -72,7 +71,7 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
             case 1: {
                 if(!commandname) return reject({path:[opt,0],msg:"commandname is undefined"});
                 if(!commandresponse) return reject({path:[opt,1,0],msg:"commandresponse is undefined"});
-                if(j.c().commands.custom.restricted.includes(commandname)) return reject({path:[opt,1,1,0],msg:"restricted command"});
+                if(files.config.commands.custom.restricted.includes(commandname)) return reject({path:[opt,1,1,0],msg:"restricted command"});
                 _id(1, "channel", channelid, "command")
                 .then(id => {
                     let command = {
@@ -84,8 +83,8 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                         permission: commandpermission,
                         create_time: Date.now(),
                         update_time: Date.now(),
-                        cooldown: commandcooldown,
-                        cooldown_user: commandcooldownuser,
+                        cooldown: commandcooldown ?? files.config.cooldowns.commands.channel,
+                        cooldown_user: commandcooldownuser ?? files.config.cooldowns.commands.user,
                         response: commandresponse
                     };
                     if(!Object.keys(files.channels.channels).includes(channelid)) files.channels.channels[channelid] = {};
@@ -150,8 +149,8 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                             permission: _nonarr(commandpermission, command_.permission),
                             create_time: command_.create_time,
                             update_time: Date.now(),
-                            cooldown: _nonarr(commandcooldown, command_.cooldown),
-                            cooldown_user: _nonarr(commandcooldownuser, command_.cooldown_user),
+                            cooldown: commandcooldown ?? command_.cooldown ?? files.config.cooldowns.commands.channel,
+                            cooldown_user: commandcooldownuser ?? command_.cooldown_user ?? files.config.cooldowns.commands.user,
                             response: _nonarr(commandresponse, command_.response)
                         };
 
@@ -179,7 +178,7 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                     if(!Object.keys(files.channels.channels[channelid]).includes("commands")) files.channels.channels[channelid]["commands"] = {};
                     commandid = commandid || getcommandidbyname();
                     if(getcommandidbyname(commandresponse)) return reject({path:[opt,1,1,0],msg:"command already exists"});
-                    if(j.c().commands.custom.restricted.includes(commandresponse)) return reject({path:[opt,1,1,1,0],msg:"restrictedcommand"});
+                    if(files.config.commands.custom.restricted.includes(commandresponse)) return reject({path:[opt,1,1,1,0],msg:"restrictedcommand"});
                     
                     if(Object.keys(files.channels.channels[channelid]["commands"]).includes(commandid)){
                         let command = files.channels.channels[channelid]["commands"][commandid];
@@ -215,8 +214,8 @@ async function customcommand(opt, j_, noreturn, channelid, commandid, commandnam
                             permission: command_.permission,
                             create_time: command_.create_time,
                             update_time: Date.now(),
-                            cooldown: _nonarr(commandcooldown, command_.cooldown),
-                            cooldown_user: _nonarr(commandcooldownuser, command_.cooldown_user),
+                            cooldown: commandcooldown ?? command_.cooldown,
+                            cooldown_user: commandcooldownuser ?? command_.cooldown_user,
                             response: command_.response
                         };  
                         files.channels.channels[channelid]["commands"][commandid] = command;

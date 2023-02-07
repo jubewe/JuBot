@@ -1,5 +1,5 @@
 {
-    "prefix": ">",
+    "prefix": "<",
     "anna": {
         "prefix": "a!",
         "perm": 62
@@ -21,7 +21,15 @@
     },
     "cooldowns": {
         "cooldown": 15000,
-        "user_cooldown": 30000
+        "user_cooldown": 30000,
+        "commands": {
+            "channel": 15000,
+            "user": 30000
+        },
+        "keywords": {
+            "channel": 10000,
+            "user": 30000
+        }
     },
     "timeouts": {
         "cache": 300000,
@@ -84,8 +92,8 @@
     "connect": {
         "discord": false,
         "twitch": true,
-        "twitch_view": false,
-        "twitch_notifications": true,
+        "twitch_view": true,
+        "twitch_notifications": false,
         "ws": {
             "server": false,
             "api": false,
@@ -97,11 +105,11 @@
             "youtube_video": false
         },
         "express": {
-            "app": true
+            "app": false
         }
     },
     "modules": {
-        "_": true,
+        "_": false,
         "notifications": false,
         "log": {
             "twitch": {

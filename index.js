@@ -22,6 +22,7 @@ const _mainpath = require("./functions/_mainpath");
 const geterrors = require("./functions/api/geterrors");
 const school_days_left = require("./functions/twitch/school_days_left");
 const _cleantime = require("./functions/_cleantime");
+const files = require("./variables/files");
 const reconnect = () => {
     require("./functions/twitch/actions/_reconnect")(j);
 };
@@ -40,19 +41,24 @@ process.on("unhandledRejection", (rej) => {
 if(c.connect.twitch){
     j.client.connect();
 
-    j.client.onAnyMessage(require("./handlers/twitch/message"));
-    j.client.onWhisper(require("./handlers/twitch/whisper"));
-    j.client.onConnect(require("./handlers/twitch/connect"));
-    j.client.on("error", require("./handlers/twitch/error"));
+    j.client.onPRIVMSG(require("./handlers/twitch/message"));
+    j.client.onWHISPER(require("./handlers/twitch/whisper"));
+    j.client.onReady(require("./handlers/twitch/connect"));
+    // j.client.onReady(() => {j.client.joinAll(files.clientchannels.channels)});
+    j.client.onError(require("./handlers/twitch/error"));
 
-    j.client.onDisconnect(() => {
-        _log(2, `${_stackname("client", "close")[3]}`);
-        setTimeout(() => {
-            reconnect();
-        }, 10000);
+    j.client.on("autojoin", a => {
+        _log(1, `${_stackname("client", "autojoin")[3]} ${a.length} Channels`);
     });
 
-    setInterval(reconnect, j.c().intervals.reconnect.client);
+    // j.client.onClose(() => {
+    //     _log(2, `${_stackname("client", "close")[3]}`);
+    //     setTimeout(() => {
+    //         reconnect();
+    //     }, 10000);
+    // });
+
+    // setInterval(reconnect, j.c().intervals.reconnect.client);
 
     _executetimers();
     _log(1, `${_stackname("timers")[3]} Executed`);
@@ -84,11 +90,15 @@ if(c.connect.twitch){
 if(c.connect.twitch_view){
     j.viewclient.connect(); 
 
-    j.viewclient.onConnect(() => {
+    j.viewclient.onReady(() => {
         _log(1, `${_stackname("viewclient", "connect")[3]} Successful`);
     });
 
-    j.viewclient.on("error", error => {
+    j.viewclient.on("autojoin", a => {
+        _log(1, `${_stackname("viewclient", "autojoin")[3]} ${a.length} Channels`);
+    });
+
+    j.viewclient.onError(error => {
         if(error){_log(2, `${_stackname("viewclient", "error")[3]} ${error.message}`);}
     });
 };

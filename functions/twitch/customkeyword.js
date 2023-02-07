@@ -5,7 +5,6 @@ const _appf = require("../_appf");
 const _id = require("./_id");
 const _nonarr = require("../_nonarr");
 const _stackname = require("../_stackname");
-let j = require("../../variables/j");
 
 /**
  * @param {number} opt 
@@ -21,7 +20,7 @@ let j = require("../../variables/j");
  * @param {number} keywordcooldown 
  * @param {number} keywordcooldownuser 
  * @returns {promise}
- */
+*/
 
 async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordname, keywordresponse, keywordaliases, keywordstate, keywordpermission, keywordcooldown, keywordcooldownuser){
     return new Promise((resolve, reject) => {
@@ -30,10 +29,10 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
         channelid = _nonarr(channelid, j_.message.channel.id);
         keywordaliases = _nonarr(keywordaliases, []);
         // keywordstate = _nonarr(keywordstate, 1);
+        keywordid = keywordid?.toLowerCase();
+        keywordname = keywordname?.toLowerCase();
         keywordstate = (global.variables.varstatic.nonarr.includes(keywordstate) ? 1 : keywordstate);
         keywordpermission = _nonarr(keywordpermission, "10");
-        keywordcooldown = _nonarr(keywordcooldown, 10000);
-        keywordcooldownuser = _nonarr(keywordcooldownuser, 30000);
         if(isNaN(keywordpermission)){
             let keywordpermission_ = Object.keys(files.permissions.permissions).map(k => {if(files.permissions.permissions[k].tag) return [k, files.permissions.permissions[k].tag]}).filter(k => {return k !== undefined && (k[0] === keywordpermission || k[1].includes(keywordpermission))});
             if(!keywordpermission_){
@@ -84,8 +83,8 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                         permission: keywordpermission,
                         create_time: Date.now(),
                         update_time: Date.now(),
-                        cooldown: keywordcooldown,
-                        cooldown_user: keywordcooldownuser,
+                        cooldown: keywordcooldown ?? files.config.cooldowns.keywords.channel,
+                        cooldown_user: keywordcooldownuser ?? files.config.cooldowns.keywords.user,
                         response: keywordresponse
                     };
                     if(!Object.keys(files.channels.channels).includes(channelid)) files.channels.channels[channelid] = {};
@@ -154,8 +153,8 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                             permission: _nonarr(keywordpermission, keyword_.permission),
                             create_time: keyword_.create_time,
                             update_time: Date.now(),
-                            cooldown: _nonarr(keywordcooldown, keyword_.cooldown),
-                            cooldown_user: _nonarr(keywordcooldownuser, keyword_.cooldown_user),
+                            cooldown: keywordcooldown ?? keyword_.cooldown ?? files.config.cooldowns.keywords.channel,
+                            cooldown_user: keywordcooldownuser ?? keyword_.cooldown_user ?? files.config.cooldowns.keywords.user,
                             response: _nonarr(keywordresponse, keyword_.response)
                         };
 
@@ -184,7 +183,7 @@ async function customkeyword(opt, j_, noreturn, channelid, keywordid, keywordnam
                     if(!Object.keys(files.channels.channels[channelid]).includes("keywords")) files.channels.channels[channelid]["keywords"] = {};
                     keywordid = keywordid || getkeywordidbyname();
                     if(getkeywordidbyname(keywordresponse)) return reject({path:[opt,1,1,0],msg:"keyword already exists"});
-                    if(j.c().keywords.custom.restricted.includes(keywordresponse)) return reject({path:[opt,1,1,1,0],msg:"restrictedkeyword"});
+                    if(files.config.keywords.custom.restricted.includes(keywordresponse)) return reject({path:[opt,1,1,1,0],msg:"restrictedkeyword"});
                     
                     if(Object.keys(files.channels.channels[channelid]["keywords"]).includes(keywordid)){
                         let keyword = files.channels.channels[channelid]["keywords"][keywordid];

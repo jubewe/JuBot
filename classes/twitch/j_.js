@@ -1,8 +1,8 @@
-const { TwitchEmote } = require("@kararty/dank-twitch-irc");
+const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
 
 class j_ {
-    static message = class {
-        static _ = class {
+    message = class extends privmsgMessage {
+        _ = class {
             static opts = class {
                 static modified_channel = Object() || undefined;
                 static noafk = Boolean();
@@ -39,68 +39,9 @@ class j_ {
             };
             static args = () => {return []};
         };
-        static message = class message {
-            static messageText = String();
-            static isAction = Boolean();
-            static isCheer = Boolean();
-            static bits = Number();
-            static bitsraw = String();
-            static type = String();
-            static emotes = TwitchEmote;
-            static emotesRaw = String();
-            static firstmsg = String();
-            static id = String();
-            static timestamp = Date();
-            static timestampRaw = Number();
-            static isreply = Boolean();
-            static replyUserName = String() || undefined;
-            static replyUserID = String() || undefined;
-            static replyMessage = String() || undefined;
-            static replyMessageID = String() || undefined;
-            static replyUserNameRaw = String() || undefined;
-            static emotecount = Number();
-            static emotesarr = TwitchEmote;
-            static emotearremotes = Array();
-            static emotesraw = String();
-        };
-
-        static userstate = class userstate {
-            static username = String();
-            static displayname = String();
-            static color = String();
-            static color2 = String();
-            static ismod = Boolean();
-            static firstmsg = Boolean();
-            static subscriber = Boolean();
-            static mod = "1" || "0";
-            static turbo = "1" || "0";
-            static usertype = String();
-            static messageId = String();
-            static id = Number();
-            static badges = String();
-            static badges2 = Array();
-            static badgesinfo = String();
-            static flags = new Map();
-            static flagsRaw = String();
-        };
-
-        static channel = class channel {
-            static name = String();
-            static nameraw = String();
-            static id = String();
-        };
-        
-        static server = class server {
-            static timestamp = Date();
-            static timestampRaw = Number();
-            static rawSource = String();
-            static ircPrefixRaw = String() || undefined;
-            static ircParameters = Array();
-            static ircPrefixnickname = String() || undefined;
-            static ircPrefixusername = String() || undefined;
-            static ircPrefixhostname = String() || undefined;
-        };
     };
+
+    send = (sendopt, sendmessage, sendmulti, sendreplacer) => {};
 };
 
 module.exports = j_;

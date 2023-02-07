@@ -112,4 +112,4 @@ module.exports = {
     pcon: require("../pcpower"),
     pcoff: require("../pcpower"),
 
-}
+};

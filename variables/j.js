@@ -1,8 +1,5 @@
-const { ChatClient } = require("@twurple/chat");
-const { StaticAuthProvider } = require("@twurple/auth");
 const { Client, Intents, MessageAttachment, MessageEmbed } = require("discordjs13.11.0");
 const { REST } = require("@discordjs/rest");
-// import { Routes } from "discordjs13.11.0/node_modules/discord-api-types/v9";
 const { Routes } = require("../node_modules/discord-api-types/v9");
 const uptime = require("../functions/twitch/uptime");
 const _mainpath = require("../functions/_mainpath");
@@ -24,24 +21,22 @@ let ws_server_config = () => {
   return require("../modules/ws/server/config.json");
 };
 
-let authprovider = new StaticAuthProvider(env().T_CLIENTID, env().T_TOKEN);
-let authprovider_pv = new StaticAuthProvider(env().T_CLIENTID, env().T_TOKEN_PV);
-
-// let seventv_ws = new ws.WebSocket("")
-
 let j_WebSocket = require("../classes/ws/j_WebSocket");
+const oberknechtClient = require("oberknecht-client/lib/client/oberknecht.client");
+const paths = () => {return require("./paths")};
+const files = () => {return require("./files")};
 
 class j {
   static variables = () => {return require("./varstatic");};
   static vars = () => {return require("./vars");};
   static urls = () => {return require("./urls")};
-  static files = () => {return require("./files");};
+  static files = files;
+  static paths = paths;
   static functions = () => {return require("../functions/_");};
   static functions_ = require("../functions/__");
   static commands = () => {return require("../commands/twitch/_");};
   static dm_commands = () => {return require("../commands/dm/_");};
   static anna_dm_commands = () => {return require("../commands/anna/_");};
-  static paths = () => {return require("./paths");};
   static env = env;
   static e = e;
   static c = () => {return require("../config.json")};
@@ -51,12 +46,8 @@ class j {
   static _error = require("../functions/_error");
   static lasterror = {};
   
-  static auth = class {
-    static authprovider = authprovider;
-    static authprovider_pv = authprovider_pv;
-  }
-  static client = ChatClient.prototype;
-  static viewclient = ChatClient.prototype;
+  static client = oberknechtClient.prototype;
+  static viewclient = oberknechtClient.prototype;
 
   static ws = {
     client: j_WebSocket,
@@ -65,7 +56,8 @@ class j {
   };
   static dc = {
     client: Client,
-    rest: REST,
+    rest: new REST({version: "9"}).setToken(env().DC_TOKEN),
+    // rest: REST,
     // rest: new REST({version: "9"}).setToken(env().DC_TOKEN)
   };
   static script = {
@@ -80,7 +72,7 @@ class j {
     "request": require("request"),
     "ws": require("ws"),
     "discord": { MessageAttachment, MessageEmbed, Client, Intents },
-    // "discord-api-types": { Routes },
+    "discord-api-types": { Routes },
     "WebSocket": j_WebSocket,
     "j_WebSocket": j_WebSocket
   };
@@ -102,19 +94,18 @@ if(config().connect.ws.server){
 };
 
 if(config().connect.twitch){
-  j.client = new ChatClient({
-    isAlwaysMod: true,
-    channels: j.files().clientchannels.channels,
-    authProvider: authprovider,
-    botLevel: e().T_RATELIMITS
+  j.client = new oberknechtClient({
+    token: env().T_TOKEN,
+    username: env().T_USERNAME,
+    channels: [...files().clientchannels.channels],
+    prefix: config().prefix
   });
 };
 
 if(config().connect.twitch_view){
-  j.viewclient =  new ChatClient({
-    channels: j.files().clientchannels.viewchannels,
-    authProvider: authprovider_pv,
-    botLevel: e().T_RATELIMITS_PV
+  j.viewclient =  new oberknechtClient({
+    token: env().T_TOKEN_PV,
+    username: env().T_USERNAME_PV
   });
 };
 

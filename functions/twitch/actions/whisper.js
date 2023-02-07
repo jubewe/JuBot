@@ -33,10 +33,8 @@ async function whisper(from_user_id, to_user_id, message, customtoken, customcli
             if(e){
                 return reject();
             } else {
-                if(_regex.jsonreg().test(r.body)){
-                    let dat = JSON.parse(r.body);
-                    if(dat.error) return reject(dat);
-                    return resolve(dat);
+                if(r.statusCode === 204){
+                    return resolve();
                 } else {
                     return reject(r.body);
                 }

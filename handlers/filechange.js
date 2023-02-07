@@ -16,9 +16,6 @@ module.exports = () => {
 
     function filechange(files) {
         for(let file in files){
-            // if(typeof files[file] === "object") filechange(files[file]);
-            // else {
-                // }
             if(filesold[file] && filesold[file] !== JSON.stringify(files[file]) && _getallobjectkeystree(j.paths()).includes(file)){
                 _wf(_getbyobjectkeyfromtree(j.paths(), file)[0][0], files[file], true);
                 changed_files++;

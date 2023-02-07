@@ -13,11 +13,11 @@ module.exports = {
     cooldown_user: -1,
     arguments: [{name:"option",required:true,options:["clear"]}],
     exec: async (j_) => {
-        if(j_.message._.args()[0]){
-            switch (j_.message._.args()[0]){
+        if(j_.message.messageArguments[0]){
+            switch (j_.message.messageArguments[0]){
                 case "clear": {
-                    if(j_.message._.args()[1]){
-                        let cachename = j_.message._.args()[1];
+                    if(j_.message.messageArguments[1]){
+                        let cachename = j_.message.messageArguments[1];
                         if(!cachename in j.c().cache.names) return j_.send(2, `Error: Invalid cache name`);
                         
                         if(j.paths()[cachename]){

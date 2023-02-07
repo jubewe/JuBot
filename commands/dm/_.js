@@ -1,6 +1,6 @@
 module.exports = {
     oauth: require("../oauth"),
-    eval: require("../twitch/eval"),
+    eval: require("../eval"),
     join: require("../twitch/join"),
     part: require("../twitch/part"),
     say: require("../say"),

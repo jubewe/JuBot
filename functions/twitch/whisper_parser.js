@@ -1,8 +1,7 @@
-const { WhisperMessage } = require("@kararty/dank-twitch-irc");
 
 /**
  * 
- * @param {WhisperMessage} response 
+ * @param {} response 
  * @returns 
  */
 

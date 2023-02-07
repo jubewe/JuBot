@@ -6,6 +6,7 @@ const _pixelize = require("../../_pixelize");
 const _regex = require("../../_regex");
 const _splitafter = require("../../_splitafter");
 const whisper = require("./whisper");
+const _regex_filter = require("../../_regex_filter");
 let c = require("../../../config.json");
 
 /**
@@ -18,7 +19,7 @@ let c = require("../../../config.json");
  * @param {boolean | null | undefined} sreplacer
  */
 
-async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
+async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer, sregfilter) {
   return new Promise(async (resolve, reject) => {
     let j = require("../../../variables/j");
     let j_;
@@ -29,13 +30,14 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
 
     schan = !(schan ?? undefined) ? j_.message._.chan : schan;
     smulti = !(smulti ?? undefined) ? undefined : smulti;
+    sregfilter = (smulti ?? undefined) === undefined ? false : true;
   
     if(smsg.startsWith("/")){
       let scmd = smsg.split(" ")[0].split("/")[1];
       if(_regex.t_actionreg().test(scmd)){
         smode = scmd;
       }
-    }
+    };
 
     let sendtrys = 3;
     let sendretrytimeout = c.timeouts.sendretrytimeout;
@@ -45,6 +47,11 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
     if(j_ && j_.message._.modified_channel){smode = 2; schan = j_.message._.modified_channel.name; smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;}
     if([3, "tag"].includes(smode)){smsg = j_.message._.usertag_ + smsg;}
     if(j_ && sreplacer){smsg = await replacevariables(j_, smsg);}
+
+    let regstart = Date.now();
+    if(sregfilter) smsg = await _regex_filter(1, smsg);
+    let regafter = Date.now();
+    // console.log("Regex parsing took", regafter - regstart, "ms");
   
     if(smsg.includes("\n")){
       let smsges = smsg.split("\n");
@@ -91,10 +98,10 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
       function _whisper(){
         if(sendtrys > 0){
           sendtrys--;
-          whisper(null, _schan, j.vars().botnamebeta() + _smsg)
+          whisper(null, (j_.message.userstate.id ?? _schan), j.vars().botnamebeta() + _smsg)
           .then(w => {_log(0, `${_staticspacer(1, "[W] ->")} ${_staticspacer(2, _schan)} ${_smsg}`);return resolve(w)})
           .catch((e) => {
-            console.error(new Error(e));
+            console.error(e);
             (async () => {
               setTimeout(() => {
                 _whisper();
@@ -109,7 +116,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer) {
       function _reply(){
         if(sendtrys > 0){
           sendtrys--;
-          j.client.say(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg, {replyTo: _sparentid})
+          j_.message.reply(j.vars().botnamebeta() + _smsg)
           .then(() => {return resolve(this)})
           .catch((e) => {
             console.error(new Error(e));

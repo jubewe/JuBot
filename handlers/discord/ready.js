@@ -5,7 +5,7 @@ const _stackname = require("../../functions/_stackname");
 const _staticspacer = require("../../functions/_staticspacer");
 let j = require("../../variables/j");
 const paths = require("../../variables/paths");
-const { Routes } = require("discordjs13.11.0/node_modules/discord-api-types/v9");
+const { Routes } = require("discord-api-types/v9");
 
 module.exports = () => {
     let j = require("../../variables/j");
@@ -44,17 +44,26 @@ module.exports = () => {
             a.options = options2;
         }
     });
+
+    let application_commands_2 = [
+        {
+            name: "test",
+            options: [],
+            type: 3
+        }
+    ];
     // console.log(application_commands[2].options);
-    // (async () => {
-    //     try {
-    //         // await j.dc.rest.put(Routes.applicationCommands(j.env().DC_APPLICATIONID), {body: application_commands})
-    //         j.c().discord.guilds.forEach(async guild => {
-    //             await j.dc.rest.put(Routes.applicationGuildCommands(j.env().DC_APPLICATIONID, guild), {body: application_commands})
-    //         });
-    //     } catch(e){
-    //         console.error(e);
-    //     }
-    // })();
+    ;(async () => {
+        try {
+            // await j.dc.rest.put(Routes.applicationCommands(j.env().DC_APPLICATIONID), {body: application_commands})
+            await j.dc.rest.put(j.modules["discord-api-types"].Routes.applicationCommands(j.env().DC_APPLICATIONID), {body: application_commands_2})
+            // j.c().discord.guilds.forEach(async guild => {
+            //     await j.dc.rest.put(Routes.applicationGuildCommands(j.env().DC_APPLICATIONID, guild), {body: application_commands})
+            // });
+        } catch(e){
+            console.error(e);
+        }
+    })();
 
     setInterval(setRandomActivity, j.c().intervals.discord.randomactivity);
 };

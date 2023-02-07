@@ -3,8 +3,8 @@ const getuserperm = require("../../functions/twitch/getuserperm");
 const _cooldown = require("../../functions/twitch/_cooldown");
 const _permission = require("../../functions/twitch/_permission");
 
-async function custom_keywordhandler(j_, j){
-    j = j || require("../../variables/j");
+async function custom_keywordhandler(j_){
+    let j = require("../../variables/j");
 
     customkeyword(0, j_, false, null, null, j_.message._.keyword)
     .then(async (keyword) => {
@@ -13,21 +13,14 @@ async function custom_keywordhandler(j_, j){
             if (parseInt(j_.message._.userperm.num) >= keyword.permission) {
                 _cooldown(0, j_.message.channel.id, keyword.id, j_.message.userstate.id, false)
                 .then((c) => {
-                    if(c[0] === 0 || keyword.cooldown <= 0 || ((Date.now() - c[0]) >= keyword.cooldown) || j_.message._.userperms._default){
-                        if(j_.message._.userperms._default || c[1] === 0 || keyword.cooldown_user <= 0 || ((Date.now() - c[0]) >= keyword.cooldown_user)){
-                            (async () => {
-                                j.send(0, j_, keyword.response, undefined, undefined, undefined, true);
-                                if((keyword.cooldown > 0 || keyword.cooldown_user > 0) && j_.message._.userperms._default){
-                                    _cooldown(1, j_.message.channel.id, keyword.id, j_.message.userstate.id, true)
-                                    .then(c2 => {})
-                                    .catch(e => {throw e});
-                                }
-                            })();
+                    if(((Date.now() - c[0]) >= (keyword.cooldown ?? j.c().cooldowns.cooldown)) || (j_.message._.userperms._default && j_.message._.matches.ignorecooldown)){
+                        if(((Date.now() - c[1]) >= (keyword.cooldown_user ?? j.c().cooldowns.user_cooldown)) || (j_.message._.userperms._default && j_.message._.matches.ignorecooldown)){
+                            j.send(0, j_, keyword.response, undefined, undefined, undefined, true);
+                            if(!(j_.message._.userperms._default && j_.message._.matches.ignorecooldown)){
+                                _cooldown(1, j_.message.channel.id, keyword.id, j_.message.userstate.id, true)
+                            }
                         }
                     }
-                })
-                .catch(e => {
-                    console.error(new Error(e))
                 })
             } else {
                 if(j_.message._.userperm.num > j.c().perm.bot && keyword.send_msg_noperm){
@@ -37,9 +30,7 @@ async function custom_keywordhandler(j_, j){
             }
         }
     })
-    .catch(e => {
-        console.error(e);
-    })
+    .catch()
 };
 
 module.exports = custom_keywordhandler;

@@ -1,5 +1,5 @@
 const _mainpath = require("../functions/_mainpath");
-const _main = require("../modules/seventv/seventv_ws");
+// const _main = require("../modules/seventv/seventv_ws");
 
 module.exports = {
   config: _mainpath("./config.json"),
@@ -16,6 +16,7 @@ module.exports = {
   cache: _mainpath("./data/cache.json"),
   reminders: _mainpath("./data/twitch/reminders.json"),
   phrases: _mainpath("./data/phrases.json"),
+  regexes: _mainpath("./data/regexes.json"),
 
   log: _mainpath("./data/logs/log.txt"),
   commandlog: _mainpath("./data/logs/commandlog.txt"),

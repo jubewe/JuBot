@@ -2,7 +2,6 @@ let j = require("../../variables/j");
 
 const getuserperm = require("../../functions/twitch/getuserperm");
 const userperms_ = require("../../functions/twitch/userperms");
-const privmsg_parser = require("../../functions/twitch/message_parser");
 const _channel = require("../../functions/twitch/_channel");
 const _cleantime = require("../../functions/_cleantime");
 const _staticspacer = require("../../functions/_staticspacer");
@@ -16,36 +15,17 @@ const getuser = require("../../functions/twitch/getuser");
 const messageargs = require("../../functions/twitch/messageargs");
 const _afk = require("../../functions/_afk");
 const _regex = require("../../functions/_regex");
-const { PrivmsgMessage, parseTwitchMessage } = require("@kararty/dank-twitch-irc");
 const commands = require("../../commands/twitch/_");
 const _permission = require("../../functions/twitch/_permission");
+const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
+const reply = require("oberknecht-client/lib/operations/reply");
 
 /**
- * @param {PrivmsgMessage} response 
+ * @param {privmsgMessage} response 
  */
 module.exports = async (response) => {
-  let response_ = {...response};
-  // console.log(response_);
-  // if(response._command && ["PING", "PONG"].includes(response._command)){
-  //   switch (response._command){
-  //     case "PONG": {
-  //       console.log("pong");
-  //       j.variables().ping.pingend = Date.now();
-  //       break;
-  //     }
-      
-  //     case "PING": {
-  //       console.log("ping");
-  //       j.variables().ping.pingstart = Date.now();
-  //       break;
-  //     }
-  //   }
-  // }
-  if(!response_._command || !["PRIVMSG"].includes(response_._command)) return;
-  response = new parseTwitchMessage({...response}["_raw"]);
-  let j_ = {"message":{"_":{}}};
-  let privmsg = privmsg_parser(response);
-  privmsg.message.messageText = privmsg.message.messageText.replace(/(^\s|\s$)/g, "").replace(/[\s]{2,}/g, " ");
+  // console.log(response);
+  let j_ = {"message":{...response,"_":{}}};
   let msgopts = j_.message._.opts = {
     modified_channel: undefined,
     noafk: false,
@@ -55,18 +35,19 @@ module.exports = async (response) => {
   let modified_channel = j_.message._.modified_channel = undefined;
 
   let msgmatches = j_.message._.matches = {
-    chan: privmsg.message.messageText.match(new RegExp(`(\-chan\:[^\\s]+|^${j.c().prefix}\\b\\w+\\b\:+\\w+)`, "i")),
-    user: privmsg.message.messageText.match(new RegExp(`\-user\:[^\\s]+`, "i")),
-    sendopt: privmsg.message.messageText.match(new RegExp(`\-send\:[^\\s]+`, "i")),
-    noafk: privmsg.message.messageText.match(new RegExp(`\-(no)*afk`, "i")),
-    noreminder: privmsg.message.messageText.match(new RegExp(`\-(no)*reminder`, "i")),
-    help: privmsg.message.messageText.match(new RegExp(`\-(h|help)`)),
+    chan: response.messageText.match(new RegExp(`(\-chan\:[^\\s]+|^${j.c().prefix}\\b\\w+\\b\:+\\w+)`, "i")),
+    user: response.messageText.match(new RegExp(`\-user\:[^\\s]+`, "i")),
+    sendopt: response.messageText.match(new RegExp(`\-send\:[^\\s]+`, "i")),
+    noafk: response.messageText.match(new RegExp(`\-(no)*afk`, "i")),
+    noreminder: response.messageText.match(new RegExp(`\-(no)*reminder`, "i")),
+    help: response.messageText.match(new RegExp(`\-(h|help)`)),
+    ignorecooldown: response.messageText.match(new RegExp(`\-(i|c|cooldown)`, "i"))
 
   };
 
   if(j.c().modules.message._){
     if(j.c().modules.message.modified_channel && (msgmatches.chan ?? msgmatches.user ?? msgmatches.sendopt)){
-      await getuserperm(privmsg.userstate.id)
+      await getuserperm(response.senderUserID, response.badgesRaw.split(",")[0]?.split("/")[0])
       .then(async (uperm) => {
         if(!(uperm.num >= j.c().perm.botdefault)) return;
         
@@ -82,18 +63,16 @@ module.exports = async (response) => {
     
             getuser(1, msgchan)
             .then(u => {
-              if(privmsg.channel.id !== u[1]){
+              if(response.channel.id !== u[1]){
                 modified_channel = j_.message._.modified_channel = {
-                  name: privmsg.channel.name,
-                  nameraw: privmsg.channel.nameraw,
-                  id: privmsg.channel.id,
+                  name: response.channel.name,
+                  id: response.channel.id,
                 };
-                privmsg.channel.name = u[0];
-                privmsg.channel.nameraw = u[0];
-                privmsg.channel.id = u[1];
+                response.channel.name = u[0];
+                response.channel.id = u[1];
               };
 
-              privmsg.message.messageText = privmsg.message.messageText.replace(msgchanmatchreplace, "");
+              response.message.messageText = response.message.messageText.replace(msgchanmatchreplace, "");
   
               msgopts.modified_channel = modified_channel;
     
@@ -112,21 +91,21 @@ module.exports = async (response) => {
                 getuser(1, msguser)
                 .then(u => {
                   j_.message._.modified_user = {
-                    username: privmsg.userstate.username,
-                    id: privmsg.userstate.id,
+                    username: response.userstate.username,
+                    id: response.userstate.id,
                   };
-                  privmsg.userstate.username = u[0];
-                  privmsg.userstate.id = u[1];
+                  response.userstate.username = u[0];
+                  response.userstate.id = u[1];
       
-                  privmsg.message.messageText = privmsg.message.messageText.replace(msgmatches.user[0], "");
+                  response.message.messageText = response.message.messageText.replace(msgmatches.user[0], "");
                   return resolve();
                 })
                 .catch(() => {
-                  privmsg.message.messageText = privmsg.message.messageText.replace(msgmatches.user[0], "");
+                  response.message.messageText = response.message.messageText.replace(msgmatches.user[0], "");
                   return resolve();
                 })
               } else {
-                privmsg.message.messageText = privmsg.message.messageText.replace(msgmatches.user[0], "NOIDONTTHINKSO du Frechdachs");
+                response.message.messageText = response.message.messageText.replace(msgmatches.user[0], "NOIDONTTHINKSO du Frechdachs");
                 return resolve();
               }
             })
@@ -139,7 +118,7 @@ module.exports = async (response) => {
         };
   
       })
-      .catch(e => {})
+      .catch()
     };
   
     if(j.c().modules.message.noafk && msgmatches.noafk) msgopts.noafk = true;;
@@ -147,27 +126,22 @@ module.exports = async (response) => {
 
     if(j.c().modules.message.help && msgmatches.help) msgopts.help = true;
 
-    privmsg.message.messageText = privmsg.message.messageText.replace(msgmatches.noafk, "").replace(msgmatches.noreminder, "").replace(msgmatches.sendopt, "");
+    response.message.messageText = response.message.messageText.replace(msgmatches.noafk, "").replace(msgmatches.noreminder, "").replace(msgmatches.sendopt, "").replace(msgmatches.ignorecooldown, "");
   };
 
-  let message = j_.message.message = privmsg.message;
-  let userstate = j_.message.userstate = privmsg.userstate;
-  let channel = j_.message.channel  = privmsg.channel;
-  let server = j_.message.server = privmsg.server;
-
-  let msg = j_.message._.msg = message.messageText;
-  let user = j_.message._.user = userstate.username;
-  let chan = j_.message._.chan = channel.name;
+  let msg = j_.message._.msg = response.message.messageText;
+  let user = j_.message._.user = response.userstate.username;
+  let chan = j_.message._.chan = response.channel.name;
   let _type = j_.message._.type = response.ircCommand;
   let usertag = j_.message._.usertag = `${user} > `;
   let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && _regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
-  let userperm = j_.message._.userperm = await getuserperm(j_.message.userstate.id);
+  let userperm = j_.message._.userperm = await getuserperm(response.userstate.id, response.userstate.badgesRaw.split(",")[0]?.split("/")[0]);
   let userperms = j_.message._.userperms = await userperms_(j_, j);
   let args = j_.message._.args = () => {return messageargs(j_, j)};
   let prefix = j_.message._.prefix = j.c().prefix;
   let command = j_.message._.command = (msg.split(" ")[0].split(prefix)[1] ? msg.split(" ")[0].split(prefix)[1].toLowerCase() : undefined);
-
-  if([1, 2].includes(j.c().modules.log.twitch.privmsg) && j.files().clientchannels.logchannels.includes(channel.id)) _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
+  
+  if([1, 2].includes(j.c().modules.log.twitch.privmsg) && j.files().clientchannels.logchannels.includes(response.channel.id)) _log(0, `${_staticspacer(2, "#" + chan)} ${_staticspacer(2, user)} ${msg}`);
 
   j_.send = (sendopt, sendmessage, sendmulti, sendreplacer) => {
     if(isNaN(sendopt) && !sendmessage){
@@ -175,10 +149,10 @@ module.exports = async (response) => {
       sendopt = 2;
     }
 
-    j.send(sendopt, j_, sendmessage, privmsg.message.id, undefined, sendmulti, sendreplacer);
+    j.send(sendopt, j_, sendmessage, response.message.id, undefined, sendmulti, sendreplacer);
   };
 
-  if(j_.message.userstate.id == j.env().T_USERID) return;
+  if(response.userstate.id == j.env().T_USERID) return;
 
   if(j.c().modules._){
     if(msgopts.help){
@@ -239,27 +213,29 @@ module.exports = async (response) => {
       .catch(e => {})
     };
   };
+
+  // reply(j.client.symbol, "test", response.channelName, response.messageID);
   
-  _channel(0, channel.id, undefined, undefined, true)
+  _channel(0, response.channel.id, undefined, undefined, true)
   .then(ch => {
-    prefix = j_.message._.prefix = (ch.prefix ? (new RegExp(`^${j.c().prefix}`).test(msg) ? j.c().prefix : ch.prefix) : j.c().prefix);
-    if(new RegExp(`^${prefix}+[\\w]+`).test(msg) || new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)){
+    prefix = j_.message._.prefix = (ch.prefix ? (new RegExp(`^${j.c().prefix}+`).test(msg) ? j.c().prefix : ch.prefix) : j.c().prefix);
+    if(new RegExp(`^${prefix}+\\w+`, "gi").test(msg)){
       let always_allowed = j.c().commands.always_allowed;
-      if(new RegExp(`^${j.c().prefix}+[\\w]+`).test(msg)) command = j_.message._.command = msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase();
+      let command = j_.message._.command = msg.split(" ")[0].split(prefix)[1].toLowerCase();
       if(!ch.allowed_commands || always_allowed.includes(command) || ch.allowed_commands.includes(command) || userperms._default){
         let command_ = [];
         if(ch.commands) command_ = _combineArr(...Object.keys(ch.commands).map(cmd => {return _combineArr(ch.commands[cmd].name, ch.commands[cmd].aliases)}));
-
         if(!always_allowed.includes(command) && !j.c().commands.custom.restricted.includes(command) && ch.commands && command_ && command_.includes(command)) custom_commandhandler(j_, j); else commandhandler(j_, j);
       }
     } else if(ch.keywords && new RegExp(`\\b(${_combineArr(...Object.keys(ch.keywords).map(key => {return _combineArr(ch.keywords[key].name, ch.keywords[key].aliases)})).join("|")})\\b`, "i").test(msg.toLowerCase())){
       let keyword = j_.message._.keyword = msg.toLowerCase().match(new RegExp(`\\b(${_combineArr(...Object.keys(ch.keywords).map(key => {return _combineArr(ch.keywords[key].name, ch.keywords[key].aliases)})).join("|")})\\b`, "i"))[0];
-      custom_keywordhandler(j_, j);
+      custom_keywordhandler(j_);
     }
   })
   .catch(e => {
+    console.error(e);
     if(!new RegExp(`^${prefix}+[\\w]+`).test(msg)) return;
     let command = j_.message._.command = msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase();
-    commandhandler(j_, j);
+    commandhandler(j_);
   })
 };

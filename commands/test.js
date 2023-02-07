@@ -1,3 +1,4 @@
+const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
 let j = require("../variables/j");
 
 module.exports = {
@@ -12,7 +13,10 @@ module.exports = {
     cooldown_user: 45000,
     description: "Test command",
     arguments:[{name:"message",required:false,options:[]}],
+    /**
+     * @param {privmsgMessage} j_ 
+     */
     exec: async (j_) => {
-        j_.send(`Test VoHiYo $(message[1])`, null, null, true);
+        j_.message.reply(`Test VoHiYo $(message[1])`);
     }
 }

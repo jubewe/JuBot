@@ -1,4 +1,4 @@
-const _pad2 = require("./_pad2");
+const _pad2 = (n) => {return n<=9?`0${n}`:n};
 
 /**
  *
@@ -9,10 +9,12 @@ const _pad2 = require("./_pad2");
  */
 
 function _cleantime(time, timeopt, timedigits) {
-  if (timedigits === "auto") {
-  } else if (!(timedigits ?? undefined) || typeof timedigits !== "number" || timedigits <= 0 ) {
+  let timedigits_ = 2;
+  if (!(timedigits ?? undefined) || typeof timedigits !== "number" || timedigits <= 0 ) {
     timedigits = "auto";
-  }
+  } else {
+    timedigits_ = timedigits;
+  };
   let dat = { time: [], order: [], tag: "" };
   let t = {
     years: {
@@ -46,43 +48,39 @@ function _cleantime(time, timeopt, timedigits) {
   );
   let ctlast = undefined;
   for (i = 0; i < Object.keys(t).length; i++) {
-    let cte = t[Object.keys(t)[i]].time;
-    if (
-      (["auto"].includes(timedigits) &&
-        !["milliseconds"].includes(Object.keys(t)[i])) ||
-      timedigits > 0
-    ) {
-      if (cte >= 1 || [0].includes(ctlast) || ![undefined].includes(ctlast)) {
+    let tc = Object.keys(t)[i];
+    let tco = t[tc];
+    let cte = tco.time;
+    if ((["auto"].includes(timedigits_) && !["milliseconds"].includes(tc)) || timedigits_ > 0) {
+      if (cte > 0 || ctlast) {
         if (ctlast === undefined) {
-          dat["tag"] = `${t[Object.keys(t)[i]]["tag"]}${cte > 1 ? "s" : ""}`;
+          dat["tag"] = `${tco["tag"]}${cte > 1 ? "s" : ""}`;
         }
         if (timeopt === 1) {
           dat["time"].push(_pad2(cte).toString());
-          dat["order"].push(Object.keys(t)[i]);
+          dat["order"].push(tc);
         } else if ([2, 3].includes(timeopt)) {
           dat["time"].push(_pad2(cte).toString());
-          dat["order"].push(Object.keys(t)[i]);
+          dat["order"].push(tc);
         } else if ([4, 5].includes(timeopt)) {
           if (cte >= 1) {
             dat["time"].push(
               cte +
                 ` ${
-                  t[Object.keys(t)[i]][["tag", "tag_"][timeopt - 4]] !== "ms"
-                    ? t[Object.keys(t)[i]][["tag", "tag_"][timeopt - 4]] +
+                  tco[["tag", "tag_"][timeopt - 4]] !== "ms"
+                    ? tco[["tag", "tag_"][timeopt - 4]] +
                       (cte > 1 ? "s" : "")
-                    : t[Object.keys(t)[i]][["tag", "tag_"][timeopt - 4]]
+                    : tco[["tag", "tag_"][timeopt - 4]]
                 }`
             );
-            dat["order"].push(Object.keys(t)[i]);
+            dat["order"].push(tc);
           }
         }
-        if (!["auto"].includes(timedigits)) {
-          timedigits--;
-        }
+        timedigits_--;
         ctlast = cte;
-      }
-    }
-  }
+      };
+    };
+  };
 
   return dat;
 }

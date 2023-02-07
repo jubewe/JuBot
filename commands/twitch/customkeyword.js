@@ -1,6 +1,7 @@
 const customkeyword = require("../../functions/twitch/customkeyword");
 const getuser = require("../../functions/twitch/getuser");
 const _cleantime = require("../../functions/_cleantime");
+const _converttime = require("../../functions/_converttime");
 const _pixelize = require("../../functions/_pixelize");
 const _regex = require("../../functions/_regex");
 const _returnerr = require("../../functions/_returnerr");
@@ -201,10 +202,10 @@ module.exports = {
                     keycooldowntime = j_.message._.args()[num+2];
                 }
                 if(isNaN(keycooldowntime)){
-                    if(keycooldowntime === _cleantime(keycooldowntime, 0)){
+                    if(keycooldowntime === _converttime(keycooldowntime)){
                         return j_.send(`Error: Invalid time inputted, please use x<s|m|h> or just x in ms`);
                     } else {
-                        keycooldowntime = _cleantime(keycooldowntime, 0)
+                        keycooldowntime = _converttime(keycooldowntime)
                     }
                 }
                 customkeyword(3, j_, false, j_.message.channel.id, null, keyname, null, null, null, null, (["channel"].includes(keycooldownopt) ? keycooldowntime : null), (["user"].includes(keycooldownopt) ? keycooldowntime : null))
@@ -242,7 +243,7 @@ module.exports = {
                     j_.send(`Keywordinfo for keyword ${keyname} (${key.id}): Aliases [${key.aliases.length}]: ${key.aliases.join(", ") || "[]"}, State: ${key.state} (${keystates[key.state]}), Permission: ${key.permission} `+
                     `(${(Object.keys(permissions.permissions).map(k => {if(permissions.permissions[k].tag) return [k, permissions.permissions[k].tag]}).filter(k => {return k !== undefined && (k[0] === key.permission || k[1].includes(key.permission))}))[0][1][0]}) `+
                     `Created: ${_cleantime((Date.now()-key.create_time), 4, 2).time.join(" and ")} ago, Edited: ${_cleantime((Date.now()-key.update_time), 4, 2).time.join(" and ")} ago, `+
-                    `Cooldown (channel): ${global.functions._numberspacer(key.cooldown)} ms, Cooldown (user): ${global.functions._numberspacer(key.cooldown_user)} ms, Response: ${key.response}`, null, null, null, false);
+                    `Cooldown (channel): ${_cleantime(key.cooldown,4).time.join(" and ")}, Cooldown (user): ${_cleantime(key.cooldown_user,4).time.join(" and ")}, Response: ${key.response}`, null, null, null, false);
                 })
                 .catch(e => {
                     j_.send(`Error: keyword not found: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
@@ -250,7 +251,7 @@ module.exports = {
             } else {
                 customkeyword(0, j_, false, null)
                 .then(keys => {
-                    j_.send(`Custom keywords in this channel: ${Object.keys(keys).map(key => {return keys[key].name})}`);
+                    j_.send(`Custom keywords in this channel: ${Object.keys(keys).map(key => {return keys[key].name}).join("; ")}`);
                 })
                 .catch(e => {
                     j_.send(`Error: Could not get keywords of this channel: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`)

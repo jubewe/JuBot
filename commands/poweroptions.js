@@ -29,7 +29,7 @@ module.exports = {
                         _wf(j.paths().startup, j.files().startup, true);
                         j_.send(`Attempting reconnect`)
                         setTimeout(() => {
-                            require("child_process").execSync(`pm2 flush j && pm2 restart j`);                        
+                            require("child_process").execSync(`pm2 flush jo && pm2 restart jo`);                        
                         }, 1000);
                     }
                 } else {
@@ -37,7 +37,6 @@ module.exports = {
                         case "api": {
                             j.modules.request(`${j.urls().api._base}:${j.urls().api._port}/restart`, {headers: j_api_headeradmin()}, (e, r) => {
                                 if(e) return j_.send(`Error: Could not restart API: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
-                                console.log(r.body);
                                 let dat = JSON.parse(r.body);
                                 if(dat.status == 200){
                                     j_.send(`Successfully restarted API`);

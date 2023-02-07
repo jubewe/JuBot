@@ -16,6 +16,7 @@ module.exports = {
     cache: _rf(paths.cache, true),
     reminders: _rf(paths.reminders, true),
     phrases: _rf(paths.phrases, true),
+    regexes: _rf(paths.regexes, true),
 
     commandlog: _rf(paths.commandlog, true),
     keywordlog: _rf(paths.keywordlog, true),

@@ -1,14 +1,25 @@
-async function getuserperm(guuser){
-    const permission = require("./_permission");
+async function getuserperm(guuser, badge) {
+  // const permission = require("./_permission");
+  return new Promise((resolve, reject) => {
     let c = require("../../config.json");
     let files = require("../../variables/files");
     guuser = guuser.toString();
-
-    if(Object.keys(files.permissions.users).includes(guuser)){
-        return permission(0, files.permissions.users[guuser]);
+    if (files.permissions.users[guuser]) {
+      return resolve({...files.permissions.permissions[files.permissions.users[guuser]], num:files.permissions.users[guuser]});
     } else {
-        return permission(0, c.perm.default);
+      if (badge) {
+        let badges = {};
+        Object.keys(files.permissions.permissions).forEach(a => {
+          if (files.permissions.permissions[a].name) {
+            badges[files.permissions.permissions[a].name] = files.permissions.permissions[a];
+            badges[files.permissions.permissions[a].name].num = a;
+          }
+        });
+        if (badges[badge]) return resolve(badges[badge]);
+      }
+      return resolve(files.permissions.permissions["10"]);
     }
+  })
 };
 
 module.exports = getuserperm;

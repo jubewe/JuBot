@@ -1,6 +1,7 @@
 const customcommand = require("../../functions/twitch/customcommand");
 const getuser = require("../../functions/twitch/getuser");
 const _cleantime = require("../../functions/_cleantime");
+const _converttime = require("../../functions/_converttime");
 const _pixelize = require("../../functions/_pixelize");
 const _regex = require("../../functions/_regex");
 const _returnerr = require("../../functions/_returnerr");
@@ -221,17 +222,17 @@ module.exports = {
                     cmdcooldowntime = j_.message._.args()[num+2];
                 }
                 if(isNaN(cmdcooldowntime)){
-                    if(cmdcooldowntime === _cleantime(cmdcooldowntime, 0)){
+                    if(cmdcooldowntime === _converttime(cmdcooldowntime, 0)){
                         return j_.send(`Error: Invalid time inputted, please use x<s|m|h> or just x in ms`);
                     } else {
-                        cmdcooldowntime = _cleantime(cmdcooldowntime, 0)
+                        cmdcooldowntime = _converttime(cmdcooldowntime, 0)
                     }
                 }
                 if(j.c().commands.custom.restricted.includes(cmdname)) {
                     j_.send(`Error: Restricted bot-command, you cannot edit this`); 
                     return;
                 }
-                customcommand(3, j_, false, j_.message.channel.id, null, cmdname, null, null, null, null, (["channel"].includes(cmdcooldownopt) ? cmdcooldowntime : null), (["user"].includes(cmdcooldownopt) ? cmdcooldowntime : null))
+                customcommand(3, j_, false, j_.message.channel.id, null, cmdname, null, null, null, null, (["channel"].includes(cmdcooldownopt) ? cmdcooldowntime : undefined), (["user"].includes(cmdcooldownopt) ? cmdcooldowntime : undefined))
                 .then(cmd => {
                     j_.send(`Successfully set ${cmdcooldownopt} cooldown of command ${cmdname} (${cmd.id}) to ${cmdcooldowntime} (${_cleantime(cmdcooldowntime, 4).time.join(" and ")})`);
                 })
@@ -266,7 +267,7 @@ module.exports = {
                     j_.send(`Commandinfo for command ${cmdname} (${cmd.id}): Aliases [${cmd.aliases.length}]: ${cmd.aliases.join(", ") || "[]"}, State: ${cmd.state} (${cmdstates[cmd.state]}), Permission: ${cmd.permission} `+
                     `(${(Object.keys(permissions.permissions).map(k => {if(permissions.permissions[k].tag) return [k, permissions.permissions[k].tag]}).filter(k => {return k !== undefined && (k[0] === cmd.permission || k[1].includes(cmd.permission))}))[0][1][0]}) `+
                     `Created: ${_cleantime((Date.now()-cmd.create_time), 4, 2).time.join(" and ")} ago, Edited: ${_cleantime((Date.now()-cmd.update_time), 4, 2).time.join(" and ")} ago, `+
-                    `Cooldown (channel): ${global.functions._numberspacer(cmd.cooldown)} ms, Cooldown (user): ${global.functions._numberspacer(cmd.cooldown_user)} ms, Response: ${cmd.response}`, null, null, null, false);
+                    `Cooldown (channel): ${_cleantime(cmd.cooldown,4).time.join(" and ")}, Cooldown (user): ${_cleantime(cmd.cooldown_user,4).time.join(" and ")}, Response: ${cmd.response}`, null, null, null, false);
                 })
                 .catch(e => {
                     j_.send(`Error: Command not found: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
@@ -274,7 +275,7 @@ module.exports = {
             } else {
                 customcommand(0, j_, false, null)
                 .then(cmds => {
-                    j_.send(`Custom Commands in this channel: ${Object.keys(cmds).map(cmd => {return cmds[cmd].name})}`);
+                    j_.send(`Custom Commands in this channel: ${Object.keys(cmds).map(cmd => {return cmds[cmd].name}).join("; ")}`);
                 })
                 .catch(e => {
                     j_.send(`Error: Could not get commands of this channel: ${_returnerr(e, 0)} ${_returnerr(e, 1)}`)

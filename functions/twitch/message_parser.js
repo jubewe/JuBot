@@ -1,8 +1,7 @@
-const { PrivmsgMessage } = require("@kararty/dank-twitch-irc");
 
 /**
  * 
- * @param {PrivmsgMessage} response 
+ * @param {privmsg} response 
  * @returns 
  */
 
