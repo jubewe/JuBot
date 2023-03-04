@@ -1,7 +1,7 @@
 module.exports = {
     numregex: () => {return new RegExp(`^([\\d]{1,})$`, "g")},
     numregex_: (nur) => {return new RegExp(`^([\\d]{1,})$`, "g").test(nur)},
-    usernamereg: () => {return new RegExp(`\\b^[\\w]{1,32}$\\b`, "g")},
+    usernamereg: () => {return new RegExp(`\\b^\\w{3,32}$\\b`, "g")},
     dc_usernamereg: () => {return new RegExp(`^\.{3,32}#[0-9]{4}$`, "gmi")},
     replacer: () => {return new RegExp(`[@#-]`, "g")},
     nobotreg: () => {return new RegExp(`(\\-)+(((no|remove)+bot(s*))|((r|n)+b))`, "g")},

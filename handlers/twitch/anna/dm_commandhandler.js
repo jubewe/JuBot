@@ -1,7 +1,7 @@
 const _permission = require("../../../functions/twitch/_permission");
 
-async function dm_commandhandler(j_, j){
-    j = j || require("../../../variables/j");
+async function dm_commandhandler(j_, response){
+    let j = require("../../../variables/j");
     let commands = j.anna_dm_commands();
     if (Object.keys(commands).includes(j_.message._.command)) {
         let command = commands[j_.message._.command];
@@ -9,7 +9,7 @@ async function dm_commandhandler(j_, j){
         
         if ([1].includes(command.state)) {
             if (parseInt(j_.message._.userperm.num) >= j.c().anna.perm) {
-                commands[j_.message._.command].exec(j_, j);
+                commands[j_.message._.command].exec(j_, response);
                 // _cooldown(0, j_.message.channel.id, commandid, j_.message.userstate.id, false)
                 // .then((c) => {
                 //     if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || j_.message._.userperms._default){

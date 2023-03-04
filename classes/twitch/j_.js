@@ -1,7 +1,7 @@
 const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
 
 class j_ {
-    message = class extends privmsgMessage {
+    message = class message extends privmsgMessage {
         _ = class {
             static opts = class {
                 static modified_channel = Object() || undefined;

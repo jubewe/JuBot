@@ -1,4 +1,4 @@
-const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
+const c_j_ = require("../classes/twitch/j_");
 let j = require("../variables/j");
 
 module.exports = {
@@ -12,11 +12,9 @@ module.exports = {
     cooldown: 30000,
     cooldown_user: 45000,
     description: "Test command",
-    arguments:[{name:"message",required:false,options:[]}],
-    /**
-     * @param {privmsgMessage} j_ 
-     */
+    arguments: [{ name: "message", required: false, options: [] }],
+    /** @param {c_j_} j_ */
     exec: async (j_) => {
-        j_.message.reply(`Test VoHiYo $(message[1])`);
+        j_.send(`Test VoHiYo $(message[1])`);
     }
-}
+};

@@ -5,7 +5,6 @@ const _id = require("./_id");
 const _stackname = require("../_stackname");
 
 /**
- * 
  * @param {number} opt 
  * @param {object | undefined} j_ 
  * @param {boolean} noreturn 
@@ -13,30 +12,29 @@ const _stackname = require("../_stackname");
  * @param {string} counterid 
  * @param {string} countername 
  * @param {string | number} counternum 
- * @returns {promise}
  */
 
 async function customcounter(opt, j_, noreturn, channelid, counterid, countername, counternum){
     return new Promise((resolve, reject) => {
         channelid = channelid || j_.message.channel.id;
-        counternum = (!global.variables.varstatic.nonarr.includes(counternum) ? parseInt(counternum) : undefined);
-        counterid = (!global.variables.varstatic.nonarr.includes(counterid) ? counterid : undefined);
+        counternum = (!(counternum ?? undefined) ? parseInt(counternum) : undefined);
+        counterid = (!(counterid ?? undefined) ? counterid : undefined);
 
         switch (opt) {
             case 0: {
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
-                if(Object.keys(files.channels.channels).includes(channelid)){
-                    if(Object.keys(files.channels.channels[channelid]).includes("counters")){
+                if(files.channels.channels[channelid]){
+                    if(files.channels.channels[channelid].counters){
                         if(countername || counterid){
                             counterid = counterid || getcounteridbyname();
                             
-                            if(Object.keys(files.channels.channels[channelid]["counters"]).includes(counterid)){
-                                return resolve(files.channels.channels[channelid]["counters"][counterid]);
+                            if(files.channels.channels[channelid].counters[counterid]){
+                                return resolve(files.channels.channels[channelid].counters[counterid]);
                             } else {
                                 return reject({path:[opt,1,1,1,0],msg:"channel counters do not include counter"});
                             }
                         } else {
-                            return resolve(files.channels.channels[channelid]["counters"]);
+                            return resolve(files.channels.channels[channelid].counters);
                         }
                     } else {
                         if(countername || counterid){
@@ -60,13 +58,8 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
                 // if(!countername && !counterid) return reject({path:[opt,1,0],msg:"countername is undefined"});
                 // if(!counternum) return reject({path:[opt,1,1,0],msg:"counternum is undefined"});
 
-                if(!Object.keys(files.channels.channels).includes(channelid)){
-                    files.channels.channels[channelid] = {};
-                }
-
-                if(!Object.keys(files.channels.channels[channelid]).includes("counters")){
-                    files.channels.channels[channelid]["counters"] = {};
-                }
+                if(!files.channels.channels[channelid]) files.channels.channels[channelid] = {};
+                if(!files.channels.channels[channelid].counters) files.channels.channels[channelid].counters = {};
 
                 createcounter();
                 break;
@@ -79,8 +72,8 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
 
                 counterid = counterid || getcounteridbyname();
 
-                if(Object.keys(files.channels.channels[channelid]["counters"]).includes(counterid)){
-                    let counter = files.channels.channels[channelid]["counters"][counterid];
+                if(files.channels.channels[channelid].counters[counterid]){
+                    let counter = files.channels.channels[channelid].counters[counterid];
                     delete counter;
 
                     // _wf(paths.channels, files.channels);
@@ -99,15 +92,14 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
 
             case 3: {
                 // rename
-
                 if(!channelid) return reject({path:[opt,0],msg:"channelid is undefined"});
                 if(!countername && !counterid) return reject({path:[opt,1,0],msg:"countername is undefined"});
                 if(global.variables.varstatic.nonarr.includes(counternum)) return reject({path:[opt,1,1,0],msg:"counternum - new name is undefined"})
 
                 counterid = counterid || getcounteridbyname();
 
-                if(Object.keys(files.channels.channels[channelid]["counters"]).includes(counterid)){
-                    let counter = files.channels.channels[channelid]["counters"][counterid];
+                if(files.channels.channels[channelid].counters[counterid]){
+                    let counter = files.channels.channels[channelid].counters[counterid];
                     let counter_ = counter;
                     
                     counter.name = counternum;
@@ -154,7 +146,10 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
 
                     counterid = id[0];
 
-                    files.channels.channels[channelid]["counters"][id[0]] = counter;
+                    if(!files.channels.channels[channelid]) files.channels.channels[channelid] = {};
+                    if(!files.channels.channels[channelid].counters) files.channels.channels[channelid].counters = {};
+
+                    files.channels.channels[channelid].counters[id[0]] = counter;
                     
                     // _wf(paths.channels, files.channels);
                     
@@ -171,7 +166,7 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
         };
 
         async function updatecounter(){
-            if(!counterid || !Object.keys(files.channels.channels[channelid]["counters"]).includes(counterid)){
+            if(!counterid || !files.channels.channels[channelid]?.counters?.[counterid]){
                 createcounter()
                 .then(counter => {
                     updatecounter2(counter);
@@ -182,7 +177,7 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
         };
 
         async function updatecounter2(counter){
-            counter = counter || files.channels.channels[channelid]["counters"][counterid];
+            counter = counter || files.channels.channels[channelid]?.counters?.[counterid];
             let counter_ = counter;
             if(opt === 4){
                 counter.num = counternum || 0;
@@ -201,9 +196,9 @@ async function customcounter(opt, j_, noreturn, channelid, counterid, counternam
         function getcounteridbyname(name){
             name = name || countername;
             let ret = undefined;
-            if(!files.channels.channels[channelid] || !files.channels.channels[channelid]["counters"]) return ret;
-            Object.keys(files.channels.channels[channelid]["counters"]).map(cntid => {
-                if(files.channels.channels[channelid]["counters"][cntid].name === name){
+            if(!files.channels.channels[channelid] || !files.channels.channels[channelid].counters) return ret;
+            Object.keys(files.channels.channels[channelid].counters).map(cntid => {
+                if(files.channels.channels[channelid].counters[cntid].name === name){
                     ret = cntid;
                 }
             });

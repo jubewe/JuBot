@@ -15,7 +15,7 @@ for(let command in commands){
             } else {
                 for(let option in argument_.options){
                     let option_ = argument_.options[option];
-                    send_commands.push(`${command} ${option_}`);
+                    send_commands.push(`${command} <${option_}>`);
                 }
             }
         }

@@ -3,8 +3,8 @@ const _parametercheck = require("../../functions/twitch/_parametercheck");
 const _cooldown = require("../../functions/twitch/_cooldown");
 const _permission = require("../../functions/twitch/_permission");
 
-async function dm_commandhandler(j_, j) {
-  j = j || require("../../variables/j");
+async function dm_commandhandler(j_, response) {
+  let j = require("../../variables/j");
   let commands = j.dm_commands();
   if (Object.keys(commands).includes(j_.message._.command)) {
     let command = commands[j_.message._.command];
@@ -18,7 +18,7 @@ async function dm_commandhandler(j_, j) {
             if(c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || j_.message._.userperms._default){
               if(c[1] === 0 || command.cooldown_user <= 0 || ((Date.now() - c[0]) >= command.cooldown_user) || j_.message._.userperms._default){
                 (async () => {
-                  commands[j_.message._.command].exec(j_, j);
+                  commands[j_.message._.command].exec(j_, response);
                   if((command.cooldown > 0 || command.cooldown_user > 0) && j_.message._.userperms._default){
                     _cooldown(1, j_.message.channel.id, commandid, j_.message.userstate.id, true)
                     .then(c2 => {})

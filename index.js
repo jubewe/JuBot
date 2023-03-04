@@ -22,10 +22,6 @@ const _mainpath = require("./functions/_mainpath");
 const geterrors = require("./functions/api/geterrors");
 const school_days_left = require("./functions/twitch/school_days_left");
 const _cleantime = require("./functions/_cleantime");
-const files = require("./variables/files");
-const reconnect = () => {
-    require("./functions/twitch/actions/_reconnect")(j);
-};
 j.variables().queuedreconnect = -1;
 
 if(_checkenv(null, "OS", 0, "Windows_NT")){
@@ -73,16 +69,18 @@ if(c.connect.twitch){
         setInterval(youtubevideo, j.c().intervals.trackers.youtube_video);
     };
 
-    setTimeout(() => {
-        send_school_days_left();
-        setInterval(school_days_left, (24*60*60*1000));
-    }, (new Date(new Date().setHours(14, 0, 0, 0)).getTime()-Date.now()));
+    j.client.onReady(() => {
+        setTimeout(() => {
+            send_school_days_left();
+            setInterval(school_days_left, (24*60*60*1000));
+        }, (new Date(new Date().setHours(14, 0, 0, 0)).getTime()-Date.now()));
+    });
 
     function send_school_days_left(){
         if(school_days_left() > 0){
-            j.client.say("jubewe", `Just ${_cleantime(school_days_left(), 4).time.join(" and ")} left`);
+            j.client.send("jubewe", `Just ${_cleantime(school_days_left(), 4).time.join(" and ")} left`);
         } else {
-            j.client.say("jubewe", `You got released from prison! Now remove that function to check for the left school days Waiting`);
+            j.client.send("jubewe", `You got released from prison! Now remove that function to check for the left school days Waiting`);
         }
     };
 };
@@ -122,35 +120,34 @@ if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
 };
 
 if(j.c().connect.ws.api){
-    j.ws.client.on("open", () => {
+    j.ws.client.onopen = () => {
         _log(1, `${_stackname("ws", "api")[3]} Connected`);
         // j.ws.client.send(JSON.stringify({"type":"login", "data": {"oauth_token": j.e().T_TOKEN_2}}));
         j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
-    });
+    };
 
-    j.ws.client.on("close", e => {
+    j.ws.client.onclose = e => {
         _log(2, `${_stackname("ws", "api")[3]} Closed`);
-        let wsreconnectint = setInterval(() => {
-            if(j.ws.client.readyState !== 1){
-                j.ws.client.close();
-                j.ws.client = new j.modules.ws.WebSocket(`ws://${j.urls().api._base.replace("http://", "")}:${j.urls().ws._port}`)
-                j.ws.client.send(JSON.stringify({"type":"login", "data": {"oauth_token": j.e().T_TOKEN_2}}));
-                j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
-                _log(2, `${_stackname("ws", "api")[3]} Re-Created`);
-            } else {
-                _log(1, `${_stackname("ws", "api")[3]} Reconnected`);
-                clearInterval(wsreconnectint);
-            }
-        }, (e == 1006 ? j.c().intervals.reconnect.ws : 30000));
+        // let wsreconnectint = setInterval(() => {
+        //     if(j.ws.client.readyState !== 1){
+        //         j.ws.client.close();
+        //         j.ws.client = new j.modules.ws.WebSocket(`ws://${j.urls().api._base.replace("http://", "")}:${j.urls().ws._port}`)
+        //         j.ws.client.send(JSON.stringify({"type":"login", "data": {"oauth_token": j.e().T_TOKEN_2}}));
+        //         j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
+        //         _log(2, `${_stackname("ws", "api")[3]} Re-Created`);
+        //     } else {
+        //         _log(1, `${_stackname("ws", "api")[3]} Reconnected`);
+        //         clearInterval(wsreconnectint);
+        //     }
+        // }, (e == 1006 ? j.c().intervals.reconnect.ws : 30000));
         // ENETUNREACH  1006
-    });
+    };
 
-    j.ws.client.on("error", e => {
-        console.error(new Error(e));
-        _log(2, `${_stackname("ws", "api")[3]} Error`);
-    });
+    j.ws.client.onerror = e => {
+        _log(2, `${_stackname("ws", "api")[3]} Error`, e);
+    };
 
-    j.ws.client.on("ping", p => {
-        j.ws.client.pong(JSON.stringify({"type":"pong","start":p.start,"start_client":Date.now()}));
-    });
+    // j.ws.client.addListener("ping", p => {
+    //     j.ws.client.pong(JSON.stringify({"type":"pong","start":p.start,"start_client":Date.now()}));
+    // });
 };

@@ -40,7 +40,7 @@ module.exports = {
 
   twitch: {
     clientchannels: _mainpath("./data/twitch/clientchannels.json"),
-    
+    users: _mainpath("./data/twitch/users.json")
   },
 
   discord: {
@@ -48,20 +48,20 @@ module.exports = {
     userids: _mainpath("./data/discord/userids.json"),
     permissions: _mainpath("./data/discord/permissions.json"),
     commands: _mainpath("./commands/discord/_.js"),
-    
+
   },
 
   express: {
     auth: {
       admin_logins: _mainpath("../_data/auth/admin_logins.json"),
       admin_tokens: _mainpath("../_data/auth/admin_tokens.json"),
-      
+
     }
   },
 
   seventv: {
     userids: _mainpath("./data/seventv/userids.json"),
-    
+
   }
-  
+
 };

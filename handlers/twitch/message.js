@@ -12,20 +12,19 @@ const custom_keywordhandler = require("./custom_keywordhandler");
 const _combineArr = require("../../functions/_combineArr");
 const remind = require("../../functions/twitch/remind");
 const getuser = require("../../functions/twitch/getuser");
-const messageargs = require("../../functions/twitch/messageargs");
 const _afk = require("../../functions/_afk");
 const _regex = require("../../functions/_regex");
 const commands = require("../../commands/twitch/_");
 const _permission = require("../../functions/twitch/_permission");
 const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
-const reply = require("oberknecht-client/lib/operations/reply");
 
-/**
- * @param {privmsgMessage} response 
- */
+/** @param {privmsgMessage} response */
 module.exports = async (response) => {
-  // console.log(response);
-  let j_ = {"message":{...response,"_":{}}};
+  class j_ {
+    static message = response;
+  };
+  j_.message._ = {};
+
   let msgopts = j_.message._.opts = {
     modified_channel: undefined,
     noafk: false,
@@ -35,14 +34,13 @@ module.exports = async (response) => {
   let modified_channel = j_.message._.modified_channel = undefined;
 
   let msgmatches = j_.message._.matches = {
-    chan: response.messageText.match(new RegExp(`(\-chan\:[^\\s]+|^${j.c().prefix}\\b\\w+\\b\:+\\w+)`, "i")),
+    chan: response.messageText.match(new RegExp(`(\-chan\:\\w+\\b|^${j.c().prefix}+\\b\\w+\\b\:+\\w+)`, "i")),
     user: response.messageText.match(new RegExp(`\-user\:[^\\s]+`, "i")),
     sendopt: response.messageText.match(new RegExp(`\-send\:[^\\s]+`, "i")),
     noafk: response.messageText.match(new RegExp(`\-(no)*afk`, "i")),
     noreminder: response.messageText.match(new RegExp(`\-(no)*reminder`, "i")),
     help: response.messageText.match(new RegExp(`\-(h|help)`)),
     ignorecooldown: response.messageText.match(new RegExp(`\-(i|c|cooldown)`, "i"))
-
   };
 
   if(j.c().modules.message._){
@@ -87,7 +85,7 @@ module.exports = async (response) => {
         if(msgmatches.user !== null){
             await new Promise((resolve) => {
               let msguser = msgmatches.user[0].split(new RegExp(`\-user\:`))[1].toLowerCase();
-              if(![j.e().T_USERNAME, j.e().T_USERNAME_PV].includes(msguser) && [j.e().T_USERNAME, j.e().T_USERNAME_PV].includes(privmsg.userstate.username)){
+              if(![j.e().T_USERNAME, j.e().T_USERNAME_PV].includes(msguser) && [j.e().T_USERNAME, j.e().T_USERNAME_PV].includes(response.userstate.username)){
                 getuser(1, msguser)
                 .then(u => {
                   j_.message._.modified_user = {
@@ -137,7 +135,7 @@ module.exports = async (response) => {
   let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && _regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
   let userperm = j_.message._.userperm = await getuserperm(response.userstate.id, response.userstate.badgesRaw.split(",")[0]?.split("/")[0]);
   let userperms = j_.message._.userperms = await userperms_(j_, j);
-  let args = j_.message._.args = () => {return messageargs(j_, j)};
+  let args = j_.message._.args = () => {return (new RegExp(`^${j.c().prefix}`, "gi").test(msg) ? response.messageParts.slice(1) : response.messageParts)};
   let prefix = j_.message._.prefix = j.c().prefix;
   let command = j_.message._.command = (msg.split(" ")[0].split(prefix)[1] ? msg.split(" ")[0].split(prefix)[1].toLowerCase() : undefined);
   
@@ -149,7 +147,7 @@ module.exports = async (response) => {
       sendopt = 2;
     }
 
-    j.send(sendopt, j_, sendmessage, response.message.id, undefined, sendmulti, sendreplacer);
+    j.send(sendopt, j_, sendmessage, response.message.id, undefined, sendmulti, (sendreplacer ?? true));
   };
 
   if(response.userstate.id == j.env().T_USERID) return;
@@ -188,7 +186,7 @@ module.exports = async (response) => {
     };
   
     if(j.c().modules.reminder && !msgopts.noreminder){
-      remind(3, j_, false, null, j_.message.userstate.id)
+      remind(4, j_, false, null, j_.message.userstate.id)
       .then(r => {
         if(r.length > 0){
           let reminders_ = [];
@@ -219,23 +217,28 @@ module.exports = async (response) => {
   _channel(0, response.channel.id, undefined, undefined, true)
   .then(ch => {
     prefix = j_.message._.prefix = (ch.prefix ? (new RegExp(`^${j.c().prefix}+`).test(msg) ? j.c().prefix : ch.prefix) : j.c().prefix);
+    args = j_.message._.args = () => {return response.messageParts.slice(1)};
     if(new RegExp(`^${prefix}+\\w+`, "gi").test(msg)){
       let always_allowed = j.c().commands.always_allowed;
       let command = j_.message._.command = msg.split(" ")[0].split(prefix)[1].toLowerCase();
       if(!ch.allowed_commands || always_allowed.includes(command) || ch.allowed_commands.includes(command) || userperms._default){
         let command_ = [];
         if(ch.commands) command_ = _combineArr(...Object.keys(ch.commands).map(cmd => {return _combineArr(ch.commands[cmd].name, ch.commands[cmd].aliases)}));
-        if(!always_allowed.includes(command) && !j.c().commands.custom.restricted.includes(command) && ch.commands && command_ && command_.includes(command)) custom_commandhandler(j_, j); else commandhandler(j_, j);
+        if(!always_allowed.includes(command) && !j.c().commands.custom.restricted.includes(command) && ch.commands && command_ && command_.includes(command)) {
+          custom_commandhandler(j_, response)
+        } else {
+          commandhandler(j_, response)
+        };
       }
     } else if(ch.keywords && new RegExp(`\\b(${_combineArr(...Object.keys(ch.keywords).map(key => {return _combineArr(ch.keywords[key].name, ch.keywords[key].aliases)})).join("|")})\\b`, "i").test(msg.toLowerCase())){
       let keyword = j_.message._.keyword = msg.toLowerCase().match(new RegExp(`\\b(${_combineArr(...Object.keys(ch.keywords).map(key => {return _combineArr(ch.keywords[key].name, ch.keywords[key].aliases)})).join("|")})\\b`, "i"))[0];
-      custom_keywordhandler(j_);
+      custom_keywordhandler(j_, response);
     }
   })
   .catch(e => {
     console.error(e);
     if(!new RegExp(`^${prefix}+[\\w]+`).test(msg)) return;
     let command = j_.message._.command = msg.split(" ")[0].split(j.c().prefix)[1].toLowerCase();
-    commandhandler(j_);
+    commandhandler(j_, response);
   })
 };

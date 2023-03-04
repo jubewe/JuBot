@@ -6,7 +6,6 @@ const _staticspacer = require("../../functions/_staticspacer");
 const _log = require("../../functions/_log");
 const dm_commandhandler = require("./dm_commandhandler");
 const anna_dm_commandhandler = require("./anna/dm_commandhandler");
-const messageargs = require("../../functions/twitch/messageargs");
 const whisperMessage = require("oberknecht-client/lib/parser/WHISPER.Message");
 
 /**
@@ -15,13 +14,12 @@ const whisperMessage = require("oberknecht-client/lib/parser/WHISPER.Message");
 module.exports = async (response) => {
   
   let j_ = {"message":{...response,"_":{}}};
-  
   let message = j_.message.message = response.message;
   let userstate = j_.message.userstate = response.userstate;
   let channel = j_.message.channel = response.channel;
   let server = j_.message.server = response.server;
   
-  let msg = j_.message._.msg = resoibse.message.messageText;
+  let msg = j_.message._.msg = response.message.messageText;
   let user = j_.message._.user = response.userstate.username;
   let chan = j_.message._.chan = undefined;
   let _type = j_.message._.type = response.IRCCommand;
@@ -29,6 +27,7 @@ module.exports = async (response) => {
   let usertag_ = j_.message._.usertag_ = `${(msg.split(" ")[1] && j.functions()._regex.usernamereg().test(msg.split(" ")[1]) ? msg.split(" ")[1] : user)} > `;
   let userperm = j_.message._.userperm = await getuserperm(response.userstate.id);
   let userperms = j_.message._.userperms = await userperms_(j_);
+  let args = j_.message._.args = () => {return (new RegExp(`^(${j.c().prefix}|${j.c().anna.prefix})`, "gi").test(msg) ? response.messageParts.slice(1) : response.messageParts)};
   _log(0, `${_staticspacer(1, "[W] <-")} ${_staticspacer(2, user)} ${msg}`);
    
   j_.send = (sendopt, sendmessage, sendmulti, sendreplacer) => {
@@ -46,12 +45,12 @@ module.exports = async (response) => {
     let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().prefix)[1] : msg.split(j.c().prefix)[1];
     
     (async () => {
-      dm_commandhandler(j_, j);
+      dm_commandhandler(j_, response);
     })();
   } else if(new RegExp(`^${j.c().anna.prefix}+[\\w]+`).test(msg)){
     let command = j_.message._.command = msg.split(" ")[1] !== undefined ? msg.split(" ")[0].split(j.c().anna.prefix)[1] : msg.split(j.c().anna.prefix)[1];
     (async () => {
-      anna_dm_commandhandler(j_, j);
+      anna_dm_commandhandler(j_, response);
     })();
   }
 };

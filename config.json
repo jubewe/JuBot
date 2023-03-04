@@ -1,7 +1,7 @@
 {
-    "prefix": "<",
+    "prefix": ">",
     "anna": {
-        "prefix": "a!",
+        "prefix": "a!!",
         "perm": 62
     },
     "defaulthex": "#6441A5",
@@ -126,13 +126,20 @@
         },
         "afk": true,
         "reminder": true
-    }, 
+    },
     "commands": {
         "custom": {
-            "restricted": ["settings", "help"],
+            "restricted": [
+                "settings",
+                "help"
+            ],
             "max": 50
         },
-        "always_allowed": ["setting", "settings", "help"]
+        "always_allowed": [
+            "setting",
+            "settings",
+            "help"
+        ]
     },
     "keywords": {
         "custom": {
@@ -140,17 +147,29 @@
         }
     },
     "notifications": {
-        "names": ["live", "follow", "subscription", "resub", "cheer", "subgift", "masssubgift"],
+        "names": [
+            "live",
+            "follow",
+            "subscription",
+            "resub",
+            "cheer",
+            "subgift",
+            "masssubgift"
+        ],
         "defaultmessages": {
             "live": "$(live.user_login) is now Live playing $(live.game_name): $(live.title)",
             "cheer": "$(sender) just cheered $(messagebits)"
         }
     },
     "trackers": {
-        "names": ["activemods"]
+        "names": [
+            "activemods"
+        ]
     },
     "cache": {
-        "names": ["cooldowns"]
+        "names": [
+            "cooldowns"
+        ]
     },
     "handlers": {
         "filechange": true
@@ -164,6 +183,8 @@
             "load": "<a:load:909354138851221545>"
         },
         "clientid": "852531603182714890",
-        "guilds": ["806475120100507649"]
+        "guilds": [
+            "806475120100507649"
+        ]
     }
 }

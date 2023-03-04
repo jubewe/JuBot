@@ -1,7 +1,6 @@
 const _pad2 = (n) => {return n<=9?`0${n}`:n};
 
 /**
- *
  * @param {number} time time: time in ms
  * @param {number} timeopt
  * @param {number} timedigits
@@ -79,7 +78,9 @@ function _cleantime(time, timeopt, timedigits) {
         timedigits_--;
         ctlast = cte;
       };
-    };
+    } else {
+      i = Object.keys(t).length;
+    }
   };
 
   return dat;

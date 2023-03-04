@@ -5,7 +5,6 @@ const _splitmsg = require("../../_splitmsg");
 const _pixelize = require("../../_pixelize");
 const _regex = require("../../_regex");
 const _splitafter = require("../../_splitafter");
-const whisper = require("./whisper");
 const _regex_filter = require("../../_regex_filter");
 let c = require("../../../config.json");
 
@@ -23,7 +22,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer, sr
   return new Promise(async (resolve, reject) => {
     let j = require("../../../variables/j");
     let j_;
-    if(typeof schan === "object"){
+    if(schan.message){
       j_ = schan;
       schan = null;
     };
@@ -31,6 +30,8 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer, sr
     schan = !(schan ?? undefined) ? j_.message._.chan : schan;
     smulti = !(smulti ?? undefined) ? undefined : smulti;
     sregfilter = (smulti ?? undefined) === undefined ? false : true;
+
+    if(smsg.startsWith("Error:")) smsg = "PoroSad " + smsg;
   
     if(smsg.startsWith("/")){
       let scmd = smsg.split(" ")[0].split("/")[1];
@@ -43,7 +44,8 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer, sr
     let sendretrytimeout = c.timeouts.sendretrytimeout;
   
     if(j_ && j_.message._.modified_send){smode = j_.message._.modified_send;};
-    if(j_ && j_.message._.type === "WHISPER"){smode = 1; schan = j_.message.userstate.username;};
+
+    if(j_ && j_.message.messageCommand === "WHISPER"){smode = 1; schan = (schan && _regex.numregex().test(schan) ? schan : j_.message.userstate.id)};
     if(j_ && j_.message._.modified_channel){smode = 2; schan = j_.message._.modified_channel.name; smsg = `[in ${_pixelize(j_.message.channel.name)} (${j_.message.channel.id})] ${smsg}`;}
     if([3, "tag"].includes(smode)){smsg = j_.message._.usertag_ + smsg;}
     if(j_ && sreplacer){smsg = await replacevariables(j_, smsg);}
@@ -80,7 +82,7 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer, sr
       function _send(){
         if(sendtrys > 0){
           sendtrys--;
-          j.client.say(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
+          j.client.send(_schan, (_sfirst === false ? "" : j.vars().botnamebeta()) + _smsg)
           .then(() => {return resolve(this)})
           .catch(e => {
             console.error(new Error(e));
@@ -98,8 +100,8 @@ async function send(smode, schan, smsg, sparentid, sfirst, smulti, sreplacer, sr
       function _whisper(){
         if(sendtrys > 0){
           sendtrys--;
-          whisper(null, (j_.message.userstate.id ?? _schan), j.vars().botnamebeta() + _smsg)
-          .then(w => {_log(0, `${_staticspacer(1, "[W] ->")} ${_staticspacer(2, _schan)} ${_smsg}`);return resolve(w)})
+          j.client.whisper(_schan, j.vars().botnamebeta() + _smsg)
+          .then(w => {_log(0, `${_staticspacer(1, "[W] ->")} ${_staticspacer(2, _schan)} ${_smsg}`); return resolve(w)})
           .catch((e) => {
             console.error(e);
             (async () => {

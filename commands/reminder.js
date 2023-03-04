@@ -13,62 +13,78 @@ module.exports = {
     permission: j.c().perm.botdefault,
     cooldown: 10000,
     cooldown_user: 5000,
-    arguments:[ {name:"reminduser",required:true,options:[]}],
+    arguments: [{ name: "reminduser", required: true, options: [] }],
     exec: async (j_) => {
-        switch (j_.message._.command){
-            case "remind":{
-                if(j_.message._.args()[0]){
+        switch (j_.message._.command) {
+            case "remind":
+            case "reminder": {
+                if (j_.message._.args()[0]) {
+                    if(["edit", "update"].includes(j_.message._.args()[0])){
+
+
+                        return;
+                    }
                     let remind_user = j_.message._.args()[0];
-                    if(remind_user === "me"){
+                    if (remind_user === "me") {
                         remind_user = j_.message.userstate.username;
                     }
-                    if(j_.message._.args()[1]){
-                        let remind_message = j_.message._.msg.substring(j_.message._.prefix.length + j_.message._.command.length +1 + j_.message._.args()[0].length +1);
+                    if (j_.message._.args()[1]) {
+                        let remind_message = j_.message._.msg.substring(j_.message._.prefix.length + j_.message._.command.length + 1 + j_.message._.args()[0].length + 1);
                         getuser(1, remind_user)
-                        .then(u => {
-                            remind(1, j_, false, j_.message.userstate.id, u[1], null, remind_message)
-                            .then(r => {
-                                j_.send(`Successfully set reminder`);
+                            .then(u => {
+                                remind(1, j_, false, j_.message.userstate.id, u[1], null, remind_message)
+                                    .then(r => {
+                                        j_.send(`Successfully set reminder (ID: ${r.id})`);
+                                    })
+                                    .catch(e => {
+                                        console.error(e);
+                                        j_.send(`Error: Could not set reminder ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                    })
                             })
                             .catch(e => {
-                                console.error(e);
-                                j_.send(`Error: Could not set reminder ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                                j_.send(`Error: Could not get userid of given user`);
                             })
-                        })
-                        .catch(e => {
-                            j_.send(`Error: Could not get userid of given user`);
-                        })
                     } else {
                         j_.send(`Error: No message given`);
                     }
                 } else {
                     j_.send(`Error: No user given`);
                 }
+
                 break;
-            }
+            };
+
+            case "editreminder":
+            case "updatereminder": {
+
+
+                break;
+            };
 
             case "remindme": {
                 let remind_user = j_.message.userstate.username;
-                if(j_.message._.args()[0]){
-                    let remind_message = j_.message._.msg.substring(j_.message._.prefix.length + j_.message._.command.length +1);
+                if (j_.message._.args()[0]) {
+                    let remind_message = j_.message._.msg.substring(j_.message._.prefix.length + j_.message._.command.length + 1);
                     getuser(1, remind_user)
-                    .then(u => {
-                        remind(1, j_, false, j_.message.userstate.id, u[1], null, remind_message)
-                        .then(r => {
-                            j_.send(`Successfully set reminder`);
+                        .then(u => {
+                            remind(1, j_, false, j_.message.userstate.id, u[1], null, remind_message)
+                                .then(r => {
+                                    j_.send(`Successfully set reminder`);
+                                })
+                                .catch(e => {
+                                    console.error(e);
+                                    j_.send(`Error: Could not set reminder ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                })
                         })
                         .catch(e => {
-                            console.error(e);
-                            j_.send(`Error: Could not set reminder ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                            j_.send(`Error: Could not get userid of given user`);
                         })
-                    })
-                    .catch(e => {
-                        j_.send(`Error: Could not get userid of given user`);
-                    })
                 } else {
                     j_.send(`Error: No message given`);
                 }
-            }
+
+                break;
+            };
         }
     }
 }

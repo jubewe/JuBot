@@ -1,3 +1,5 @@
+const whisperMessage = require("oberknecht-client/lib/parser/WHISPER.Message");
+const c_j_ = require("../../classes/twitch/j_");
 const getuser = require("../../functions/twitch/getuser");
 const _requestopts = require("../../functions/_requestopts");
 const _returnerr = require("../../functions/_returnerr");
@@ -13,9 +15,10 @@ module.exports = {
     permission: j.c().perm.bothigh,
     cooldown: -1,
     cooldown_user: -1,
-    exec: async (j_, j) => {
-        if(j_.message._.args()[0]){
-            let user = j_.message._.args()[0];
+    /** @param {c_j_} j_ * @param {whisperMessage} response */
+    exec: async (j_, response) => {
+        if(response.messageParts[1]){
+            let user = response.messageParts[1];
             let vipurl = ((j_.message._.command == "vip" ? j.urls().twitch.vip.add : j.urls().twitch.vip.remove));
             getuser(1, user)
             .then(u => {

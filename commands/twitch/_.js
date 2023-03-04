@@ -74,6 +74,8 @@ module.exports = {
     remind: require("../reminder"),
     reminder: require("../reminder"),
     remindme: require("../reminder"),
+    editreminder: require("../reminder"),
+    updatereminder: require("../reminder"),
 
     phrase: require("../phrase"),
     randomphrase: require("../phrase"),

@@ -1,86 +1,13 @@
-function date_(){return new Date(new Date().setMinutes(new Date().getMinutes()-new Date().getTimezoneOffset())).toISOString().split("Z")[0].replace("T", " ")};
-function _returner(returneropt, returnera, returnerb, returnertrue, returnerfalse){
-    // returneropt: 0: ===, 1: !==, 2: return returnera, 3: return returnerb
-    if(returneropt === 0){
-        return (returnera === returnerb ? returnertrue : returnerfalse)
-    } else if(returneropt === 1){
-        return (returnera !== returnerb ? returnertrue : returnerfalse)
-    } else if(returneropt === 2){
-        return (returnera === returnerb ? returnera : returnertrue)
-    } else if(returneropt === 3){
-        return (returnera !== returnerb ? returnera : returnertrue)
-    } else if(returneropt === 4){
-        if(returnerb.includes(returnera)){
-            return returnertrue
-        } else {
-            return returnerfalse
-        }
-    } else if(returneropt === 5){
-        if(!returnerb.includes(returnera)){
-            return returnertrue
-        } else {
-            return returnerfalse
-        }
-    }
-};
+function date_() { return new Date(new Date().setMinutes(new Date().getMinutes() - new Date().getTimezoneOffset())).toISOString().split("Z")[0].replace("T", " ") };
 
-/**
- * 
- * @param {number} logopt 
- * @param {string} logmsg 
- * @param {string} logcolorfg 
- * @param {string} logcolorbg 
- */
-
-function _log(logopt, logmsg, logcolorfg, logcolorbg){
-    // 0 = none, 1 = info (green), 2 = error (red), 3 = custom
-    let logcolors = ["reset", "bright", "dim", "underscore", "blink", "reverse", "hidden", "fgblack", 
-        "fgred", "fggreen", "fgyellow", "fgblue", "fgmagenta", "fgcyan", "fgwhite", "bgblack", "bgred", 
-        "bggreen", "bgyellow", "bgblue", "bgmagenta", "bgcyan", "bgwhite"];
-    let logcolorsa = ["0", "1", "2", "4", "5", "7", "8", "30", "31", "32", "33", "34", "35", "36", 
-        "37", "40", "41", "42", "43", "44", "45", "46", "47"];
-    if(logcolorfg !== undefined && logcolorfg !== 0){
-        if(!isNaN(logcolorfg)){
-            logcolorfg = `\x1b[${logcolorfg}m`;
-        } else {
-            if(logcolors.includes(logcolorfg)){
-                logcolorfg = `\x1b[${logcolorsa[logcolors.indexOf(logcolorfg)]}m`;
-            } else {
-                logcolorfg = `\x1b[0m`;
-            }
-        }
-    } else {
-        if(logcolorfg !== undefined){
-            logcolorfg = "\x1b[0m";
-        }
-    }
-
-    if(logcolorbg !== undefined && logcolorbg !== 0){
-        if(!isNaN(logcolorbg)){
-            logcolorbg = `\x1b[${logcolorbg}m`;
-        } else {
-            if(logcolors.includes(logcolorbg)){
-                logcolorbg = `\x1b[${logcolorsa[logcolors.indexOf(logcolorbg)]}m`;
-            } else {
-                logcolorbg = `\x1b[0m`;
-            }
-        }
-    } else {
-        if(logcolorbg !== undefined){
-            logcolorbg = "\x1b[0m";
-        }
-    }
-
-    if(logopt === 0){
-        console.log(`${_returner(3, logcolorbg, undefined, "")}${_returner(3, logcolorfg, undefined, "")} ${date_()}\x1b[0m${_returner(3, logcolorbg, undefined, "")}${_returner(3, logcolorfg, undefined, "")} \x1b[0m > ${logmsg}`);
-        // none
-    } else if(logopt === 1){
-        console.info(`${_returner(3, logcolorbg, undefined, "\x1b[43m")}${_returner(3, logcolorfg, undefined, "\x1b[30m")} ${date_()}\x1b[0m${_returner(3, logcolorbg, undefined, "\x1b[43m")}${_returner(3, logcolorfg, undefined, "\x1b[30m")} \x1b[0m > ${logmsg}`);
-        // yellow
-    } else if(logopt === 2){
-        console.error(`${_returner(3, logcolorbg, undefined, "\x1b[41m")}${_returner(3, logcolorfg, undefined, "")} ${date_()}\x1b[0m${_returner(3, logcolorbg, undefined, "\x1b[41m")}${_returner(3, logcolorfg, undefined, "")} \x1b[0m > ${logmsg}`);
-        // red
-    }
+/** @param {number?} logopt 0 = log, 1 = info, 2 = error @param {string | Error?} logmsg @param {string?} logcolorfg @param {string?} logcolorbg */
+function _log(logopt, logmsg, logcolorfg, logcolorbg) {
+    const logcolors = { "reset": "0", "bright": "1", "dim": "2", "underscore": "4", "blink": "5", "reverse": "7", "hidden": "8", "fgblack": "30", "fgred": "31", "fggreen": "32", "fgyellow": "33", "fgblue": "34", "fgmagenta": "35", "fgcyan": "36", "fgwhite": "37", "bgblack": "40", "bgred": "41", "bggreen": "42", "bgyellow": "43", "bgblue": "44", "bgmagenta": "45", "bgcyan": "46", "bgwhite": "47" };
+    const casecolors = { "fg": { "0": "", "1": "30", "2": "41" }, "bg": { "0": "", "1": "43", "2": "41" } };
+    logcolorfg = (`\x1b[${(((logcolorfg ?? 0) == 0 ? (casecolors.fg[(logopt ?? 0)]) : (logcolors[logcolorfg] ? logcolors[logcolorfg] : logcolorfg ?? casecolors.fg[(logopt ?? 0)])))}m`);
+    logcolorbg = (`\x1b[${(((logcolorbg ?? 0) == 0 ? (casecolors.bg[(logopt ?? 0)]) : (logcolors[logcolorbg] ? logcolors[logcolorbg] : logcolorbg ?? casecolors[(logopt ?? 0)])))}m`);
+    const logm = [`${logcolorbg}${logcolorfg} ${date_()} \x1b[0m >`, (logmsg.error?.message ?? logmsg.error ?? logmsg?.message ?? logmsg)];
+    switch (logopt) { default: case 0: return console.log(...logm); case 1: return console.info(...logm); case 2: return console.error(...logm); };
 };
 
 module.exports = _log;

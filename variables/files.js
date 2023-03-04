@@ -50,6 +50,10 @@ module.exports = {
     seventv: {
         userids: _rf(paths.seventv.userids, true),
         
+    },
+
+    twitch: {
+        users: _rf(paths.twitch.users, true),
     }
 
 }

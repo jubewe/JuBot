@@ -1,3 +1,4 @@
+const privmsgMessage = require("oberknecht-client/lib/parser/PRIVMSG.Message");
 const c_j_ = require("../../classes/twitch/j_");
 const getuserperm = require("../../functions/twitch/getuserperm");
 const _cooldown = require("../../functions/twitch/_cooldown");
@@ -5,8 +6,9 @@ const _permission = require("../../functions/twitch/_permission");
 
 /**
  * @param {c_j_} j_ 
+ * @param {privmsgMessage} response
  */
-async function commandhandler(j_) {
+async function commandhandler(j_, response) {
   let j = require("../../variables/j");
 
   let commands = j.commands();
@@ -23,7 +25,7 @@ async function commandhandler(j_) {
       .then((c) => {
         if (c[0] === 0 || command.cooldown <= 0 || ((Date.now() - c[0]) >= command.cooldown) || message._.userperms._default) {
           if (((Date.now() - c[0]) >= (command.cooldown_user)) || message._.userperms._default) {
-            command.exec(j_);
+            command.exec(j_, response);
             if (!message._.userperms._default) {
               _cooldown(1, message.channel.id, commandid, message.userstate.id, true)
             }

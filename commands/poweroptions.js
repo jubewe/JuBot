@@ -29,7 +29,7 @@ module.exports = {
                         _wf(j.paths().startup, j.files().startup, true);
                         j_.send(`Attempting reconnect`)
                         setTimeout(() => {
-                            require("child_process").execSync(`pm2 flush jo && pm2 restart jo`);                        
+                            require("child_process").execSync(`pm2 flush j && pm2 restart j`);                        
                         }, 1000);
                     }
                 } else {
