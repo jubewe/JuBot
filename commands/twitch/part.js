@@ -1,5 +1,5 @@
 const pixelize = require("../../functions/_pixelize");
-const returnerr = require("../../functions/_returnerr");
+const _returnerr = require("../../functions/_returnerr");
 let j = require("../../variables/j");
 
 module.exports = {
@@ -10,17 +10,17 @@ module.exports = {
     add_version: "0.0.1",
     add_user: "jubewe",
     permission: j.c().perm.botdefault,
-    arguments: [{name:"partchannel",required:true,options:["channel"]}],
+    arguments: [{ name: "partchannel", required: true, options: ["channel"] }],
     exec: async (j_) => {
-        if(j_.message._.msg.split(" ")[1] !== undefined){
+        if (j_.message._.msg.split(" ")[1] !== undefined) {
             let partchan = j_.message._.msg.split(" ")[1].toLowerCase();
             j.part(partchan)
-            .then(pc => {
-                j_.send(`Successfully parted ${pixelize(partchan)} ${returnerr(pc, 1)}`);
-            })
-            .catch(e => {
-                j_.send(`Error: Could not part ${pixelize(partchan)} ${returnerr(e, 0)} ${returnerr(e, 1)}`)
-            })
+                .then(pc => {
+                    j_.send(`Successfully parted ${pixelize(partchan)}`);
+                })
+                .catch(e => {
+                    j_.send(`Error: Could not part ${pixelize(partchan)}: ${_returnerr(e)}`);
+                })
         } else {
             j_.send(`Error: No Channel given`);
         }

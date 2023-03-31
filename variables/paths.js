@@ -25,6 +25,7 @@ module.exports = {
   seventvlog: _mainpath("./data/logs/seventvlog.txt"),
   notificationlog: _mainpath("./data/logs/notificationlog.txt"),
   trackerlog: _mainpath("./data/logs/trackerlog.txt"),
+  intervallog: _mainpath("./data/logs/intervallog.txt"),
 
   startup: _mainpath("./data/_startup.json"),
 

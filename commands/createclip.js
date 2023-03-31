@@ -61,11 +61,11 @@ module.exports = {
                 }
             })
             .catch(e => {
-                j_.send(2, `Error: Could not get user token: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                j_.send(2, `Error: Could not get user token: ${_returnerr(e)}`);
             })
         })
         .catch(e => {
-            j_.send(2, `Error: Could not recieve channelid: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+            j_.send(2, `Error: Could not recieve channelid: ${_returnerr(e)}`);
         })
     }
 }

@@ -1,19 +1,11 @@
-const _pad2 = (n) => {return n<=9?`0${n}`:n};
+const _pad2 = (n) => { return n <= 9 ? `0${n}` : n };
 
-/**
- * @param {number} time time: time in ms
- * @param {number} timeopt
- * @param {number} timedigits
- * @returns {time} Parsed time
- */
-
+/** @param {number} time time: time in ms @param {number} timeopt @param {number} timedigits @returns {time} Parsed time */
 function _cleantime(time, timeopt, timedigits) {
-  let timedigits_ = 2;
-  if (!(timedigits ?? undefined) || typeof timedigits !== "number" || timedigits <= 0 ) {
+  if (!(timedigits ?? undefined) || typeof timedigits !== "number" || timedigits <= 0) {
     timedigits = "auto";
-  } else {
-    timedigits_ = timedigits;
   };
+  let timedigits_ = timedigits;
   let dat = { time: [], order: [], tag: "" };
   let t = {
     years: {
@@ -35,7 +27,7 @@ function _cleantime(time, timeopt, timedigits) {
     milliseconds: { tag_: "ms", tag: "millisecond", conversion: 1, time: 0 },
   };
   t.milliseconds.time = time;
-  for (i = 0; i < Object.keys(t).length - 1; i++) {
+  for (i = 0; i < (Object.keys(t).length - 1); i++) {
     t[Object.keys(t)[i]].time = Math.floor(
       t.milliseconds.time / t[Object.keys(t)[i]].conversion
     );
@@ -50,7 +42,7 @@ function _cleantime(time, timeopt, timedigits) {
     let tc = Object.keys(t)[i];
     let tco = t[tc];
     let cte = tco.time;
-    if ((["auto"].includes(timedigits_) && !["milliseconds"].includes(tc)) || timedigits_ > 0) {
+    if ((["auto"].includes(timedigits_) && ((i <= ((Object.keys(t).length - 1) > 0 ? Object.keys(t).length - 1 : Object.keys(t).length)) || i === 0)) || timedigits_ > 0) {
       if (cte > 0 || ctlast) {
         if (ctlast === undefined) {
           dat["tag"] = `${tco["tag"]}${cte > 1 ? "s" : ""}`;
@@ -65,12 +57,11 @@ function _cleantime(time, timeopt, timedigits) {
           if (cte >= 1) {
             dat["time"].push(
               cte +
-                ` ${
-                  tco[["tag", "tag_"][timeopt - 4]] !== "ms"
-                    ? tco[["tag", "tag_"][timeopt - 4]] +
-                      (cte > 1 ? "s" : "")
-                    : tco[["tag", "tag_"][timeopt - 4]]
-                }`
+              ` ${tco[["tag", "tag_"][timeopt - 4]] !== "ms"
+                ? tco[["tag", "tag_"][timeopt - 4]] +
+                (cte > 1 ? "s" : "")
+                : tco[["tag", "tag_"][timeopt - 4]]
+              }`
             );
             dat["order"].push(tc);
           }
@@ -82,8 +73,7 @@ function _cleantime(time, timeopt, timedigits) {
       i = Object.keys(t).length;
     }
   };
-
   return dat;
-}
+};
 
 module.exports = _cleantime;

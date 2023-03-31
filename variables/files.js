@@ -18,10 +18,11 @@ module.exports = {
     phrases: _rf(paths.phrases, true),
     regexes: _rf(paths.regexes, true),
 
-    commandlog: _rf(paths.commandlog, true),
-    keywordlog: _rf(paths.keywordlog, true),
-    counterlog: _rf(paths.counterlog, true),
-    log: _rf(paths.log, true),
+    commandlog: _rf(paths.commandlog),
+    keywordlog: _rf(paths.keywordlog),
+    counterlog: _rf(paths.counterlog),
+    log: _rf(paths.log),
+    intervallog: _rf(paths.intervallog),
 
     startup: _rf(paths.startup, true),
 

@@ -16,5 +16,6 @@ module.exports = {
     /** @param {c_j_} j_ */
     exec: async (j_) => {
         j_.send(`Test VoHiYo $(message[1])`);
+        j_.message.reply([...Array(100)].map((a, i) => `Test ${i} `).join(""));
     }
 };

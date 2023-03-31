@@ -21,21 +21,20 @@ module.exports = {
             switch (j_.message._.args()[0]) {
                 case "update":
                 case "edit": {
-                    if(!j_.message._.args()[1]) return j_.send(`Error: No Timerid specified`);
-                    if(!j_.message._.args()[2]) return j_.send(`Error: No new time specified`);
+                    if (!j_.message._.args()[1]) return j_.send(`Error: No Timerid specified`);
+                    if (!j_.message._.args()[2]) return j_.send(`Error: No new time specified`);
 
                     let timerid = j_.message._.args()[1];
                     let newtime = _converttime(j_.message._.args()[2]);
 
                     _timer(3, j_.message.userstate.id, timerid, newtime)
-                    .then(t => {
-                        j_.send(`Successfully updated timer time to ${_cleantime(newtime, 5).time.join(" and ")} (ID: ${t.id})`);
-                    })
-                    .catch(e => {
-                        console.error(e);
-                        j_.send(`Error: Could not update timer: ${_returnerr(e, 0)} ${_returnerr(e,1)}`);
-                    });
-                    
+                        .then(t => {
+                            j_.send(`Successfully updated timer time to ${_cleantime(newtime, 5).time.join(" and ")} (ID: ${t.id})`);
+                        })
+                        .catch(e => {
+                            j_.send(`Error: Could not update timer: ${_returnerr(e)}`);
+                        });
+
                     break;
                 };
 

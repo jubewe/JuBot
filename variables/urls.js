@@ -40,6 +40,9 @@ let urls = {
             return null;
         }
     },
+    "modlookup": {
+        "_base": "https://modlookup-api.jubewe.de"
+    },
     "riotgames": {
         "_base": {
             "europe": "https://europe.api.riotgames.com",
@@ -61,8 +64,9 @@ let urls = {
         "v3": {
             "channel": {
                 "emotes": "https://7tv.io/v3/users/twitch/:channel"
-            }
+            },
         },
+        "gql": "https://7tv.io/v3/gql",
         "events": {
             "_base": "wss://events.7tv.io/v3"
         }

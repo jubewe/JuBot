@@ -19,7 +19,7 @@ module.exports = {
             case "remind":
             case "reminder": {
                 if (j_.message._.args()[0]) {
-                    if(["edit", "update"].includes(j_.message._.args()[0])){
+                    if (["edit", "update"].includes(j_.message._.args()[0])) {
 
 
                         return;
@@ -37,8 +37,7 @@ module.exports = {
                                         j_.send(`Successfully set reminder (ID: ${r.id})`);
                                     })
                                     .catch(e => {
-                                        console.error(e);
-                                        j_.send(`Error: Could not set reminder ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                        j_.send(`Error: Could not set reminder ${_returnerr(e)}`);
                                     })
                             })
                             .catch(e => {
@@ -72,8 +71,7 @@ module.exports = {
                                     j_.send(`Successfully set reminder`);
                                 })
                                 .catch(e => {
-                                    console.error(e);
-                                    j_.send(`Error: Could not set reminder ${_returnerr(e, 0)} ${_returnerr(e, 1)}`);
+                                    j_.send(`Error: Could not set reminder ${_returnerr(e)}`);
                                 })
                         })
                         .catch(e => {

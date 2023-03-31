@@ -1,5 +1,4 @@
 /**
- * 
  * @param {array} pickarray 
  * @param {number} pickcount
  * @returns {string} Option

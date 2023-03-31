@@ -39,8 +39,7 @@ module.exports = {
                 }
             })
             .catch(e => {
-                console.error(e);
-                j_.send(`Error: Could not get video${_returnplural(videos)}: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                j_.send(`Error: Could not get video${_returnplural(videos)}: ${_returnerr(e)}`);
             })
         } else {
             j_.send(`Error: No Video(s) specified`);

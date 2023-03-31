@@ -34,8 +34,8 @@ module.exports = {
         }
     ],
     exec: async (j_) => {
-        if(j_.message._.args()[0]){
-            switch (j_.message._.args()[0]){
+        if (j_.message._.args()[0]) {
+            switch (j_.message._.args()[0]) {
                 case "add": {
                     // if(j_.message._.args()[1]){
                     //     getguild(1, j_.message._.args()[1])
@@ -49,7 +49,7 @@ module.exports = {
                     //         };
                     //     })
                     //     .catch(e => {
-                    //         j_.send(`Error: Could not get user: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+                    //         j_.send(`Error: Could not get user: ${_returnerr(e)}`);
                     //     })
                     // } else {
                     // }
@@ -58,22 +58,22 @@ module.exports = {
                     break;
                 }
 
-                case "remove": 
+                case "remove":
                 case "delete": {
-                    if(j_.message._.args()[1]){
+                    if (j_.message._.args()[1]) {
                         getuser(1, j_.message._.args()[1])
-                        .then(u => {
-                            if(files.discord.clientguilds.logguilds.includes(u[1])){
-                                files.discord.clientguilds.logguilds.splice(files.discord.clientguilds.logguilds.indexOf(u[1]), 1);
+                            .then(u => {
+                                if (files.discord.clientguilds.logguilds.includes(u[1])) {
+                                    files.discord.clientguilds.logguilds.splice(files.discord.clientguilds.logguilds.indexOf(u[1]), 1);
 
-                                j_.send(`Successfully removed ${_pixelize(u[1])} (${u[1]}) from logchannels`);
-                            } else {
-                                j_.send(`Error: Channel is not in logchannels`);
-                            }
-                        })
-                        .catch(e => {
-                            j_.send(`Error: Could not get channel`);
-                        })
+                                    j_.send(`Successfully removed ${_pixelize(u[1])} (${u[1]}) from logchannels`);
+                                } else {
+                                    j_.send(`Error: Channel is not in logchannels`);
+                                }
+                            })
+                            .catch(e => {
+                                j_.send(`Error: Could not get channel: ${_returnerr(e)}`);
+                            })
                     } else {
                         j_.send(`Error: No channel to remove given`);
                     }

@@ -16,8 +16,7 @@ module.exports = {
     serverinfo: require("../server"),
     setting: require("../settings"),
     settings: require("../settings"),
-    "7tv": require("../seventv"),
-    seventv: require("../seventv"),
+    discord7tv: require("../dcseventv"),
     download: require("../download"),
     view: require("../view"),
     unview: require("../unview"),
@@ -26,6 +25,8 @@ module.exports = {
     cafk: require("./afk"),
     rafk: require("./afk"),
     ping: require("../botinfo"),
+    // "7tv": require("../seventv"),
+    // seventv: require("../dcseventv"),
     
     command: require("./customcommand"),
     commands: require("./customcommand"),
@@ -114,4 +115,6 @@ module.exports = {
     pcon: require("../pcpower"),
     pcoff: require("../pcpower"),
 
+    package: require("../npmpackage"),
+    npmpackage: require("../npmpackage"),
 };

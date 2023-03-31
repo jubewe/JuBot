@@ -16,7 +16,7 @@ module.exports = {
             require("child_process").execSync("pm2 flush");
             j_.send("Successfully flushed logs");
         } catch(e){
-            j_.send(`Error: Could not flush logs: ${_returnerr(e,0)} ${_returnerr(e,1)}`);
+            j_.send(`Error: Could not flush logs: ${_returnerr(e)}`);
         }
     }
 };

@@ -22,19 +22,21 @@ const _mainpath = require("./functions/_mainpath");
 const geterrors = require("./functions/api/geterrors");
 const school_days_left = require("./functions/twitch/school_days_left");
 const _cleantime = require("./functions/_cleantime");
+const mlapirequestopts = require("./functions/mlapirequestopts");
+const request = require("request");
 j.variables().queuedreconnect = -1;
 
-if(_checkenv(null, "OS", 0, "Windows_NT")){
+if (_checkenv(null, "OS", 0, "Windows_NT")) {
     _log(1, `${_stackname("script", "test")[3]} executed`);
     require(_mainpath("./test.js"))();
 };
 
 process.on("unhandledRejection", (rej) => {
     console.error(rej);
-    if(!_checkenv(null, "OS", 0, "Windows_NT")) _error(rej);
+    if (!_checkenv(null, "OS", 0, "Windows_NT")) _error(rej);
 });
 
-if(c.connect.twitch){
+if (c.connect.twitch) {
     j.client.connect();
 
     j.client.onPRIVMSG(require("./handlers/twitch/message"));
@@ -42,6 +44,12 @@ if(c.connect.twitch){
     j.client.onReady(require("./handlers/twitch/connect"));
     // j.client.onReady(() => {j.client.joinAll(files.clientchannels.channels)});
     j.client.onError(require("./handlers/twitch/error"));
+
+    // request(mlapirequestopts("/token/validate", { headers: { "authorization": j.env().T_TOKEN } }), (e, r) => {
+    //     if(e) return console.error(e);
+
+    //     console.log(`ML Validated`, r.body);
+    // });
 
     j.client.on("autojoin", a => {
         _log(1, `${_stackname("client", "autojoin")[3]} ${a.length} Channels`);
@@ -59,25 +67,24 @@ if(c.connect.twitch){
     _executetimers();
     _log(1, `${_stackname("timers")[3]} Executed`);
 
-    if(j.c().connect.trackers.activemods || j.c().connect.trackers.live){
+    if (j.c().connect.trackers.activemods || j.c().connect.trackers.live) {
         setTimeout(livechannels, 3000);
         setInterval(livechannels, j.c().intervals.trackers.activemods);
     };
 
-    if(j.c().connect.trackers.youtube_video){
+    if (j.c().connect.trackers.youtube_video) {
         setTimeout(youtubevideo, 3000);
         setInterval(youtubevideo, j.c().intervals.trackers.youtube_video);
     };
 
     j.client.onReady(() => {
         setTimeout(() => {
-            send_school_days_left();
-            setInterval(school_days_left, (24*60*60*1000));
-        }, (new Date(new Date().setHours(14, 0, 0, 0)).getTime()-Date.now()));
+            setInterval(school_days_left, (24 * 60 * 60 * 1000));
+        }, (new Date(new Date().setHours(14, 0, 0, 0)).getTime() - Date.now()));
     });
 
-    function send_school_days_left(){
-        if(school_days_left() > 0){
+    function send_school_days_left() {
+        if (school_days_left() > 0) {
             j.client.send("jubewe", `Just ${_cleantime(school_days_left(), 4).time.join(" and ")} left`);
         } else {
             j.client.send("jubewe", `You got released from prison! Now remove that function to check for the left school days Waiting`);
@@ -85,8 +92,8 @@ if(c.connect.twitch){
     };
 };
 
-if(c.connect.twitch_view){
-    j.viewclient.connect(); 
+if (c.connect.twitch_view) {
+    j.viewclient.connect();
 
     j.viewclient.onReady(() => {
         _log(1, `${_stackname("viewclient", "connect")[3]} Successful`);
@@ -97,11 +104,11 @@ if(c.connect.twitch_view){
     });
 
     j.viewclient.onError(error => {
-        if(error){_log(2, `${_stackname("viewclient", "error")[3]} ${error.message}`);}
+        if (error) { _log(2, `${_stackname("viewclient", "error")[3]} ${error.message}`); }
     });
 };
 
-if(c.connect.discord){
+if (c.connect.discord) {
     j.dc.client.login(j.e().DC_TOKEN);
 
     j.dc.client.on("ready", require("./handlers/discord/ready"));
@@ -110,20 +117,20 @@ if(c.connect.discord){
     j.dc.client.on("error", require("./handlers/discord/error"));
 };
 
-if(c.connect.ws.server) require("./modules/ws/server/index")();
-if(c.connect.express.app) require("./modules/express/index")();
-if(c.connect.ws.seventv) require("./modules/seventv/seventv_ws")();
+if (c.connect.ws.server) require("./modules/ws/server/index")();
+if (c.connect.express.app) require("./modules/express/index")();
+if (c.connect.ws.seventv) require("./modules/seventv/seventv_ws")();
 
-if(!_checkenv(j.e(), "OS", 0, "Windows_NT")){
-    setTimeout(() => {geterrors(1)}, 3000);
-    setInterval(() => {geterrors(1)}, j.c().intervals.errors);
+if (!_checkenv(j.e(), "OS", 0, "Windows_NT")) {
+    setTimeout(() => { geterrors(1) }, 3000);
+    setInterval(() => { geterrors(1) }, j.c().intervals.errors);
 };
 
-if(j.c().connect.ws.api){
+if (j.c().connect.ws.api) {
     j.ws.client.onopen = () => {
         _log(1, `${_stackname("ws", "api")[3]} Connected`);
         // j.ws.client.send(JSON.stringify({"type":"login", "data": {"oauth_token": j.e().T_TOKEN_2}}));
-        j.ws.client.send(JSON.stringify({"type":"connect","name":"jubot","led_pin":c.raspi.led_pin}));
+        j.ws.client.send(JSON.stringify({ "type": "connect", "name": "jubot", "led_pin": c.raspi.led_pin }));
     };
 
     j.ws.client.onclose = e => {
